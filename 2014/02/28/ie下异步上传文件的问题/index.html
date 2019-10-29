@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.2',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="遇到一个奇葩插件：ajaxfileupload.js 作用是异步上传文件，实现方法是动态生成form和form提交的目标iframe，再从iframe的body取回服务器返回 问题是：  这个插件没任何作者信息，js文件内版本号都没有，有问题得google半天 这个插件有点历史了，当年配套的是jQuery 1.2.1，用现在的新版本会使catch到的错误没有handler 这个插件是个半成品，作者">
+<meta name="keywords" content="javascript,ie,input">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ie下异步上传文件的问题">
+<meta property="og:url" content="https:&#x2F;&#x2F;wenxiongid.github.io&#x2F;2014&#x2F;02&#x2F;28&#x2F;ie%E4%B8%8B%E5%BC%82%E6%AD%A5%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6%E7%9A%84%E9%97%AE%E9%A2%98&#x2F;index.html">
+<meta property="og:site_name" content="JuneWu&#39;s Blog">
+<meta property="og:description" content="遇到一个奇葩插件：ajaxfileupload.js 作用是异步上传文件，实现方法是动态生成form和form提交的目标iframe，再从iframe的body取回服务器返回 问题是：  这个插件没任何作者信息，js文件内版本号都没有，有问题得google半天 这个插件有点历史了，当年配套的是jQuery 1.2.1，用现在的新版本会使catch到的错误没有handler 这个插件是个半成品，作者">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-29T06:17:18.225Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wenxiongid.github.io/2014/02/28/ie%E4%B8%8B%E5%BC%82%E6%AD%A5%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6%E7%9A%84%E9%97%AE%E9%A2%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>ie下异步上传文件的问题 | JuneWu's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JuneWu's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="Searching..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2014/02/28/ie%E4%B8%8B%E5%BC%82%E6%AD%A5%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6%E7%9A%84%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="June Wu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JuneWu's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ie下异步上传文件的问题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2014-02-28 18:45:00" itemprop="dateCreated datePublished" datetime="2014-02-28T18:45:00+08:00">2014-02-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-10-29 14:17:18" itemprop="dateModified" datetime="2019-10-29T14:17:18+08:00">2019-10-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/work/" itemprop="url" rel="index">
+                    <span itemprop="name">work</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>遇到一个奇葩插件：<code>ajaxfileupload.js</code></p>
+<p>作用是异步上传文件，实现方法是动态生成<code>form</code>和<code>form</code>提交的目标<code>iframe</code>，再从<code>iframe</code>的<code>body</code>取回服务器返回</p>
+<p>问题是：</p>
+<ol>
+<li>这个插件没任何作者信息，js文件内版本号都没有，有问题得google半天</li>
+<li>这个插件有点历史了，当年配套的是<code>jQuery 1.2.1</code>，用现在的新版本会使<code>catch</code>到的错误没有<code>handler</code></li>
+<li>这个插件是个半成品，作者大概没有全面测试过就放出来了，事实证明ie6~8是使用不了的</li>
+<li>国内竟然有好多网站在用这个插件，google到的信息多半是中文的</li>
+</ol>
+<p>这个插件在ie6～8的症状如下：</p>
+<p>动态插入<code>iframe</code>，<code>src</code>设为<code>javascript:false</code>；<code>form</code>的<code>target</code>设为这个<code>iframe</code>，再把<code>handler</code>绑定在<code>iframe</code>的<code>load</code>事件上。在其他浏览器上这个流程都没问题，但就是在那几个ie上，<code>load</code>事件竟然就在load完<code>javascript:false;</code>就<code>trigger</code>了……然后……就没然后了</p>
+<p>这个问题倒还好，我在<code>handler</code>里加了个判断，若<code>src</code>是<code>javascript:false;</code>就不做处理，等到真正的返回。但是，等了十年那<code>load</code>事件再也没有<code>trigger</code>过，查了network是根本没有<code>post</code>请求……于是我尝试手动<code>$(form).submit()</code>，终于在第二次手动submit后发出了请求然后有了返回，还要每次都是两次……</p>
+<p>于是我加上了重试<code>handler</code>，在没收到返回前，隔一定时间再作提交，不过这个时间不好定，使用起来也不现实，但起码有个方法了。于是把这套代码放到虚拟机的真ie8上去试……对，之前都是在ie11里把文档模式设成ie8去试的……结果就是提交的文件为空……为空为空为空为空为空为空为空为空为空为空为空</p>
+<p>google结果是ie阻止了<code>javascript</code>调用的<code>submit</code>事件，防止后台自动上传……我试了下<code>$(&#39;input[type=submit]&#39;).click()</code>也不行……</p>
+<p>结果是ie6～8这个功能不做了……</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/ie/" rel="tag"># ie</a>
+              <a href="/tags/input/" rel="tag"># input</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2014/02/28/ie6%E3%80%817%E4%B8%8B%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8D%E8%83%BD%E4%BD%BF%E7%94%A8%E6%95%B0%E7%BB%84%E7%B4%A2%E5%BC%95/" rel="next" title="ie6、7下字符串不能使用数组索引">
+                  <i class="fa fa-chevron-left"></i> ie6、7下字符串不能使用数组索引
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2014/03/10/%E5%8F%AF%E7%BC%96%E8%BE%91%E5%9D%97%E5%85%89%E6%A0%87%E5%AE%9A%E4%BD%8D%E7%9A%84%E6%96%B9%E6%B3%95/" rel="prev" title="可编辑块光标定位的方法">
+                  可编辑块光标定位的方法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="June Wu"
+    src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">June Wu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wenxiongid" title="GitHub &amp;rarr; https:&#x2F;&#x2F;github.com&#x2F;wenxiongid" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:junewu.canton@gmail.com" title="E-Mail &amp;rarr; mailto:junewu.canton@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">June Wu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '89487a94f5c6b491d160',
+      clientSecret: 'a69f582367a08d3edd0281c7234d4ca8dbca1f2c',
+      repo: 'wenxiongid/guestbook',
+      owner: '',
+      admin: ['wenxiongid'],
+      id: '7260517030bd6676c184a441e391a1c4',
+        language: '',
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>

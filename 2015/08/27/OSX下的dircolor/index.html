@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.2',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="偶然看到一个github库dircolors-solarized，刚好我在iTerm用的也是solarized的配色，OSX下终端的ls出来也只有简单的几种颜色，一眼看过去密密麻麻的都不知道是什么文件，看到这个心想终于有个好的解决方案了，立刻看着installation来做 把仓库clone到本地，把dircolors.ansi-universal复制到~&#x2F;.dir_colors: 1cp dir">
+<meta name="keywords" content="linux,OSX">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OSX下的dircolor">
+<meta property="og:url" content="https:&#x2F;&#x2F;wenxiongid.github.io&#x2F;2015&#x2F;08&#x2F;27&#x2F;OSX%E4%B8%8B%E7%9A%84dircolor&#x2F;index.html">
+<meta property="og:site_name" content="JuneWu&#39;s Blog">
+<meta property="og:description" content="偶然看到一个github库dircolors-solarized，刚好我在iTerm用的也是solarized的配色，OSX下终端的ls出来也只有简单的几种颜色，一眼看过去密密麻麻的都不知道是什么文件，看到这个心想终于有个好的解决方案了，立刻看着installation来做 把仓库clone到本地，把dircolors.ansi-universal复制到~&#x2F;.dir_colors: 1cp dir">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-29T06:17:18.225Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wenxiongid.github.io/2015/08/27/OSX%E4%B8%8B%E7%9A%84dircolor/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>OSX下的dircolor | JuneWu's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JuneWu's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="Searching..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2015/08/27/OSX%E4%B8%8B%E7%9A%84dircolor/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="June Wu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JuneWu's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          OSX下的dircolor
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-08-27 18:24:00" itemprop="dateCreated datePublished" datetime="2015-08-27T18:24:00+08:00">2015-08-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-10-29 14:17:18" itemprop="dateModified" datetime="2019-10-29T14:17:18+08:00">2019-10-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/life/" itemprop="url" rel="index">
+                    <span itemprop="name">life</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>偶然看到一个github库<a href="https://github.com/seebi/dircolors-solarized" target="_blank" rel="noopener">dircolors-solarized</a>，刚好我在iTerm用的也是solarized的配色，OSX下终端的ls出来也只有简单的几种颜色，一眼看过去密密麻麻的都不知道是什么文件，看到这个心想终于有个好的解决方案了，立刻看着installation来做</p>
+<p>把仓库clone到本地，把<code>dircolors.ansi-universal</code>复制到<code>~/.dir_colors</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp dircolors.ansi-universal ~/.dir_colors</span><br></pre></td></tr></table></figure>
+
+<p>然后运行<code>eval &#39;dircolors ~/.dir_colors&#39;</code></p>
+<p>咦？出现错误<code>zsh: command not found: dircolors</code></p>
+<p>没有<code>dircolors</code>这个命令？说明里没说有这个情况的啊，google一下，得到了<a href="http://unix.stackexchange.com/questions/91937/mac-os-x-dircolors-not-found" target="_blank" rel="noopener">说明</a>是：<code>dircolors</code>是<code>GNU coreutils</code>的专有命令，OSX就没有咯。那就是这个库的方法用不了了？</p>
+<p>再google一下，发现GNU的<code>ls</code>是可以通过<code>brew install coreutils</code>安装的，刚输完前面的命令发现以前已经装过了，er…</p>
+<p>好吧，那直接在shell的配置文件加上<code>alias ls=&quot;gls --color=auto&quot;</code>应该就可以了，我用的是<code>zsh</code>，于是加进<code>~/.zshrc</code>。加上后，晕了，弹出这么一个错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/bin/ls: illegal option -- -</span><br><span class="line">usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]</span><br></pre></td></tr></table></figure>
+
+<p>这是什么鬼回事？明明都加了alias了啊？看这错误提示调用的还是<code>/bin/ls</code>，这是OSX自带的<code>ls</code>喔…</p>
+<p>想起了<code>which -a</code>命令可以查看一个命令的全部版本（还是同名的文件？不会表达），那alias的命令能不能列出来呢？试一下<code>which -a ls</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls: aliased to ls -G</span><br><span class="line">/bin/ls</span><br></pre></td></tr></table></figure>
+
+<p>噢，真的有！什么时候<code>ls</code> alias成<code>ls -G</code>了？我的<code>gls</code>呢？看来在我的alias后面又被其他文件里的配置被alias了，唉，这个<code>which</code>只能看被alias成什么，看不到在哪里被alias的啊，google一轮后也找不到，那只能每次打开终端都输一次<code>alias ls=&quot;gls --color=auto&quot;</code>吗？</p>
+<p>想起我在用的iTerm有个<code>Send text at start</code>选项（在Preferences–&gt;Profile–&gt;General），可以在每次打开终端窗口的时候输入这行指令，那我想到最后的方法就是把这行命令放到这里了，总比每次手输要好吧，吧</p>
+<p>啊，最后忘记了，还要运行<code>dircolor</code>的，现在要改成<code>gdircolor</code>了，完整的命令是<code>gdircolor ~/.dir_colors</code>，这行代码就加到<code>~/.zshrc</code>中。修改好后再执行<code>source ~/.zshrc</code></p>
+<p>好了，最后重启iTerm，<code>ls</code>一下，终于搞定了</p>
+<p>最后还是没找到这<code>ls -G</code>是在哪里被alias的，有没有一个命令是可以找到alias的配置文件的呢？</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/OSX/" rel="tag"># OSX</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2015/08/06/Hexo-blog%E6%90%AD%E5%BB%BA/" rel="next" title="Hexo blog搭建">
+                  <i class="fa fa-chevron-left"></i> Hexo blog搭建
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2015/12/16/rem%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" rel="prev" title="rem使用注意事项">
+                  rem使用注意事项 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="June Wu"
+    src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">June Wu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wenxiongid" title="GitHub &amp;rarr; https:&#x2F;&#x2F;github.com&#x2F;wenxiongid" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:junewu.canton@gmail.com" title="E-Mail &amp;rarr; mailto:junewu.canton@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">June Wu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '89487a94f5c6b491d160',
+      clientSecret: 'a69f582367a08d3edd0281c7234d4ca8dbca1f2c',
+      repo: 'wenxiongid/guestbook',
+      owner: '',
+      admin: ['wenxiongid'],
+      id: '41155573f87000de10a829cc3098304c',
+        language: '',
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>

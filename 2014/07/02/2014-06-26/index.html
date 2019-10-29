@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.2',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="2014-09-29 18:08 模块更新Update: 加入停止吸顶触发高度，dom元素传参方法如下： 12345&amp;lt;div class=&quot;f-hd-ph&quot;&amp;gt;    &amp;lt;div class=&quot;jdc-fixtop f-hd-wp&quot; data-offset=&quot;触发高度&quot; data-offset_bottom=&quot;停止吸顶触发高度&quot;&amp;gt;        ......    &amp;lt;&#x2F;d">
+<meta name="keywords" content="javascript,jshop">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jshop吸顶banner公共模块">
+<meta property="og:url" content="https:&#x2F;&#x2F;wenxiongid.github.io&#x2F;2014&#x2F;07&#x2F;02&#x2F;2014-06-26&#x2F;index.html">
+<meta property="og:site_name" content="JuneWu&#39;s Blog">
+<meta property="og:description" content="2014-09-29 18:08 模块更新Update: 加入停止吸顶触发高度，dom元素传参方法如下： 12345&amp;lt;div class=&quot;f-hd-ph&quot;&amp;gt;    &amp;lt;div class=&quot;jdc-fixtop f-hd-wp&quot; data-offset=&quot;触发高度&quot; data-offset_bottom=&quot;停止吸顶触发高度&quot;&amp;gt;        ......    &amp;lt;&#x2F;d">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2014-09-29T10:08:00.000Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wenxiongid.github.io/2014/07/02/2014-06-26/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>jshop吸顶banner公共模块 | JuneWu's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JuneWu's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="Searching..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2014/07/02/2014-06-26/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="June Wu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JuneWu's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          jshop吸顶banner公共模块
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2014-07-02 16:35:00" itemprop="dateCreated datePublished" datetime="2014-07-02T16:35:00+08:00">2014-07-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2014-09-29 18:08:00" itemprop="dateModified" datetime="2014-09-29T18:08:00+08:00">2014-09-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/work/" itemprop="url" rel="index">
+                    <span itemprop="name">work</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>2014-09-29 18:08 模块更新Update:</p>
+<p>加入停止吸顶触发高度，dom元素传参方法如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"f-hd-ph"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"jdc-fixtop f-hd-wp"</span> <span class="attr">data-offset</span>=<span class="string">"触发高度"</span> <span class="attr">data-offset_bottom</span>=<span class="string">"停止吸顶触发高度"</span>&gt;</span></span><br><span class="line">        ......</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>js传参方法如下，同时兼容旧版的传参方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'需吸顶dom'</span>).fixTop(&#123;</span><br><span class="line">    top: 触发吸顶的高度,</span><br><span class="line">    bottom: 停止吸顶触发高度</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>加入触发吸顶、停止触发吸顶回调函数，只可使用js方法传参：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'需吸顶dom'</span>).fixTop(&#123;</span><br><span class="line">    top: 触发吸顶的高度,</span><br><span class="line">    bottom: 停止吸顶触发高度</span><br><span class="line">&#125;, &#123;</span><br><span class="line">    toFix: 吸顶回调函数,</span><br><span class="line">    toStatic: 停止吸顶回调函数</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>加入更新触发吸顶、触发停止吸顶高度方法<code>updatePoint</code>，可同时更新开始、结束点，不传则不更新该点：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(el).data[<span class="string">'FixTop'</span>].updatePoint(&#123;</span><br><span class="line">    top: 触发吸顶的高度,</span><br><span class="line">    bottom: 停止吸顶触发高度</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>2014-07-17 15:53 模块更新Update:</p>
+<p>添加使用类名添加行为的功能，不需再手动初始化模块</p>
+<p>只需dom元素结构如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"f-hd-ph"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"jdc-fixtop f-hd-wp"</span> <span class="attr">data-offset</span>=<span class="string">"触发高度"</span>&gt;</span></span><br><span class="line">        ......</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>再在最后引入此公共模块，即可在<code>jdc-fixtop</code>类上初始化本模块，当窗口滚动到大于触发高度时将触发吸顶，少于时还原</p>
+<hr>
+<p>2014-07-02 16:35 模块更新Update:</p>
+<p>不再限定吸顶dom的<code>id</code>，封装成jQuery插件，分离吸顶<code>id</code>和触发<code>fix</code>的<code>scrollTop</code>值，使用方法为</p>
+<p><code>$(&#39;需吸顶dom&#39;).fixTop(触发吸顶的高度);</code></p>
+<hr>
+<p>需吸顶的dom元素结构需如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"f-hd-ph"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"f-hd-wp"</span>&gt;</span>   </span><br><span class="line">		......</span><br><span class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其中<code>.f-hd-ph</code>(fixed-header-placeholder)为banner的占位符，以避免滚动到下方时banner的<code>position</code>转换为<code>fixed</code>或<code>absolute</code>时高度塌陷，所以此元素需指定高度</p>
+<p><code>.f-hd-wp</code>(fixed-header-wrapper)为banner的容器，滚动时<code>position</code>转换为<code>fixed</code>或<code>absolute</code>；此元素宽度为100%，<code>overflow</code>属性为<code>hidden</code>，全景背景可设在此元素；元素内可添加导航等内容</p>
+<h3 id="一个栗子："><a href="#一个栗子：" class="headerlink" title="一个栗子："></a>一个栗子：</h3><p>以下为自定义模块内容，在模块后再加上吸顶模块即可：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css"><span class="selector-class">.f-hd-ph</span>&#123;</span></span><br><span class="line">  height: 100px;</span><br><span class="line">&#125;</span><br><span class="line"><span class="css"><span class="selector-class">.f-hd-wp</span>&#123;</span></span><br><span class="line">  height: 100px;</span><br><span class="line">  background: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="css"><span class="selector-class">.header-content</span>&#123;</span></span><br><span class="line">  width: 1002px;</span><br><span class="line">  height: 100px;</span><br><span class="line"><span class="css">  <span class="selector-tag">margin-left</span><span class="selector-pseudo">:auto</span>;</span></span><br><span class="line"><span class="css">  <span class="selector-tag">margin-right</span><span class="selector-pseudo">:auto</span>;</span></span><br><span class="line">  background: blue;</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"f-hd-ph"</span>&gt;</span>  </span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"fix-header"</span> <span class="attr">class</span>=<span class="string">"f-hd-wp"</span>&gt;</span>   </span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"header-content"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </span><br><span class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"height:2000px;"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">$(<span class="string">'#fix-header'</span>).fixTop($(<span class="string">'#fix-header'</span>).offset().top);</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>最后附模块源码：</p>
+<p>css代码：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.f-hd-wp</span>&#123;</span><br><span class="line">  <span class="attribute">width</span>:<span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">overflow</span>: hidden;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.fix-header-fix</span>&#123;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">z-index</span>: <span class="number">100</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>js代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params">$</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> is_support_fix=(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="keyword">return</span> !($.browser.msie &amp;&amp; $.browser.version &lt; <span class="number">7</span>);</span><br><span class="line">  &#125;)();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> FixTop=<span class="function"><span class="keyword">function</span>(<span class="params">target, scrollTopPoint, option</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> _this=<span class="keyword">this</span>;</span><br><span class="line">    _this.$target=$(target);</span><br><span class="line">    _this.scrollTopPoint=scrollTopPoint;</span><br><span class="line">    <span class="keyword">if</span>(scrollTopPoint.top)&#123;</span><br><span class="line">      _this.scrollTopPoint=scrollTopPoint.top;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(scrollTopPoint.bottom)&#123;</span><br><span class="line">      _this.scrollBottomPoint=scrollTopPoint.bottom;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(_this.$target.length)&#123;</span><br><span class="line">      $(<span class="built_in">window</span>, <span class="built_in">document</span>).bind(<span class="string">'scroll'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> scrollTop=$(<span class="keyword">this</span>).scrollTop();</span><br><span class="line">        _this.scrollBottomPoint=_this.scrollBottomPoint || $(<span class="string">'body'</span>).height();</span><br><span class="line">        <span class="keyword">if</span>(!_this.$target.data(<span class="string">'is_fix'</span>) &amp;&amp;</span><br><span class="line">          (_this.scrollTopPoint &amp;&amp; scrollTop &gt; _this.scrollTopPoint) &amp;&amp;</span><br><span class="line">          (_this.scrollBottomPoint &amp;&amp; scrollTop &lt; _this.scrollBottomPoint))&#123;</span><br><span class="line">          _this.$target.addClass(<span class="string">'fix-header-fix'</span>);</span><br><span class="line">          <span class="keyword">if</span>(is_support_fix)&#123;</span><br><span class="line">            _this.$target.css(<span class="string">'position'</span>, <span class="string">'fix'</span>+<span class="string">'ed'</span>);</span><br><span class="line">          &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            _this.$target.css(<span class="string">'top'</span>, scrollTop+<span class="string">'px'</span>);</span><br><span class="line">          &#125;</span><br><span class="line">          _this.$target.data(<span class="string">'is_fix'</span>, <span class="number">1</span>);</span><br><span class="line">          <span class="keyword">if</span>(option &amp;&amp; $.isFunction(option.toFix))&#123;</span><br><span class="line">            option.toFix();</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(_this.$target.data(<span class="string">'is_fix'</span>) &amp;&amp;</span><br><span class="line">          scrollTop &lt;= _this.scrollTopPoint || </span><br><span class="line">          scrollTop &gt;= _this.scrollBottomPoint)&#123;</span><br><span class="line">          _this.$target.removeClass(<span class="string">'fix-header-fix'</span>);</span><br><span class="line">          <span class="keyword">if</span>(is_support_fix)&#123;</span><br><span class="line">            _this.$target.css(<span class="string">'position'</span>, <span class="string">'static'</span>);</span><br><span class="line">          &#125;</span><br><span class="line">          _this.$target.data(<span class="string">'is_fix'</span>, <span class="number">0</span>);</span><br><span class="line">          <span class="keyword">if</span>(option &amp;&amp; $.isFunction(option.toStatic))&#123;</span><br><span class="line">            option.toStatic();</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      $(<span class="built_in">window</span>, <span class="built_in">document</span>).trigger(<span class="string">'scroll'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  FixTop.prototype.updatePoint=<span class="function"><span class="keyword">function</span>(<span class="params">scrollTopPoint</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> _this=<span class="keyword">this</span>;</span><br><span class="line">    _this.scrollTopPoint=scrollTopPoint;</span><br><span class="line">    <span class="keyword">if</span>(scrollTopPoint.top)&#123;</span><br><span class="line">      _this.scrollTopPoint=scrollTopPoint.top;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(scrollTopPoint.bottom)&#123;</span><br><span class="line">      _this.scrollBottomPoint=scrollTopPoint.bottom;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  $.fn.fixTop=<span class="function"><span class="keyword">function</span>(<span class="params">scrollTopPoint, option</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> $<span class="keyword">this</span>=$(<span class="keyword">this</span>);</span><br><span class="line">    $<span class="keyword">this</span>.data()[<span class="string">'FixTop'</span>]=<span class="keyword">new</span> FixTop(<span class="keyword">this</span>, scrollTopPoint, option);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;)(jQuery);</span><br><span class="line"></span><br><span class="line">$(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  $(<span class="string">'.jdc-fixtop'</span>).each(<span class="function"><span class="keyword">function</span>(<span class="params">i, el</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> $el=$(el),</span><br><span class="line">      offset=$el.data(<span class="string">'offset'</span>) || $el.offset().top,</span><br><span class="line">      offset_bottom=$el.data(<span class="string">'offset_bottom'</span>);</span><br><span class="line">    $(el).fixTop(&#123;</span><br><span class="line">      top: offset,</span><br><span class="line">      bottom: offset_bottom</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/jshop/" rel="tag"># jshop</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2014/06/23/2014-06-23/" rel="next" title="OSX下safari窗口滚动时scrollTop值变化问题">
+                  <i class="fa fa-chevron-left"></i> OSX下safari窗口滚动时scrollTop值变化问题
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2015/08/06/Hexo-blog%E6%90%AD%E5%BB%BA/" rel="prev" title="Hexo blog搭建">
+                  Hexo blog搭建 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一个栗子："><span class="nav-number">1.</span> <span class="nav-text">一个栗子：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="June Wu"
+    src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">June Wu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wenxiongid" title="GitHub &amp;rarr; https:&#x2F;&#x2F;github.com&#x2F;wenxiongid" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:junewu.canton@gmail.com" title="E-Mail &amp;rarr; mailto:junewu.canton@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">June Wu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '89487a94f5c6b491d160',
+      clientSecret: 'a69f582367a08d3edd0281c7234d4ca8dbca1f2c',
+      repo: 'wenxiongid/guestbook',
+      owner: '',
+      admin: ['wenxiongid'],
+      id: 'ca8483e5dc9d5399db511e5919f7290f',
+        language: '',
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>
