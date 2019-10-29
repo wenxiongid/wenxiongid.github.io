@@ -59,7 +59,7 @@
 <meta property="og:description" content="视频播放在PC端跟移动端有很多表现不一样，在H5的开发过程中，一定要在真机测试，一定要在真机测试，一定要在真机测试 1. video对象可用的事件PC端可用的事件有很多，像play、canplay、timeupdate、ended、paused等等 但在移动端，信赖的事件只有timeupdate和ended，判断视频是否正在播放可通过timeupdate事件是否有触发判断 但视频在刚播放时有可能会">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http:&#x2F;&#x2F;img12.360buyimg.com&#x2F;cms&#x2F;jfs&#x2F;t7669&#x2F;79&#x2F;3394930983&#x2F;104490&#x2F;873dce8d&#x2F;59f6f05cN7b168dc7.jpg">
-<meta property="og:updated_time" content="2019-10-29T06:17:18.227Z">
+<meta property="og:updated_time" content="2019-10-29T10:15:57.943Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;img12.360buyimg.com&#x2F;cms&#x2F;jfs&#x2F;t7669&#x2F;79&#x2F;3394930983&#x2F;104490&#x2F;873dce8d&#x2F;59f6f05cN7b168dc7.jpg">
 
@@ -246,7 +246,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-10-29 14:17:18" itemprop="dateModified" datetime="2019-10-29T14:17:18+08:00">2019-10-29</time>
+                <time title="Modified: 2019-10-29 18:15:57" itemprop="dateModified" datetime="2019-10-29T18:15:57+08:00">2019-10-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -276,6 +276,8 @@
 <p>但在移动端，信赖的事件只有<code>timeupdate</code>和<code>ended</code>，判断视频是否正在播放可通过<code>timeupdate</code>事件是否有触发判断</p>
 <p>但视频在刚播放时有可能会加载还没完成而出现黑屏，但<code>timeupdate</code>事件此时也会触发，可结合判断<code>video.currentTime</code>是否大于<code>0</code>判断视频是否已经真正开始播放：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">video.addEventListener(<span class="string">'timeupdate'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(video.currentTime &gt; <span class="number">0</span>)&#123;</span><br><span class="line">		<span class="comment">//视频正在播放</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
 
 <h2 id="2-视频的播放控制"><a href="#2-视频的播放控制" class="headerlink" title="2. 视频的播放控制"></a>2. 视频的播放控制</h2><p>移动端暂时没有一个通用的方法让视频在各个浏览器（微信、手Q、各种浏览器）自动播放，故固定交互模式为<strong>需要用户操作才可使视频开始播放，包括之后视频的切换也需用户操作</strong></p>
 <p>视频文件需要用户的动作触发调用<code>video.play()</code>之后才会开始加载，且绑定的事件才会触发</p>

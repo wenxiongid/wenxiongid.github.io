@@ -241,7 +241,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-10-29 14:17:18" itemprop="dateModified" datetime="2019-10-29T14:17:18+08:00">2019-10-29</time>
+                <time title="Modified: 2019-10-29 18:15:57" itemprop="dateModified" datetime="2019-10-29T18:15:57+08:00">2019-10-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -271,25 +271,14 @@
 <p>但在移动端，信赖的事件只有<code>timeupdate</code>和<code>ended</code>，判断视频是否正在播放可通过<code>timeupdate</code>事件是否有触发判断</p>
 <p>但视频在刚播放时有可能会加载还没完成而出现黑屏，但<code>timeupdate</code>事件此时也会触发，可结合判断<code>video.currentTime</code>是否大于<code>0</code>判断视频是否已经真正开始播放：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">video.addEventListener(<span class="string">'timeupdate'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(video.currentTime &gt; <span class="number">0</span>)&#123;</span><br><span class="line">		<span class="comment">//视频正在播放</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h2 id="2-视频的播放控制"><a href="#2-视频的播放控制" class="headerlink" title="2. 视频的播放控制"></a>2. 视频的播放控制</h2><p>移动端暂时没有一个通用的方法让视频在各个浏览器（微信、手Q、各种浏览器）自动播放，故固定交互模式为<strong>需要用户操作才可使视频开始播放，包括之后视频的切换也需用户操作</strong></p>
-<p>视频文件需要用户的动作触发调用<code>video.play()</code>之后才会开始加载，且绑定的事件才会触发</p>
-<h2 id="3-视频的行内显示"><a href="#3-视频的行内显示" class="headerlink" title="3. 视频的行内显示"></a>3. 视频的行内显示</h2><h3 id="3-1-iOS和手Q域名下微信和手Q的情况"><a href="#3-1-iOS和手Q域名下微信和手Q的情况" class="headerlink" title="3.1 iOS和手Q域名下微信和手Q的情况"></a>3.1 iOS和手Q域名下微信和手Q的情况</h3><p>iOS 10或以上系统里只需在<code>video</code>标签加上<code>playsinline</code>和<code>webkit-playsinline</code>即可实现行内显示，iOS 9可加入这个库：<a href="https://github.com/bfred-it/iphone-inline-video" target="_blank" rel="noopener">iphone-inline-video</a></p>
-<p>html代码：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">video</span> <span class="attr">src</span>=<span class="string">"a.mp4"</span> <span class="attr">playsinline</span> <span class="attr">webkit-playsinline</span>/&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>android平台若使用已加入白名单的域名，使用同样的属性可在微信和手Q实现与iOS基本一样的表现，但会在视频右上角显示<code>全屏</code>的按钮：</p>
-<p><img src="http://img12.360buyimg.com/cms/jfs/t7669/79/3394930983/104490/873dce8d/59f6f05cN7b168dc7.jpg" alt=""></p>
-<p>点击该<code>全屏</code>按钮，视频会脱离页面显示，绑定的事件处理也不会触发，会对页面逻辑有严重的影响；但浏览器没有提供方法隐藏该按钮，只能通过扩大视频范围配合容器的<code>overflow:hidden</code>属性把按钮“推出去”</p>
-<h3 id="3-2-非手Q域名或在京东APP下的情况"><a href="#3-2-非手Q域名或在京东APP下的情况" class="headerlink" title="3.2 非手Q域名或在京东APP下的情况"></a>3.2 非手Q域名或在京东APP下的情况</h3><p>京东APP和微信、手Q在android系统下使用的都是QQ浏览器X5内核，但加入白名单后的域名在京东APP里也不能像微信、手Q一样行内播放视频，跟域名没入白名单的页面在微信、手Q里一样的表现</p>
-<p>通过<a href="https://x5.tencent.com/tbs/guide/video.html" target="_blank" rel="noopener">X5内核的文档</a>可以找到让视频非全屏播放的方法：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">video</span> <span class="attr">src</span>=<span class="string">"a.mp4"</span> <span class="attr">x5-video-player-type</span>=<span class="string">"h5"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>但视频播放时表现会与iOS上表现不一样，在播放时会隐藏页面标题栏，整个页面会有一个拉伸的过程，播放停止时若把视频隐藏（设为<code>display:none</code>）也会有一个拉伸的过程回复到普通页面；在视频的播放过程中，需要点两次右上角的“返回”按钮才能关闭页面，第一次返回将停止视频并回到页面的普通状态，第二次将关闭页面。</p>
-<h2 id="4-etc"><a href="#4-etc" class="headerlink" title="4. etc"></a>4. etc</h2><h3 id="4-1-开始时"><a href="#4-1-开始时" class="headerlink" title="4.1 开始时"></a>4.1 开始时</h3><p>测试过在iOS、安卓X5内核中<code>&lt;video&gt;</code>为<code>diaplay: none</code>时也可调用<code>play()</code>方法，但为保证其他浏览器的兼容性，还是建议先设成<code>diaplay: block</code>且宽高设为需展示大小再调用<code>play()</code>方法</p>
-<h3 id="4-2-结束时"><a href="#4-2-结束时" class="headerlink" title="4.2 结束时"></a>4.2 结束时</h3><p>安卓X5内核在视频播放完毕后将会在中央显示播放按钮，有机会会显示广告……所以在视频播放后需将<code>&lt;video&gt;</code>设为<code>display: none</code></p>
-<h3 id="4-3-中断视频"><a href="#4-3-中断视频" class="headerlink" title="4.3 中断视频"></a>4.3 中断视频</h3><p>在视频播放中需要中断（如跳过此段视频播放下一段），先需调用<code>video.pause()</code>停止当前视频的播放，但此时视频还会继续加载，占用后面资源加载的带宽，所以还要把<code>video.src</code>设为空<code>&#39;&#39;</code>，当视频需要重新播放时，再把原来的视频地址设回到<code>video.src</code></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/10/30/%E5%BE%AE%E4%BF%A1%E6%89%8BQ%E8%A7%86%E9%A2%91H5%E5%89%8D%E4%BA%BA%E6%A0%BD%E6%A0%91%E8%AE%B0/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -339,7 +328,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-10-29 14:17:18" itemprop="dateModified" datetime="2019-10-29T14:17:18+08:00">2019-10-29</time>
+                <time title="Modified: 2019-10-29 18:19:05" itemprop="dateModified" datetime="2019-10-29T18:19:05+08:00">2019-10-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -373,75 +362,14 @@
 <p>但测试在 6 Plus 上始终能重现这个bug，就想这次奶野了，没多少个小时就要上线了，就用上之前想的一个没加上优化方法，还好解决了</p>
 <p>先说说解决方法，很简单的：把不显示的分页设成 <code>display: none;</code></p>
 <p>第二天想这是什么原因呢，就做了下面的测试：</p>
-<h2 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h2><p>仿照解决bug前做的简单demo：</p>
-<p><a href="http://junewu.work/app/dreaming/cert/test1.html" target="_blank" rel="noopener">https://junewu.work/app/dreaming/cert/test1.html</a></p>
-<p><img src="https://img30.360buyimg.com/cms/jfs/t3055/121/5526296430/1973/931b58d7/5874bad7N1ac20430.png" alt=""></p>
-<p>跟原来的H5一样，采取分页式展示，每页有一个keyframes动画，demo用了一个两帧的逐帧动画模拟，动画只在屏幕显示的时候做动作，未进入屏幕和退出屏幕后停止动作</p>
-<p>在 iPhone 6 的 QQ 里的 webview 打开此页面，测试添加分页，当添加到160左右出现闪退现象，微信的 webview 也差不多，150个分页后出现闪退，比较意外的是 safari 浏览器打开，到130个分页左右就页面重置了，比上面的表现都差点</p>
-<p>然后是根据之前的解决方法，把不在当前屏幕显示的分页都做<code>display: none</code>处理</p>
-<p><a href="http://junewu.work/app/dreaming/cert/test2.html" target="_blank" rel="noopener">https://junewu.work/app/dreaming/cert/test1.html</a></p>
-<p><img src="https://img12.360buyimg.com/cms/jfs/t4108/218/1443315332/1962/4f20d841/58772df1N6ab0f389.png" alt=""></p>
-<p>在几个webview、浏览器中都顺利超过数百个分页，性能还没有降低；两个测试对比，说明影响闪退发生的是分页是否显示；猜测是屏幕外的分页还在渲染导致资源占用过高造成</p>
-<h2 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h2><p>是不是逐帧动画影响了资源占用？本来按照CSS样式，不在屏幕里的分页动画是停止的，但浏览器的表现总有这样那样的差错，第二个测试就把所有的动画都停止</p>
-<p>这个页面把所有的动画都取消了：</p>
-<p><a href="http://junewu.work/app/dreaming/cert/test1_1.html" target="_blank" rel="noopener">https://junewu.work/app/dreaming/cert/test1_1.html</a></p>
-<p><img src="https://img12.360buyimg.com/cms/jfs/t3889/35/1457657261/1906/bc52dfe8/58774367Nead82b1b.png" alt=""></p>
-<p>作为对比，下面的页面停止了动画，在屏幕外的分页也做了<code>display:none</code>处理</p>
-<p><a href="http://junewu.work/app/dreaming/cert/test1_1.html" target="_blank" rel="noopener">https://junewu.work/app/dreaming/cert/test1_1.html</a></p>
-<p><img src="https://img10.360buyimg.com/cms/jfs/t3103/246/5615113485/1948/89a59553/58774407Ncb39def7.png" alt=""></p>
-<p>结果是，跟有动画时一样，在150~160个分页左右出现闪退，那其实这几个浏览器的渲染应该还是没有问题的，只是闪退跟当前是否显示动画没关</p>
-<h2 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h2><p>上面的测试说明，在现在测试的几个变量中，闪退只跟不是<code>display:none</code>的分页数量有关，想到每个分页的切换位置是使用<code>transform: translate3d</code>来实现的，那如果换成<code>top</code>来实现，是否能改善呢？下面再做个测试</p>
-<p><a href="http://junewu.work/app/dreaming/cert/test1_3.html" target="_blank" rel="noopener">https://junewu.work/app/dreaming/cert/test1_3.html</a></p>
-<p><img src="https://img30.360buyimg.com/cms/jfs/t3982/64/1446522174/1938/44da7eec/587897afN856d9f68.png" alt=""></p>
-<p>把<code>transform: translate3d</code>换成用<code>top</code>之后闪退的现象没出现了，一直增加到1000个分页以上都还很稳定；在这里闻到了一点「硬件加速」的味道，大概闪退的根源差不多快要找到了</p>
-<p>之后再把<code>transform</code>用回来，不过用<code>translateY</code>替换原来的<code>translate3d</code>:</p>
-<p><a href="http://junewu.work/app/dreaming/cert/test2_3.html" target="_blank" rel="noopener">https://junewu.work/app/dreaming/cert/test2_3.html</a></p>
-<p><img src="https://img11.360buyimg.com/cms/jfs/t4111/56/1560323884/1918/4f9af8a4/5878aaf6N30697253.png" alt=""></p>
-<p>闪退现象也没重现了，熟悉CSS3属性的应该都了解过，使一个元素使用硬件加速的简单方法就是为它加上<code>transform: translate3d(0, 0, 0)</code>，那么现在我们就可以确定，闪退的出现就跟使用了「硬件加速」的元素数量有关了</p>
-<h2 id="4"><a href="#4" class="headerlink" title="4."></a>4.</h2><p>之前的H5为什么在 iPhone 6上较难重现，在iPhone 6 Plus 上又必定能重现呢？回看一下屏幕分辨率自适应的实现方式，是通过获取屏幕宽高来定义分页的<code>transform: scale</code>属性来实现类似<code>background-size: contain</code>的适应方式的。于是得出在两台手机上，只有元素占的面积不同！6 Plus 上占的面积比 6 上的大，于是最后做了以下的测试页来验证猜想：</p>
-<p><a href="http://junewu.work/app/dreaming/cert/test1_4.html" target="_blank" rel="noopener">https://junewu.work/app/dreaming/cert/test1_4.html</a></p>
-<p><img src="https://img11.360buyimg.com/cms/jfs/t3265/99/5772327361/1944/4e6e16f3/587f5a4bN7fc3f5e7.png" alt=""></p>
-<p>闪退提前在40~50个分页的时候出现。到了这步基本可以断定闪退跟「有硬件加速的非隐藏的元素总面积」有关了</p>
-<p>总结一下几个测试的结果：</p>
-<table>
-<thead>
-<tr>
-<th>页面表现</th>
-<th>闪退情况</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>分页<code>translate3d</code>、<code>scale(0.35)</code>，退场不隐藏，有逐帧动画</td>
-<td>150~160个分页</td>
-</tr>
-<tr>
-<td>分页<code>translate3d</code>、<code>scale(0.35)</code>，退场隐藏，有逐帧动画</td>
-<td>不出现</td>
-</tr>
-<tr>
-<td>分页<code>translate3d</code>、<code>scale(0.35)</code>，退场不隐藏，无逐帧动画</td>
-<td>150~160个分页</td>
-</tr>
-<tr>
-<td>分页<code>translate3d</code>、<code>scale(0.35)</code>，退场隐藏，无逐帧动画</td>
-<td>不出现</td>
-</tr>
-<tr>
-<td>分页<code>top</code>、<code>scale(0.35)</code>，退场不隐藏，无逐帧动画</td>
-<td>不出现</td>
-</tr>
-<tr>
-<td>分页<code>translateY</code>、<code>scale(0.35)</code>，退场不隐藏，无逐帧动画</td>
-<td>不出现</td>
-</tr>
-<tr>
-<td>分页<code>translate3d</code>、<code>scale(1)</code>，退场不隐藏，无逐帧动画</td>
-<td>40~50个分页</td>
-</tr>
-</tbody></table>
-<p>按测试页面上元素的大小<code>1015px * 1000px</code>（应用scale前的大小）计算，造成闪退的元素总大小阈值应该在53287500~56840000之间，按iPhone 6 的屏幕大小计算，可以撑住两百多屏分页，当然实际项目页面可能会有多个动画、表现层叠加，可以支持的分页数量应该会比估计的少很多</p>
-<p>当然如果做好退场/未进场的页面隐藏，可以不用像这样拿着计算器去算还剩多少面积可以用，这个应该算是渲染方面的一种手动gc吧</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/01/10/%E5%BE%AE%E4%BF%A1H5%E9%A1%B5%E9%9D%A2%E5%8A%A8%E7%94%BB%E4%B8%8E%E9%97%AA%E9%80%80/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 

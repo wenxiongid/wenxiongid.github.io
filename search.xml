@@ -9,6 +9,8 @@
 <p>但视频在刚播放时有可能会加载还没完成而出现黑屏，但<code>timeupdate</code>事件此时也会触发，可结合判断<code>video.currentTime</code>是否大于<code>0</code>判断视频是否已经真正开始播放：</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">video.addEventListener(<span class="string">'timeupdate'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(video.currentTime &gt; <span class="number">0</span>)&#123;</span><br><span class="line">		<span class="comment">//视频正在播放</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
+<a id="more"></a>
+
 <h2 id="2-视频的播放控制"><a href="#2-视频的播放控制" class="headerlink" title="2. 视频的播放控制"></a>2. 视频的播放控制</h2><p>移动端暂时没有一个通用的方法让视频在各个浏览器（微信、手Q、各种浏览器）自动播放，故固定交互模式为<strong>需要用户操作才可使视频开始播放，包括之后视频的切换也需用户操作</strong></p>
 <p>视频文件需要用户的动作触发调用<code>video.play()</code>之后才会开始加载，且绑定的事件才会触发</p>
 <h2 id="3-视频的行内显示"><a href="#3-视频的行内显示" class="headerlink" title="3. 视频的行内显示"></a>3. 视频的行内显示</h2><h3 id="3-1-iOS和手Q域名下微信和手Q的情况"><a href="#3-1-iOS和手Q域名下微信和手Q的情况" class="headerlink" title="3.1 iOS和手Q域名下微信和手Q的情况"></a>3.1 iOS和手Q域名下微信和手Q的情况</h3><p>iOS 10或以上系统里只需在<code>video</code>标签加上<code>playsinline</code>和<code>webkit-playsinline</code>即可实现行内显示，iOS 9可加入这个库：<a href="https://github.com/bfred-it/iphone-inline-video" target="_blank" rel="noopener">iphone-inline-video</a></p>
@@ -48,6 +50,8 @@
 <p>但测试在 6 Plus 上始终能重现这个bug，就想这次奶野了，没多少个小时就要上线了，就用上之前想的一个没加上优化方法，还好解决了</p>
 <p>先说说解决方法，很简单的：把不显示的分页设成 <code>display: none;</code></p>
 <p>第二天想这是什么原因呢，就做了下面的测试：</p>
+<a id="more"></a>
+
 <h2 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h2><p>仿照解决bug前做的简单demo：</p>
 <p><a href="http://junewu.work/app/dreaming/cert/test1.html" target="_blank" rel="noopener">https://junewu.work/app/dreaming/cert/test1.html</a></p>
 <p><img src="https://img30.360buyimg.com/cms/jfs/t3055/121/5526296430/1973/931b58d7/5874bad7N1ac20430.png" alt=""></p>
