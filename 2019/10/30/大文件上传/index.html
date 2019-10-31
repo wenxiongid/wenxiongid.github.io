@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.2',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="最近遇到一道题目，是怎样实现一个大文件上传的接口设计，需要考虑的一个功能是断点续传 因为以往没有多少服务器开发的经验，一开始想不明白断点续传的实现原理；看了一下其他人的实现方法，思路是把文件分块上传，上传完再合并的方法 确定方案因为文件通过分割、合并、网络传输的处理，最后需要计算md5与原来的文件比对，所以客户端和服务端都需要计算md5 支持断点续传的实现，应该在本地计算md5值后，服务器使用md">
+<meta name="keywords" content="node">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大文件上传">
+<meta property="og:url" content="https:&#x2F;&#x2F;wenxiongid.github.io&#x2F;2019&#x2F;10&#x2F;30&#x2F;%E5%A4%A7%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0&#x2F;index.html">
+<meta property="og:site_name" content="JuneWu&#39;s Blog">
+<meta property="og:description" content="最近遇到一道题目，是怎样实现一个大文件上传的接口设计，需要考虑的一个功能是断点续传 因为以往没有多少服务器开发的经验，一开始想不明白断点续传的实现原理；看了一下其他人的实现方法，思路是把文件分块上传，上传完再合并的方法 确定方案因为文件通过分割、合并、网络传输的处理，最后需要计算md5与原来的文件比对，所以客户端和服务端都需要计算md5 支持断点续传的实现，应该在本地计算md5值后，服务器使用md">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-31T09:20:40.622Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wenxiongid.github.io/2019/10/30/%E5%A4%A7%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>大文件上传 | JuneWu's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JuneWu's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="Searching..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2019/10/30/%E5%A4%A7%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="June Wu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JuneWu's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          大文件上传
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-10-30 11:21:32" itemprop="dateCreated datePublished" datetime="2019-10-30T11:21:32+08:00">2019-10-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-10-31 17:20:40" itemprop="dateModified" datetime="2019-10-31T17:20:40+08:00">2019-10-31</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/work/" itemprop="url" rel="index">
+                    <span itemprop="name">work</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近遇到一道题目，是怎样实现一个大文件上传的接口设计，需要考虑的一个功能是断点续传</p>
+<p>因为以往没有多少服务器开发的经验，一开始想不明白断点续传的实现原理；看了一下其他人的实现方法，思路是把文件分块上传，上传完再合并的方法</p>
+<h2 id="确定方案"><a href="#确定方案" class="headerlink" title="确定方案"></a>确定方案</h2><p>因为文件通过分割、合并、网络传输的处理，最后需要计算md5与原来的文件比对，所以客户端和服务端都需要计算md5</p>
+<p>支持断点续传的实现，应该在本地计算md5值后，服务器使用md5值查询上传的状态，是完全重头开始传输文件还是只传缺失的块，或是已全部上传好</p>
+<p>服务器保存上传的块需要知道每个块在原文件所在的位置，这需要客户端在上传的同时带上这个参数；每个文件块也应当做客户端——服务端md5校验，避免因为文件块的传输错误导致合并文件后的文件错误</p>
+<a id="more"></a>
+
+<div id="flowchart-0" class="flow-chart"></div>
+
+<h2 id="实施"><a href="#实施" class="headerlink" title="实施"></a>实施</h2><p>web客户端使用<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Blob/slice" target="_blank" rel="noopener"><code>Blob.slice</code>API</a>分割文件，使用<code>spark-md5</code>计算md5值</p>
+<p>选择文件后，切割文件和计算文件和文件块md5：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice,</span><br><span class="line">  file = <span class="keyword">this</span>.selectedFile,</span><br><span class="line">  chunkSize = <span class="number">2097152</span>,<span class="comment">// Read in chunks of 2MB</span></span><br><span class="line">  chunks = <span class="built_in">Math</span>.ceil(file.size / chunkSize),</span><br><span class="line">  spark = <span class="keyword">new</span> SparkMD5.ArrayBuffer(),</span><br><span class="line">  fileReader = <span class="keyword">new</span> FileReader()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> currentChunk = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> loadNext = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> start = currentChunk * chunkSize,</span><br><span class="line">    end = (start + chunkSize) &gt; file.size ? file.size : (start + chunkSize)</span><br><span class="line">  fileReader.readAsArrayBuffer(blobSlice.call(file, start, end))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fileReader.onload = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> partSpark = <span class="keyword">new</span> SparkMD5.ArrayBuffer()</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'read chunk nr'</span>, currentChunk + <span class="number">1</span>, <span class="string">'of'</span>, chunks)</span><br><span class="line">  spark.append(e.target.result)</span><br><span class="line">  partSpark.append(e.target.result)</span><br><span class="line">  <span class="keyword">this</span>.chunkMd5List[currentChunk] = partSpark.end()</span><br><span class="line">  currentChunk++</span><br><span class="line">  <span class="keyword">this</span>.md5Progress = currentChunk / chunks * <span class="number">100</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span>(currentChunk &lt; chunks)&#123;</span><br><span class="line">    loadNext()</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'finished loading'</span>);</span><br><span class="line">    <span class="keyword">this</span>.md5 = spark.end()</span><br><span class="line">    <span class="built_in">console</span>.info(<span class="string">'computed hash'</span>, <span class="keyword">this</span>.md5);  <span class="comment">// Compute hash</span></span><br><span class="line">    <span class="keyword">this</span>.upload()</span><br><span class="line">  &#125;</span><br><span class="line">  fileReader.onerror = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.warn(<span class="string">'oops, something went wrong.'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">loadNext()</span><br></pre></td></tr></table></figure>
+
+<p>服务端一开始的想法是使用mongoDB数据库记录传输过来的每一个文件和文件块的存储状态，后面发现，数据库和文件系统不能很好的同步，后面实施就只使用文件系统来记录</p>
+<p>目录结构如下，incoming文件夹存放分割的文件块，每个文件一个目录，目录下以{序号}-{文件块md5}为文件名存储文件块：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">server---incoming--&#123;文件md5&#125;--&#123;序号&#125;-&#123;文件块md5&#125;</span><br><span class="line">       |</span><br><span class="line">       |-archive--&#123;文件md5&#125;--&#123;文件名&#125;</span><br></pre></td></tr></table></figure>
+
+<p>客户端传来文件md5，检查文件是否已上传完毕并合并：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">  <span class="keyword">const</span> archiveFolder = <span class="keyword">await</span> fsPromises.stat(archiveFolderPath)</span><br><span class="line">  <span class="keyword">if</span>(archiveFolder)&#123;</span><br><span class="line">    <span class="keyword">const</span> archiveFolderFile = <span class="keyword">await</span> fsPromises.readdir(archiveFolderPath)</span><br><span class="line">    <span class="keyword">if</span>(archiveFolderFile.length &gt; <span class="number">0</span>)&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span>(e)&#123;</span><br><span class="line">  <span class="built_in">console</span>.error(e)</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>若未上传，检查已上传的文件块：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> incomingFolder = <span class="keyword">await</span> fsPromises.stat(incomingFolderPath)</span><br><span class="line">  <span class="keyword">if</span>(incomingFolder)&#123;</span><br><span class="line">    <span class="keyword">const</span> incomingFolderFiles = <span class="keyword">await</span> fsPromises.readdir(incomingFolderPath)</span><br><span class="line">    <span class="keyword">const</span> chunks = []</span><br><span class="line">    incomingFolderFiles.forEach(<span class="function"><span class="params">fileName</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> nameInfo = fileName.split(<span class="string">'-'</span>)</span><br><span class="line">      chunks[nameInfo[<span class="number">0</span>]] = nameInfo[<span class="number">1</span>]</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">return</span> chunks</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> result = <span class="keyword">await</span> fsPromises.mkdir(incomingFolderPath)</span><br><span class="line">    <span class="keyword">return</span> []</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">  <span class="built_in">console</span>.error(e)</span><br><span class="line">  <span class="keyword">const</span> result = <span class="keyword">await</span> fsPromises.mkdir(incomingFolderPath)</span><br><span class="line">  <span class="keyword">return</span> []</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为习惯使用async/await方式写异步代码（真的非常方便），所以全部fs的方法都用了fsPromise，结果在读/写文件内容的时候傻眼了，fsPromise没有stream的方法（想来也是，这两种方式原理是不一样的），只能把整个文件内容写进内存中再做业务读/写处理，后果当然就是内存挤爆了</p>
+<p>最后用了async/await和stream的混合方式来写异步文件读写操作，虽然其中产生了<code>new Promise(async (resole, reject) =&gt;{...})</code>的promise套promise写法，但运行中是没有问题的</p>
+<p>存储并计算文件块md5值：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> uploadpartPromise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="keyword">async</span> (resolve, reject) =&gt; &#123;</span><br><span class="line">  <span class="keyword">try</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> fmd5 = crypto.createHash(<span class="string">'md5'</span>)</span><br><span class="line">    <span class="keyword">const</span> folderStat = <span class="keyword">await</span> fsPromises.stat(incomingFolderPath)</span><br><span class="line">    <span class="keyword">if</span>(!folderStat || !folderStat.isDirectory())&#123;</span><br><span class="line">      <span class="keyword">await</span> fsPromises.mkdir(incomingFolderPath)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> incomingFilePath = path.resolve(incomingFolderPath, <span class="string">`<span class="subst">$&#123;index&#125;</span>-<span class="subst">$&#123;partMd5&#125;</span>`</span>)</span><br><span class="line">    <span class="keyword">const</span> readStream = fs.createReadStream(data.path)</span><br><span class="line">    <span class="keyword">const</span> writeStream = fs.createWriteStream(incomingFilePath, &#123;</span><br><span class="line">      flags: <span class="string">'w'</span></span><br><span class="line">    &#125;)</span><br><span class="line">    readStream.pipe(writeStream)</span><br><span class="line">    readStream.on(<span class="string">'data'</span>, (chunk) =&gt; &#123;</span><br><span class="line">      fmd5.update(chunk)</span><br><span class="line">    &#125;)</span><br><span class="line">    readStream.on(<span class="string">'end'</span>, () =&gt; &#123;</span><br><span class="line">      <span class="keyword">const</span> uploadedPartMd5 = fmd5.digest(<span class="string">'hex'</span>)</span><br><span class="line">      <span class="keyword">if</span>(partMd5 === uploadedPartMd5) &#123;</span><br><span class="line">        uploadedChunks++</span><br><span class="line">        resolve()</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        ctx.body = &#123;</span><br><span class="line">          code: <span class="number">-10</span>,</span><br><span class="line">          msg: <span class="string">'part md5 not match'</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">    reject(e)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">await</span> uploadpartPromise</span><br></pre></td></tr></table></figure>
+
+<p>合并文件块时也用了同样的方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fmd5 = crypto.createHash(<span class="string">'md5'</span>)</span><br><span class="line"><span class="keyword">const</span> getPartMergePromise = <span class="function">(<span class="params">index</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> chunkMd5 = chunks[index]</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'append file index:'</span>, index)</span><br><span class="line">    <span class="keyword">const</span> currentFilePath = path.resolve(incomingFolderPath, <span class="string">`<span class="subst">$&#123;index&#125;</span>-<span class="subst">$&#123;chunkMd5&#125;</span>`</span>)</span><br><span class="line">    <span class="built_in">console</span>.log(currentFilePath)</span><br><span class="line">    <span class="keyword">const</span> read = fs.createReadStream(currentFilePath)</span><br><span class="line">    <span class="keyword">const</span> write = fs.createWriteStream(archiveFilePath, &#123;</span><br><span class="line">      flags: <span class="string">'a'</span></span><br><span class="line">    &#125;)</span><br><span class="line">    read.pipe(write)</span><br><span class="line">    read.on(<span class="string">'data'</span>, (chunk) =&gt; &#123;</span><br><span class="line">      fmd5.update(chunk)</span><br><span class="line">    &#125;)</span><br><span class="line">    read.on(<span class="string">'end'</span>, () =&gt; &#123;</span><br><span class="line">      resolve()</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> index = <span class="number">0</span>; index &lt; chunks.length; index++)&#123;</span><br><span class="line">  <span class="keyword">await</span> getPartMergePromise(index)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> fmd5.digest(<span class="string">'hex'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>最后附上github地址: <a href="https://github.com/wenxiongid/big-file-upload" target="_blank" rel="noopener">https://github.com/wenxiongid/big-file-upload</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>要实现一个断点续传的上传组件需要前后端配合作信息比对，从前是使用flash的api作本地的文件分割、md5计算，但现在新的web api已经可以做到这部分的工作，现时纯使用HTML5已可实现以往需要外挂程序才能实现的功能；另一个角度是，现在web程序从其他语言（as3、C等等）翻译过来的也越来越多，之后前端的一个短期趋势应该是从其他语言学习架构、功能实现的方法应用在web客户端中<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.6.5/flowchart.min.js"></script><textarea id="flowchart-0-code" style="display: none">st=>start: 选择文件
+e=>end: 文件已上传
+opLocalMd5=>operation: 计算文件md5，发送到服务器
+isServerFileExits=>condition: 检查文件是否存在
+opServerGetUploadedChunks=>operation: 检查已上传的文件块
+opSplit=>operation: 分割文件
+opPartMd5=>operation: 计算文件块md5
+isAllUploaded=>condition: 全部块上传完毕？
+opUploadPart=>operation: 上传文件块，上报文件块md5
+上报总文件md5
+isPartMd5Same=>condition: 比对文件块md5
+opSavePart=>operation: 存储文件块
+opMerge=>operation: 合并文件
+opServerMd5=>operation: 服务器计算md5
+isMd5Same=>condition: md5值相同？
+opError=>operation: 返回错误信息
+opSaveFile=>operation: 存储文件
+
+st->isServerFileExits
+isServerFileExits(yes)->e
+isServerFileExits(no)->opServerGetUploadedChunks->opSplit->opPartMd5->opUploadPart->isPartMd5Same
+isPartMd5Same(no)->opUploadPart
+isPartMd5Same(yes)->opSavePart->isAllUploaded
+isAllUploaded(no)->opSplit
+isAllUploaded(yes)->opMerge->opServerMd5->isMd5Same
+isMd5Same(no)->opError
+isMd5Same(yes)->opSaveFile(left)->e</textarea><textarea id="flowchart-0-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("flowchart-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-0-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-0", options);</script></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/node/" rel="tag"># node</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2017/10/30/%E5%BE%AE%E4%BF%A1%E6%89%8BQ%E8%A7%86%E9%A2%91H5%E5%89%8D%E4%BA%BA%E6%A0%BD%E6%A0%91%E8%AE%B0/" rel="next" title="微信手Q视频H5前人栽树记">
+                  <i class="fa fa-chevron-left"></i> 微信手Q视频H5前人栽树记
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#确定方案"><span class="nav-number">1.</span> <span class="nav-text">确定方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实施"><span class="nav-number">2.</span> <span class="nav-text">实施</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="June Wu"
+    src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">June Wu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">June Wu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '89487a94f5c6b491d160',
+      clientSecret: 'a69f582367a08d3edd0281c7234d4ca8dbca1f2c',
+      repo: 'wenxiongid.github.io',
+      owner: 'wenxiongid',
+      admin: ['wenxiongid'],
+      id: '3e0a729b57b3053745022837aff708db',
+        language: '',
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>

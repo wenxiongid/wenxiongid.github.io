@@ -210,6 +210,93 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2019/10/30/%E5%A4%A7%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="June Wu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JuneWu's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/10/30/%E5%A4%A7%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" class="post-title-link" itemprop="url">大文件上传</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-10-30 11:21:32" itemprop="dateCreated datePublished" datetime="2019-10-30T11:21:32+08:00">2019-10-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-10-31 17:20:40" itemprop="dateModified" datetime="2019-10-31T17:20:40+08:00">2019-10-31</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/work/" itemprop="url" rel="index">
+                    <span itemprop="name">work</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近遇到一道题目，是怎样实现一个大文件上传的接口设计，需要考虑的一个功能是断点续传</p>
+<p>因为以往没有多少服务器开发的经验，一开始想不明白断点续传的实现原理；看了一下其他人的实现方法，思路是把文件分块上传，上传完再合并的方法</p>
+<h2 id="确定方案"><a href="#确定方案" class="headerlink" title="确定方案"></a>确定方案</h2><p>因为文件通过分割、合并、网络传输的处理，最后需要计算md5与原来的文件比对，所以客户端和服务端都需要计算md5</p>
+<p>支持断点续传的实现，应该在本地计算md5值后，服务器使用md5值查询上传的状态，是完全重头开始传输文件还是只传缺失的块，或是已全部上传好</p>
+<p>服务器保存上传的块需要知道每个块在原文件所在的位置，这需要客户端在上传的同时带上这个参数；每个文件块也应当做客户端——服务端md5校验，避免因为文件块的传输错误导致合并文件后的文件错误</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/10/30/%E5%A4%A7%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2017/10/30/%E5%BE%AE%E4%BF%A1%E6%89%8BQ%E8%A7%86%E9%A2%91H5%E5%89%8D%E4%BA%BA%E6%A0%BD%E6%A0%91%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1138,96 +1225,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2014/05/01/2014-05-01/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="June Wu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JuneWu's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/05/01/2014-05-01/" class="post-title-link" itemprop="url">Flash player debugger使用</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2014-05-01 11:02:17" itemprop="dateCreated datePublished" datetime="2014-05-01T11:02:17+08:00">2014-05-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-10-29 14:17:18" itemprop="dateModified" datetime="2019-10-29T14:17:18+08:00">2019-10-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/work/" itemprop="url" rel="index">
-                    <span itemprop="name">work</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>这个想了下还是记下来吧，今天项目需要要写些as3的东西，但是发布到测试环境后不能用<code>flash builder</code> 查看<code>trace</code>输出了，装了<code>flash player debugger</code>还是什么提示都没有，google了一下找到使用方法了……</p>
-<p>源地址：<a href="https://github.com/mozilla/shumway/wiki/Trace-Output-with-Flash-Player-Debugger" target="_blank" rel="noopener">https://github.com/mozilla/shumway/wiki/Trace-Output-with-Flash-Player-Debugger</a></p>
-<p>一些要点记下来免得github出什么问题或作者删了</p>
-<ol>
-<li><p>首先装flash player debugger，地址么adobe官网，版本经常更新地址就不贴了</p>
-</li>
-<li><p>找到配置文件mm.cfg，OSX的就在用户目录~，其他的看   <a href="http://help.adobe.com/en_US/flex/using/WS2db454920e96a9e51e63e3d11c0bf69084-7fc9.html" target="_blank" rel="noopener">http://help.adobe.com/en_US/flex/using/WS2db454920e96a9e51e63e3d11c0bf69084-7fc9.html</a> 基本都是各自的用户目录</p>
-</li>
-<li><p>mm.cfg里写上以下配置，就会记录trace输出和warning、AVM调用信息</p>
-<p> ErrorReportingEnable=1<br> TraceOutputFileEnable=1<br> MaxWarnings=50<br> AS3Trace=1</p>
-</li>
-<li><p>找到log文件，OSX的在~/Library/Preferences/Macromedia/Flash Player/Logs/，其他的看<a href="http://help.adobe.com/en_US/flex/using/WSda78ed3a750d6b8f-4867184d1239f9d0558-8000.html" target="_blank" rel="noopener">http://help.adobe.com/en_US/flex/using/WSda78ed3a750d6b8f-4867184d1239f9d0558-8000.html</a></p>
-</li>
-</ol>
-<p>ps:最后说下terminal下<code>tail -f</code>可以看文件动态更新，我知道你们知道，但我之前不知道…</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1278,7 +1275,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1291,7 +1288,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
