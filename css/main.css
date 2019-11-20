@@ -894,6 +894,12 @@ pre .javascript .function {
   margin-top: 0;
   padding-top: 0;
 }
+.flow-chart {
+  text-align: center;
+}
+.flow-chart svg {
+  max-width: 100%;
+}
 .container {
   min-height: 100%;
   position: relative;
@@ -1146,7 +1152,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #a430ff;
+  background: #3d70b9;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
