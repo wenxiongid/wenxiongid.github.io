@@ -1,6 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>连连看开发</title>
+    <url>/2019/11/21/%E8%BF%9E%E8%BF%9E%E7%9C%8B%E5%BC%80%E5%8F%91/</url>
+    <content><![CDATA[<p>因为不可描述的原因，过了没两天，又要开发另一个小游戏喇～（我好兴奋呀.jpg）</p>
+<p>消消乐开发完没两天，渲染就用同一套，也是用Vue了</p>
+<h2 id="同样先理一下游戏的逻辑"><a href="#同样先理一下游戏的逻辑" class="headerlink" title="同样先理一下游戏的逻辑"></a>同样先理一下游戏的逻辑</h2><ol>
+<li>选取两个相同类型的块</li>
+<li>两个块之间沿行、列连线，线只能经过空白的格子，且最多只能转向两次</li>
+<li>如果存在这样的连线，则两个块消除成空白的格子；若不存在则不作改变</li>
+</ol>
+<p>描述的有点绕，但玩过的应该都知道是什么一种机制，其中比较困难的一点应该是怎么找出两块的连线</p>
+<p>但在这之前，还是有一步: <code>0. 生成一张能全部消除的图</code></p>
+<h2 id="游戏逻辑实现"><a href="#游戏逻辑实现" class="headerlink" title="游戏逻辑实现"></a>游戏逻辑实现</h2><p>因为这次的游戏机制没有重新排序、插入新数据的动作，所以图的存储方式没有什么特殊要求，就也沿用消消乐的存储方式了</p>
+<h3 id="0-生成一张能全部消除的图"><a href="#0-生成一张能全部消除的图" class="headerlink" title="0. 生成一张能全部消除的图"></a>0. 生成一张能全部消除的图</h3><p>根据玩法，图里必须先预留一些空白格子，才能让游戏进行下去，这次给的地图构造是这样的:</p>
+<p><img src="https://img13.360buyimg.com/imagetools/jfs/t1/62865/39/15954/8653/5dd65007E895af7ab/14153b56d8c8999f.png" alt="https://img13.360buyimg.com/imagetools/jfs/t1/62865/39/15954/8653/5dd65007E895af7ab/14153b56d8c8999f.png"></p>
+<p>其中白色的位置是预留空白格子</p>
+<p>那其他格子该怎么填充呢？像消消乐那样无脑随机类型塞是不行的，要是最后剩了一个没得配对，就玩不下去了；所以塞的时候必须成对的塞</p>
+<p>那就先定每个类型的格子数量都是偶数的，然后每塞一个就减1，直到都用完</p>
+<p>先定义一个数组存每一个类型格子的数量，每个类型就平均分了</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> typeInfo = <span class="built_in">Array</span>(<span class="keyword">this</span>.typeCount).fill(<span class="keyword">this</span>.partColCount * <span class="number">2</span> * <span class="keyword">this</span>.rowCount / <span class="keyword">this</span>.typeCount)</span><br></pre></td></tr></table></figure>
+
+<p>然后每次塞的时候，就从里面找还没用完的格子来用</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> getAvailableType = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> availableTypeInfo = []</span><br><span class="line">  typeInfo.forEach(<span class="function">(<span class="params">count, type</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(count &gt; <span class="number">0</span>)&#123;</span><br><span class="line">      availableTypeInfo.push(type)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">const</span> tryType = availableTypeInfo[<span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * availableTypeInfo.length)]</span><br><span class="line">  typeInfo[tryType]--</span><br><span class="line">  <span class="keyword">return</span> tryType + <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里<code>return tryType + 1</code>是因为类型标识<code>type</code>里<code>0</code>的定义是空白格子，有效的格子类型从<code>1</code>开始</p>
+<p>然后遍历整个图，在每个位置上调用上面的方法塞格子</p>
+<h3 id="1-两个格子的连线"><a href="#1-两个格子的连线" class="headerlink" title="1. 两个格子的连线"></a>1. 两个格子的连线</h3><p>按游戏的规则，连线最多只能转向两次，那我们就可以穷举一下，不转、转1次、转2次的连线来看这两个格子能不能连起来</p>
+<h4 id="不转向"><a href="#不转向" class="headerlink" title="不转向"></a>不转向</h4><p>不转向的连线就是一根直线，限制了这两个格子必须在同一列或同一行</p>
+<p>也就是说如果已经知道两个格子不在同一行也不在同一列，那就可以跳到下一个方法了</p>
+<p>我们可以先找这两个格子之间的每一个格子，然后看这些格子是不是都是<code>type === 0</code>的来判断能不能连线</p>
+<p>因为后面两种方法都有这样找两个格子中间每一个格子的操作，这里就先引入一个方法:</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">lineTo(src, target)&#123;</span><br><span class="line">  <span class="keyword">if</span>(src.rowIndex === target.rowIndex || src.colIndex === target.colIndex)&#123;</span><br><span class="line">    <span class="keyword">let</span> notZeroCount = <span class="number">0</span></span><br><span class="line">    <span class="keyword">const</span> lineCellList = []</span><br><span class="line">    <span class="keyword">const</span> current = &#123;</span><br><span class="line">      rowIndex: src.rowIndex,</span><br><span class="line">      colIndex: src.colIndex</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> step = &#123;</span><br><span class="line">      row: normalize(target.rowIndex - src.rowIndex),</span><br><span class="line">      col: normalize(target.colIndex - src.colIndex)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span>(!(current.rowIndex === target.rowIndex &amp;&amp; current.colIndex === target.colIndex))&#123;</span><br><span class="line">      lineCellList.push(&#123;</span><br><span class="line">        ...this.map[current.colIndex][current.rowIndex],</span><br><span class="line">        rowIndex: current.rowIndex,</span><br><span class="line">        colIndex: current.colIndex,</span><br><span class="line">      &#125;)</span><br><span class="line">      <span class="keyword">if</span>(<span class="keyword">this</span>.map[current.colIndex][current.rowIndex].type !== <span class="number">0</span>)&#123;</span><br><span class="line">        notZeroCount++</span><br><span class="line">      &#125;</span><br><span class="line">      current.rowIndex += step.row</span><br><span class="line">      current.colIndex += step.col</span><br><span class="line">    &#125;</span><br><span class="line">    lineCellList.push(&#123;</span><br><span class="line">      ...this.map[target.colIndex][target.rowIndex],</span><br><span class="line">      rowIndex: target.rowIndex,</span><br><span class="line">      colIndex: target.colIndex,</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span>.map[target.colIndex][target.rowIndex].type !== <span class="number">0</span>)&#123;</span><br><span class="line">      notZeroCount++</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      notZeroCount,</span><br><span class="line">      lineCellList</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个方法其实也包括了开始、结束的两个格子的，同时也统计了这些格子中不是空白格子的数量</p>
+<p>那如果调用上面的方法，得到的非空白格数量<code>notZeroCount</code>为2时（有且仅有两端的格子不是空白格），这两个格子就可以连线</p>
+<h4 id="转一次"><a href="#转一次" class="headerlink" title="转一次"></a>转一次</h4><p>转一次的连线最多只有两种可能，且两个格子必须不同行且不同列：</p>
+<p><img src="https://img13.360buyimg.com/imagetools/jfs/t1/86207/17/2795/16692/5dd657fbE0d4492eb/427ac3e70d45784e.png" alt="https://img13.360buyimg.com/imagetools/jfs/t1/86207/17/2795/16692/5dd657fbE0d4492eb/427ac3e70d45784e.png"></p>
+<p>其中黄色格子是选定的两个格子，我们找到转向的位置（灰色格子）就可以用上面的<code>lineTo</code>方法找到连线的两个线段</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 1转</span></span><br><span class="line"><span class="keyword">if</span>(t1.rowIndex !== t2.rowIndex &amp;&amp; t1.colIndex !== t2.colIndex)&#123;</span><br><span class="line">  <span class="keyword">const</span> c1 = &#123;</span><br><span class="line">    rowIndex: t1.rowIndex,</span><br><span class="line">    colIndex: t2.colIndex</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> line1_1 = <span class="keyword">this</span>.lineTo(t1, c1)</span><br><span class="line">  <span class="keyword">const</span> line1_2 = <span class="keyword">this</span>.lineTo(c1, t2)</span><br><span class="line">  <span class="keyword">if</span>(line1_1.notZeroCount === <span class="number">1</span> &amp;&amp; line1_2.notZeroCount === <span class="number">1</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> [line1_1.lineCellList, line1_2.lineCellList]</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> c2 = &#123;</span><br><span class="line">    rowIndex: t2.rowIndex,</span><br><span class="line">    colIndex: t1.colIndex</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> line2_1 = <span class="keyword">this</span>.lineTo(t1, c2)</span><br><span class="line">  <span class="keyword">const</span> line2_2 = <span class="keyword">this</span>.lineTo(c2, t2)</span><br><span class="line">  <span class="keyword">if</span>(line2_1.notZeroCount === <span class="number">1</span> &amp;&amp; line2_2.notZeroCount === <span class="number">1</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> [line2_1.lineCellList, line2_2.lineCellList]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中每个线段中不是空白格的数量<code>notZeroCount</code>为<code>1</code>时（只有开始、结束的格子）就可以判断为可以连线</p>
+<h4 id="转两次"><a href="#转两次" class="headerlink" title="转两次"></a>转两次</h4><p>这种情况就比较复杂了，先画一下都有怎样的可能</p>
+<p><img src="https://img13.360buyimg.com/imagetools/jfs/t1/64254/40/16068/16725/5dd65c22E831565d1/276896502b2abb4f.png" alt="https://img13.360buyimg.com/imagetools/jfs/t1/64254/40/16068/16725/5dd65c22E831565d1/276896502b2abb4f.png"></p>
+<p>唔……这一坨都是什么东西，先分个类拆开来看看</p>
+<p><img src="https://img13.360buyimg.com/imagetools/jfs/t1/54177/4/16387/14957/5dd65ce5E11070f30/c922a018c22c691c.png" alt="https://img13.360buyimg.com/imagetools/jfs/t1/54177/4/16387/14957/5dd65ce5E11070f30/c922a018c22c691c.png"></p>
+<p><img src="https://img13.360buyimg.com/imagetools/jfs/t1/71284/27/15844/15557/5dd65ce5E781cdf91/c530d237655d9770.png" alt="https://img13.360buyimg.com/imagetools/jfs/t1/71284/27/15844/15557/5dd65ce5E781cdf91/c530d237655d9770.png"></p>
+<p>对，为什么要这样分类呢？这两种类型里的连线都有什么特点？</p>
+<p>同一个类型的连线，都是由三条线段组成的，而中间的这条线段，连接了两个目标块所在的行（或列）</p>
+<p>而这一条线段（以下称为<code>bridge</code>）可以出现在任何列（行），只要<code>bridge</code>的两端与目标块的连线上都是空白格，就可以判断成这个连线可以让这两个目标块相连了</p>
+<p>那我们的突破口就是找到这条<code>bridge</code>，用两个块的行（列）座标，在图上的每一列（行）遍历，如果找到一条<code>bridge</code>上都是空白格，那再检查<code>bridge</code>的两端到目标块的连线上如果也都是空白格，那我们就找到这条连线了</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 2转</span></span><br><span class="line"><span class="keyword">if</span>(t1.rowIndex !== t2.rowIndex)&#123;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> colIndex = <span class="number">0</span>; colIndex &lt; <span class="keyword">this</span>.partColCount * <span class="number">2</span> + <span class="number">1</span>; colIndex++)&#123;</span><br><span class="line">    <span class="keyword">const</span> bridge = <span class="keyword">this</span>.lineTo(&#123;</span><br><span class="line">      rowIndex: t1.rowIndex,</span><br><span class="line">      colIndex</span><br><span class="line">    &#125;, &#123;</span><br><span class="line">      rowIndex: t2.rowIndex,</span><br><span class="line">      colIndex</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">if</span>(bridge.notZeroCount === <span class="number">0</span>)&#123;</span><br><span class="line">      <span class="keyword">const</span> line1 = <span class="keyword">this</span>.lineTo(t1, &#123;</span><br><span class="line">        rowIndex: t1.rowIndex,</span><br><span class="line">        colIndex</span><br><span class="line">      &#125;)</span><br><span class="line">      <span class="keyword">const</span> line2 = <span class="keyword">this</span>.lineTo(&#123;</span><br><span class="line">        rowIndex: t2.rowIndex,</span><br><span class="line">        colIndex</span><br><span class="line">      &#125;, t2)</span><br><span class="line">      <span class="keyword">if</span>(line1.notZeroCount === <span class="number">1</span> &amp;&amp; line2.notZeroCount === <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> [line1.lineCellList, bridge.lineCellList, line2.lineCellList]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(t1.colIndex !== t2.colIndex)&#123;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> rowIndex = <span class="number">0</span>; rowIndex &lt; <span class="keyword">this</span>.rowCount; rowIndex++)&#123;</span><br><span class="line">    <span class="keyword">const</span> bridge = <span class="keyword">this</span>.lineTo(&#123;</span><br><span class="line">      rowIndex,</span><br><span class="line">      colIndex: t1.colIndex</span><br><span class="line">    &#125;, &#123;</span><br><span class="line">      rowIndex,</span><br><span class="line">      colIndex: t2.colIndex</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">if</span>(bridge.notZeroCount === <span class="number">0</span>)&#123;</span><br><span class="line">      <span class="keyword">const</span> line1 = <span class="keyword">this</span>.lineTo(t1, &#123;</span><br><span class="line">        rowIndex,</span><br><span class="line">        colIndex: t1.colIndex</span><br><span class="line">      &#125;)</span><br><span class="line">      <span class="keyword">const</span> line2 = <span class="keyword">this</span>.lineTo(&#123;</span><br><span class="line">        rowIndex,</span><br><span class="line">        colIndex: t2.colIndex</span><br><span class="line">      &#125;, t2)</span><br><span class="line">      <span class="keyword">if</span>(line1.notZeroCount === <span class="number">1</span> &amp;&amp; line2.notZeroCount === <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> [line1.lineCellList, bridge.lineCellList, line2.lineCellList]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h2 id="游戏渲染"><a href="#游戏渲染" class="headerlink" title="游戏渲染"></a>游戏渲染</h2><p>同样沿用消消乐的渲染方法，因为不涉及到格子移动，只需要做被消掉的格子消失的动画，只需要在被消失的格子上加一个<code>lastType</code>的属性，标识它消失之前是什么类型的格子就好了</p>
+<p>连线需要画出来，表示两个格子是怎么连起来的，因为通过上面的<code>lineTo</code>方法，可以得到每条线段的起点、终点，那有这些座标就可以自由发挥了；这里用到的方法是每个线段插入一个宽度（高度）为2的元素，播完动画移除</p>
+]]></content>
+      <categories>
+        <category>work</category>
+      </categories>
+      <tags>
+        <tag>Javascript</tag>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>消消乐开发</title>
     <url>/2019/11/20/%E6%B6%88%E6%B6%88%E4%B9%90%E5%BC%80%E5%8F%91/</url>
     <content><![CDATA[<p>项目要求要做一个消消乐（三消、3-match game）的开发，找遍国内外的demo，总有些功能缺失，迫不得已自己来搞一个</p>
@@ -798,8 +864,8 @@ isMd5Same(yes)->opSaveFile(left)->e</textarea><textarea id="flowchart-0-options"
         <category>work</category>
       </categories>
       <tags>
-        <tag>javascript</tag>
         <tag>CSS</tag>
+        <tag>javascript</tag>
       </tags>
   </entry>
   <entry>
