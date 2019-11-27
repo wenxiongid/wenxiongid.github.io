@@ -1,6 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>金币飞入效果</title>
+    <url>/2019/11/27/%E9%87%91%E5%B8%81%E9%A3%9E%E5%85%A5%E6%95%88%E6%9E%9C/</url>
+    <content><![CDATA[<p>先看一下效果是怎样的:</p>
+<p><img src="https://img10.360buyimg.com/imagetools/jfs/t1/70114/8/16197/1029481/5dde4245E42155d9f/e3bbd07edbeedc3e.gif" alt="https://img10.360buyimg.com/imagetools/jfs/t1/70114/8/16197/1029481/5dde4245E42155d9f/e3bbd07edbeedc3e.gif"></p>
+<p>简单说就是固定两个点，元素从其中一个出发，到另一个点结束，中间的轨迹为随机曲线（包括直线）</p>
+<p>从这个条件立刻想到的是二次函数的图像，经过x轴上的两个点，把两个固定的点当作是<code>x</code>轴与函数图像的交点，再随机取开口的大小($y=ax^2+bx+c$中a的取值)，就可以定义出这条随机曲线</p>
+<p>这样实现分以下步骤来处理</p>
+<ol>
+<li>先定义开始点和结束点</li>
+<li>定义一个新座标系，以开始点为原点(0, 0)，结束点为x轴上的点(d, 0)d为两点的距离</li>
+<li>求出从新座标系变换到原座标系的变换矩阵</li>
+<li>定义曲线的方程</li>
+<li>使用曲线方程求出某个时间点的元素位置，并用变换矩阵映射回原有座标系，得到原有座标系中元素的位置</li>
+</ol>
+<p><strong>以下定义开始点为<code>p1</code>, 结束点为<code>p2</code></strong></p>
+<h2 id="新座标系映射到原座标系的矩阵"><a href="#新座标系映射到原座标系的矩阵" class="headerlink" title="新座标系映射到原座标系的矩阵"></a>新座标系映射到原座标系的矩阵</h2><p>先设变换矩阵为$\begin{bmatrix}A &amp; B &amp; C\\D &amp; E &amp; F\\G &amp; H &amp; I\end{bmatrix}$</p>
+<p>通过</p>
+<p>$$\begin{bmatrix}A &amp; B &amp; C\\D &amp; E &amp; F\\G &amp; H &amp; I\end{bmatrix}\begin{bmatrix}0\\0\\1\end{bmatrix} = \begin{bmatrix}p1.x\\p1.y\\1\end{bmatrix}$$</p>
+<p>和</p>
+<p>$$\begin{bmatrix}A &amp; B &amp; C\\D &amp; E &amp; F\\G &amp; H &amp; I\end{bmatrix}\begin{bmatrix}d\\0\\1\end{bmatrix} = \begin{bmatrix}p2.x\\p2.y\\1\end{bmatrix}$$</p>
+<p>可以得出:</p>
+<p>$$C = p1.x$$</p>
+<p>$$F = p1.y$$</p>
+<p>$$G = 0$$</p>
+<p>$$I = 1$$</p>
+<p>$$A = \frac{p2.x - p1.x}{d}$$</p>
+<p>$$D = \frac{p2.y - p1.y}{d}$$</p>
+<p>剩下的$B$、$E$和$H$怎么算出来呢？</p>
+<p>通过变换矩阵中<a href="https://zh.wikipedia.org/wiki/%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5#%E5%85%B6%E5%AE%83%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%8F%98%E6%8D%A2" target="_blank" rel="noopener">各个位置数值在对向量影响</a>可以看出，因为两个座标系只通过了平移和旋转的处理，所以$B = -D$，$E = A$，$H = 0$</p>
+<p>得出转换矩阵为:</p>
+<p>$$\begin{bmatrix}\frac{p2.x - p1.x}{d} &amp; \frac{p1.y - p2.y}{d} &amp; p1.x\\\frac{p2.y - p1.y}{d} &amp; \frac{p2.x - p1.x}{d} &amp; p1.y\\0 &amp; 0 &amp; 1\end{bmatrix}$$</p>
+<h2 id="定义曲线的方程"><a href="#定义曲线的方程" class="headerlink" title="定义曲线的方程"></a>定义曲线的方程</h2><p>前面我们先预设了这个方程为二次函数，所以设函数为：</p>
+<p>$$y = ax^2 + bx + c$$</p>
+<p>且新座标系中的$(0, 0)$和$(d, 0)$两点</p>
+<p>可以求出:</p>
+<p>$$b = -a * d$$</p>
+<p>$$c = 0$$</p>
+<p>整理为以下函数:</p>
+<p>$$y = ax^2 - adx$$</p>
+<h2 id="求出某个时间点的元素位置"><a href="#求出某个时间点的元素位置" class="headerlink" title="求出某个时间点的元素位置"></a>求出某个时间点的元素位置</h2><p>设从开始出发经过的时间为<code>t</code>秒，<strong>这里可不是把<code>t</code>放入上面的方程中!</strong></p>
+<p>上面方程中<code>x</code>是什么意思？是在两点的连线中，元素与开始点的距离，所以在已知经过时间的情况下，我们还需要知道元素沿两点连线方向移动的速度，这个速度可以作为一个参数传入，这里先定元素沿两点连线方向匀速移动，速度是<code>v</code>每秒，所以得出$x = vt$，并在<code>x &gt; d</code>的时候停止运动</p>
+<p>前面我们说过函数图像的开口大小由<code>a</code>来决定，这里我们用<code>Math.random() - 0.5</code>取一个值（因为曲线可在上下两个象限，所以可取正负值）</p>
+<p>代入曲线函数可求出<code>y</code>的值，再把$(x, y)$的座标通过变换矩阵映射回原座标系得到应该在屏幕上显示的座标</p>
+<h2 id="一些优化"><a href="#一些优化" class="headerlink" title="一些优化"></a>一些优化</h2><p>在使用上面的方法制作的效果中，发现在距离比较短的两点效果还好，距离比较大的两点，元素相对两点连线的偏移量相当大，效果很奇怪，结合当<code>a</code>的取值越小、函数图像的开口越大，曲线越平缓、最大偏移量也较小，所以考虑在对<code>a</code>取值时，使用<code>(Math.random() - 0.5) / d</code>的方法，使在距离较大的两点，也能使元素较聚拢在两点连线上</p>
+<p>在这次的效果中，元素表现为金币，不会自己作不规则的动作，所以使用二次函数的抛物线图像可以满足需求，但如果表现为鱼之类的动物时，可加上一些来回的动作丰富运动的曲线，例如在二次函数的基础上乘以一个三角函数<code>sin</code>，可作出较为丰富的运动轨迹（不过加在金币上会很魔性，大家可以试试）</p>
+]]></content>
+      <categories>
+        <category>work</category>
+      </categories>
+      <tags>
+        <tag>Javascript</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>连连看开发</title>
     <url>/2019/11/21/%E8%BF%9E%E8%BF%9E%E7%9C%8B%E5%BC%80%E5%8F%91/</url>
     <content><![CDATA[<p>因为不可描述的原因，过了没两天，又要开发另一个小游戏喇～（我好兴奋呀.jpg）</p>
@@ -83,7 +137,7 @@
 <a id="more"></a>
 
 <p>流程图如下:</p>
-<div id="flowchart-0" class="flow-chart"></div>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">st=&gt;start: 生成不能消除的图</span><br><span class="line">e=&gt;end: 游戏结束或重新生成图</span><br><span class="line">opSwitchCell=&gt;operation: 调换相邻的两个块</span><br><span class="line">isCanCrush=&gt;condition: 有能消除的块吗？</span><br><span class="line">isCanCrush2=&gt;condition: 还有能消除的块吗?</span><br><span class="line">opCrush=&gt;operation: 消除块</span><br><span class="line">opSortAndFill=&gt;operation: 重新把块排序和填充新块</span><br><span class="line">isHasChance=&gt;condition: 有能动一下就能消除的块吗？</span><br><span class="line"></span><br><span class="line">st-&gt;opSwitchCell-&gt;isCanCrush</span><br><span class="line">isCanCrush(yes)-&gt;opCrush-&gt;opSortAndFill-&gt;isCanCrush2</span><br><span class="line">isCanCrush(no)-&gt;opSwitchCell</span><br><span class="line">isCanCrush2(yes)-&gt;opCrush</span><br><span class="line">isCanCrush2(no)-&gt;isHasChance</span><br><span class="line">isHasChance(yes)-&gt;opSwitchCell</span><br><span class="line">isHasChance(no)-&gt;e</span><br></pre></td></tr></table></figure>
 
 <h2 id="游戏逻辑实现"><a href="#游戏逻辑实现" class="headerlink" title="游戏逻辑实现"></a>游戏逻辑实现</h2><h3 id="1-先定图的存储形式"><a href="#1-先定图的存储形式" class="headerlink" title="1. 先定图的存储形式"></a>1. 先定图的存储形式</h3><p>按逻辑来说图的存储当然就是一个矩阵了，在javascript里是用数组套数组的形式来实现矩阵，那先是行还是列呢？</p>
 <p>考虑到从列的方向需要做重新排序和新数据填充，把每一列当成一个数组来看待是比较好处理的方法</p>
@@ -185,22 +239,7 @@
 
 <p>因为每次操作后，都有检查能否消除然后再消除-排序-填充-检查能否消除的循环操作，本来是想用<code>do...while</code>做的，但是中间插进了动画这个异步操作后，这个循环也只能写成异步了，你看上面的<code>next</code>返回<code>Promise</code>就是为这个准备的，循环也只能写成递归调用了:</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">async</span> crushUntilEnd()&#123;</span><br><span class="line">  <span class="keyword">if</span>(<span class="keyword">this</span>.game.checkCrush().hasCrush)&#123;</span><br><span class="line">    <span class="keyword">this</span>.game.crush()</span><br><span class="line">    <span class="keyword">await</span> <span class="keyword">this</span>.next()</span><br><span class="line">    <span class="keyword">this</span>.game.sort()</span><br><span class="line">    <span class="keyword">await</span> <span class="keyword">this</span>.next()</span><br><span class="line">    <span class="keyword">this</span>.game.fillMap()</span><br><span class="line">    <span class="keyword">await</span> <span class="keyword">this</span>.next()</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span>.game.checkCrush().hasCrush)&#123;</span><br><span class="line">      <span class="keyword">await</span> <span class="keyword">this</span>.crushUntilEnd()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.6.5/flowchart.min.js"></script><textarea id="flowchart-0-code" style="display: none">st=>start: 生成不能消除的图
-e=>end: 游戏结束或重新生成图
-opSwitchCell=>operation: 调换相邻的两个块
-isCanCrush=>condition: 有能消除的块吗？
-isCanCrush2=>condition: 还有能消除的块吗?
-opCrush=>operation: 消除块
-opSortAndFill=>operation: 重新把块排序和填充新块
-isHasChance=>condition: 有能动一下就能消除的块吗？
-
-st->opSwitchCell->isCanCrush
-isCanCrush(yes)->opCrush->opSortAndFill->isCanCrush2
-isCanCrush(no)->opSwitchCell
-isCanCrush2(yes)->opCrush
-isCanCrush2(no)->isHasChance
-isHasChance(yes)->opSwitchCell
-isHasChance(no)->e</textarea><textarea id="flowchart-0-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("flowchart-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-0-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-0", options);</script>]]></content>
+]]></content>
       <categories>
         <category>work</category>
       </categories>
@@ -219,7 +258,7 @@ isHasChance(no)->e</textarea><textarea id="flowchart-0-options" style="display: 
 <p>服务器保存上传的块需要知道每个块在原文件所在的位置，这需要客户端在上传的同时带上这个参数；每个文件块也应当做客户端——服务端md5校验，避免因为文件块的传输错误导致合并文件后的文件错误</p>
 <a id="more"></a>
 
-<div id="flowchart-0" class="flow-chart"></div>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">st=&gt;start: 选择文件</span><br><span class="line">e=&gt;end: 文件已上传</span><br><span class="line">opLocalMd5=&gt;operation: 计算文件md5，发送到服务器</span><br><span class="line">isServerFileExits=&gt;condition: 检查文件是否存在</span><br><span class="line">opServerGetUploadedChunks=&gt;operation: 检查已上传的文件块</span><br><span class="line">opSplit=&gt;operation: 分割文件</span><br><span class="line">opPartMd5=&gt;operation: 计算文件块md5</span><br><span class="line">isAllUploaded=&gt;condition: 全部块上传完毕？</span><br><span class="line">opUploadPart=&gt;operation: 上传文件块，上报文件块md5</span><br><span class="line">上报总文件md5</span><br><span class="line">isPartMd5Same=&gt;condition: 比对文件块md5</span><br><span class="line">opSavePart=&gt;operation: 存储文件块</span><br><span class="line">opMerge=&gt;operation: 合并文件</span><br><span class="line">opServerMd5=&gt;operation: 服务器计算md5</span><br><span class="line">isMd5Same=&gt;condition: md5值相同？</span><br><span class="line">opError=&gt;operation: 返回错误信息</span><br><span class="line">opSaveFile=&gt;operation: 存储文件</span><br><span class="line"></span><br><span class="line">st-&gt;isServerFileExits</span><br><span class="line">isServerFileExits(yes)-&gt;e</span><br><span class="line">isServerFileExits(no)-&gt;opServerGetUploadedChunks-&gt;opSplit-&gt;opPartMd5-&gt;opUploadPart-&gt;isPartMd5Same</span><br><span class="line">isPartMd5Same(no)-&gt;opUploadPart</span><br><span class="line">isPartMd5Same(yes)-&gt;opSavePart-&gt;isAllUploaded</span><br><span class="line">isAllUploaded(no)-&gt;opSplit</span><br><span class="line">isAllUploaded(yes)-&gt;opMerge-&gt;opServerMd5-&gt;isMd5Same</span><br><span class="line">isMd5Same(no)-&gt;opError</span><br><span class="line">isMd5Same(yes)-&gt;opSaveFile(left)-&gt;e</span><br></pre></td></tr></table></figure>
 
 <h2 id="实施"><a href="#实施" class="headerlink" title="实施"></a>实施</h2><p>web客户端使用<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Blob/slice" target="_blank" rel="noopener"><code>Blob.slice</code>API</a>分割文件，使用<code>spark-md5</code>计算md5值</p>
 <p>选择文件后，切割文件和计算文件和文件块md5：</p>
@@ -244,33 +283,7 @@ isHasChance(no)->e</textarea><textarea id="flowchart-0-options" style="display: 
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> fmd5 = crypto.createHash(<span class="string">'md5'</span>)</span><br><span class="line"><span class="keyword">const</span> getPartMergePromise = <span class="function">(<span class="params">index</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> chunkMd5 = chunks[index]</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'append file index:'</span>, index)</span><br><span class="line">    <span class="keyword">const</span> currentFilePath = path.resolve(incomingFolderPath, <span class="string">`<span class="subst">$&#123;index&#125;</span>-<span class="subst">$&#123;chunkMd5&#125;</span>`</span>)</span><br><span class="line">    <span class="built_in">console</span>.log(currentFilePath)</span><br><span class="line">    <span class="keyword">const</span> read = fs.createReadStream(currentFilePath)</span><br><span class="line">    <span class="keyword">const</span> write = fs.createWriteStream(archiveFilePath, &#123;</span><br><span class="line">      flags: <span class="string">'a'</span></span><br><span class="line">    &#125;)</span><br><span class="line">    read.pipe(write)</span><br><span class="line">    read.on(<span class="string">'data'</span>, (chunk) =&gt; &#123;</span><br><span class="line">      fmd5.update(chunk)</span><br><span class="line">    &#125;)</span><br><span class="line">    read.on(<span class="string">'end'</span>, () =&gt; &#123;</span><br><span class="line">      resolve()</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> index = <span class="number">0</span>; index &lt; chunks.length; index++)&#123;</span><br><span class="line">  <span class="keyword">await</span> getPartMergePromise(index)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> fmd5.digest(<span class="string">'hex'</span>)</span><br></pre></td></tr></table></figure>
 
 <p>最后附上github地址: <a href="https://github.com/wenxiongid/big-file-upload" target="_blank" rel="noopener">https://github.com/wenxiongid/big-file-upload</a></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>要实现一个断点续传的上传组件需要前后端配合作信息比对，从前是使用flash的api作本地的文件分割、md5计算，但现在新的web api已经可以做到这部分的工作，现时纯使用HTML5已可实现以往需要外挂程序才能实现的功能；另一个角度是，现在web程序从其他语言（as3、C等等）翻译过来的也越来越多，之后前端的一个短期趋势应该是从其他语言学习架构、功能实现的方法应用在web客户端中<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.6.5/flowchart.min.js"></script><textarea id="flowchart-0-code" style="display: none">st=>start: 选择文件
-e=>end: 文件已上传
-opLocalMd5=>operation: 计算文件md5，发送到服务器
-isServerFileExits=>condition: 检查文件是否存在
-opServerGetUploadedChunks=>operation: 检查已上传的文件块
-opSplit=>operation: 分割文件
-opPartMd5=>operation: 计算文件块md5
-isAllUploaded=>condition: 全部块上传完毕？
-opUploadPart=>operation: 上传文件块，上报文件块md5
-上报总文件md5
-isPartMd5Same=>condition: 比对文件块md5
-opSavePart=>operation: 存储文件块
-opMerge=>operation: 合并文件
-opServerMd5=>operation: 服务器计算md5
-isMd5Same=>condition: md5值相同？
-opError=>operation: 返回错误信息
-opSaveFile=>operation: 存储文件
-
-st->isServerFileExits
-isServerFileExits(yes)->e
-isServerFileExits(no)->opServerGetUploadedChunks->opSplit->opPartMd5->opUploadPart->isPartMd5Same
-isPartMd5Same(no)->opUploadPart
-isPartMd5Same(yes)->opSavePart->isAllUploaded
-isAllUploaded(no)->opSplit
-isAllUploaded(yes)->opMerge->opServerMd5->isMd5Same
-isMd5Same(no)->opError
-isMd5Same(yes)->opSaveFile(left)->e</textarea><textarea id="flowchart-0-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("flowchart-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-0-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-0", options);</script></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>要实现一个断点续传的上传组件需要前后端配合作信息比对，从前是使用flash的api作本地的文件分割、md5计算，但现在新的web api已经可以做到这部分的工作，现时纯使用HTML5已可实现以往需要外挂程序才能实现的功能；另一个角度是，现在web程序从其他语言（as3、C等等）翻译过来的也越来越多，之后前端的一个短期趋势应该是从其他语言学习架构、功能实现的方法应用在web客户端中</p>
 ]]></content>
       <categories>
         <category>work</category>
@@ -864,8 +877,8 @@ isMd5Same(yes)->opSaveFile(left)->e</textarea><textarea id="flowchart-0-options"
         <category>work</category>
       </categories>
       <tags>
-        <tag>CSS</tag>
         <tag>javascript</tag>
+        <tag>CSS</tag>
       </tags>
   </entry>
   <entry>

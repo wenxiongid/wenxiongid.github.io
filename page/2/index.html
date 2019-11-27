@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.0.0">
@@ -100,12 +100,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -206,6 +206,94 @@
             
 
   <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2015/08/06/Hexo-blog%E6%90%AD%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="June Wu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JuneWu's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/08/06/Hexo-blog%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">Hexo blog搭建</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-08-06 10:17:07" itemprop="dateCreated datePublished" datetime="2015-08-06T10:17:07+08:00">2015-08-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-10-29 14:17:18" itemprop="dateModified" datetime="2019-10-29T14:17:18+08:00">2019-10-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/life/" itemprop="url" rel="index">
+                    <span itemprop="name">life</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>前几天终于狠下心来把vps配了个域名，然后就开始想把blog的东西从farbox转回来了；逛V2EX看见了Hexo这一静态博客也是用markdown写的，习惯了markdown后就不想再用那些富文本，迁移工作量也少，就用它了。</p>
+<p>Hexo卖点是用Node.js能快速生成站点，且自带Node.js的web服务器。web服务器我vps上已有一个nginx的站点了，参照了<a href="http://blog.berry10086.com/Tech/deploy-hexo-to-vps/" target="_blank" rel="noopener">这篇博文</a>的介绍，仿照他的做法，使用git部署页面文件到nginx的网站目录</p>
+<p>一路照做下来，觉得里面写到的服务器有页面文件替换部分有些繁琐（clone到tmp目录—&gt;清空站点目录—&gt;复制tmp文件到站点目录），就想直接在站点目录做<code>git pull</code>操作就好了，不是手动修改过站点目录的文件的话<code>pull</code>操作应该是不会有错误出现的，而且文章里的做法git帐号需要有操作站点目录的权限、总觉得有哪里不对……</p>
+<p>于是改了一下方法，想是<code>cd</code>到站点目录执行<code>git pull</code>，但这样做其实也是需要修改站点目录的权限的，而且修改后即等于修改了文件，执行<code>pull</code>操作会报错文件不符需<code>commit</code>和<code>merge</code>，那怎么办呢？在vps上捣弄半天，不如用<code>sudo git pull</code>吧，一行解决了两个问题，root权限操作站点目录不需修改权限，用pull命令也不用把文件弄来弄去了，好，写脚本去了</p>
+<p>试验了下用git帐号用不了<code>sudo</code>命令，说不在sudoers列表什么的，好嘛那就加进去嘛，google一下，sudoers列表在<code>/etc/sudoers</code>文件里，加上一行<code>git ALL=(ALL:ALL) ALL</code>，期间要用<code>chmod u+x /etc/sudoers</code>去掉写保护，修改后<code>chmod u-X /etc/sudoers</code>加回来。好了，<code>sudo</code>名令能用了，但是后面要输root密码，在shell脚本里该怎么处理呢？</p>
+<p>又google了一下，还是这个<code>/etc/sudoers</code>文件，可以设置某个帐号使用sudo命令不用输密码，还可以限制文件，好，把之前加的改一下，改成<code>git ALL=(ALL:ALL) NOPASSWD: /home/git/update-blog</code>，我把cd进站点文件夹和<code>git pull</code>命令写进了<code>update-blog</code>脚本，那我就只要执行<code>sudo /home/git/update-blog</code>就好喇。</p>
+<p>好，都配好了那本地hexo这边<code>hexo d</code>一下试试部署，发现这服务器文件没有更新嘛，又没什么错误提示，于是我又clone了一份到其他地方再捣弄几下，加个文件直接<code>git push</code>试试看，这次有错误提示了，<code>sudo: no tty present and no askpass program specified</code>什么的。再放google看看，说是在<code>/etc/sudoers</code>加入一行<code>Defaults visiblepw</code>就好了，加了之后果然好了，顺利push成功，站点文件也更新了，顺利完成部署工作</p>
+<p>但这tty是什么鬼呢？加入的这个<code>Defaults visiblepw</code>又是干什么的？不弄清楚不放心啊。</p>
+<p>google了tty，应该就是控制终端，就是登录的shell，但我现在是用的git的hooks触发的，没有登录的shell，于是就报上面的错了。</p>
+<p>然后加入的<code>Defaults visiblepw</code>呢？查到了<a href="http://www.sudo.ws/man/1.8.13/sudoers.man.html" target="_blank" rel="noopener">sudoers文档</a>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">visiblepw</span><br><span class="line">By default, sudo will refuse to run if the user must enter a password but it is not possible to disable echo on the terminal. If the visiblepw flag is set, sudo will prompt for a password even when it would be visible on the screen. This makes it possible to run things like “ssh somehost sudo ls” since by default, ssh(1) does not allocate a tty when running a command. This flag is off by default.</span><br></pre></td></tr></table></figure>
+
+<p>好像是加了就不判断有没有tty了</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
         
   
   
@@ -987,86 +1075,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2014/02/25/2014-02-21/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="June Wu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JuneWu's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/02/25/2014-02-21/" class="post-title-link" itemprop="url">mouseenter, mouseleave事件在ie6,7下的表现差异</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2014-02-25 21:28:00" itemprop="dateCreated datePublished" datetime="2014-02-25T21:28:00+08:00">2014-02-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-10-29 14:17:18" itemprop="dateModified" datetime="2019-10-29T14:17:18+08:00">2019-10-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/work/" itemprop="url" rel="index">
-                    <span itemprop="name">work</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>今天在做把DRSOON@win客户端web化时，发现<code>mouseenter</code>, <code>mouseleave</code>事件的<code>target</code>为<code>a</code>中的<code>label</code></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"label"</span>&gt;</span>label<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>多次测试后发现<code>a</code>在不设置<code>background</code>时触发不了事件，结果把<code>a</code>设上背景色后恢复预想交互</p>
-<p>事件是用<code>jQuery</code>绑定的，好像<code>mouseenter</code>, <code>mouseleave</code>原生只有在ie下有？以后再研究</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1117,7 +1125,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1215,6 +1223,56 @@
 
 
   
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+    
 
   
 

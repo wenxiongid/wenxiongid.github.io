@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.0.0">
@@ -104,12 +104,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -276,7 +276,7 @@
 <p>服务器保存上传的块需要知道每个块在原文件所在的位置，这需要客户端在上传的同时带上这个参数；每个文件块也应当做客户端——服务端md5校验，避免因为文件块的传输错误导致合并文件后的文件错误</p>
 <a id="more"></a>
 
-<div id="flowchart-0" class="flow-chart"></div>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">st=&gt;start: 选择文件</span><br><span class="line">e=&gt;end: 文件已上传</span><br><span class="line">opLocalMd5=&gt;operation: 计算文件md5，发送到服务器</span><br><span class="line">isServerFileExits=&gt;condition: 检查文件是否存在</span><br><span class="line">opServerGetUploadedChunks=&gt;operation: 检查已上传的文件块</span><br><span class="line">opSplit=&gt;operation: 分割文件</span><br><span class="line">opPartMd5=&gt;operation: 计算文件块md5</span><br><span class="line">isAllUploaded=&gt;condition: 全部块上传完毕？</span><br><span class="line">opUploadPart=&gt;operation: 上传文件块，上报文件块md5</span><br><span class="line">上报总文件md5</span><br><span class="line">isPartMd5Same=&gt;condition: 比对文件块md5</span><br><span class="line">opSavePart=&gt;operation: 存储文件块</span><br><span class="line">opMerge=&gt;operation: 合并文件</span><br><span class="line">opServerMd5=&gt;operation: 服务器计算md5</span><br><span class="line">isMd5Same=&gt;condition: md5值相同？</span><br><span class="line">opError=&gt;operation: 返回错误信息</span><br><span class="line">opSaveFile=&gt;operation: 存储文件</span><br><span class="line"></span><br><span class="line">st-&gt;isServerFileExits</span><br><span class="line">isServerFileExits(yes)-&gt;e</span><br><span class="line">isServerFileExits(no)-&gt;opServerGetUploadedChunks-&gt;opSplit-&gt;opPartMd5-&gt;opUploadPart-&gt;isPartMd5Same</span><br><span class="line">isPartMd5Same(no)-&gt;opUploadPart</span><br><span class="line">isPartMd5Same(yes)-&gt;opSavePart-&gt;isAllUploaded</span><br><span class="line">isAllUploaded(no)-&gt;opSplit</span><br><span class="line">isAllUploaded(yes)-&gt;opMerge-&gt;opServerMd5-&gt;isMd5Same</span><br><span class="line">isMd5Same(no)-&gt;opError</span><br><span class="line">isMd5Same(yes)-&gt;opSaveFile(left)-&gt;e</span><br></pre></td></tr></table></figure>
 
 <h2 id="实施"><a href="#实施" class="headerlink" title="实施"></a>实施</h2><p>web客户端使用<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Blob/slice" target="_blank" rel="noopener"><code>Blob.slice</code>API</a>分割文件，使用<code>spark-md5</code>计算md5值</p>
 <p>选择文件后，切割文件和计算文件和文件块md5：</p>
@@ -301,33 +301,7 @@
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fmd5 = crypto.createHash(<span class="string">'md5'</span>)</span><br><span class="line"><span class="keyword">const</span> getPartMergePromise = <span class="function">(<span class="params">index</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> chunkMd5 = chunks[index]</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'append file index:'</span>, index)</span><br><span class="line">    <span class="keyword">const</span> currentFilePath = path.resolve(incomingFolderPath, <span class="string">`<span class="subst">$&#123;index&#125;</span>-<span class="subst">$&#123;chunkMd5&#125;</span>`</span>)</span><br><span class="line">    <span class="built_in">console</span>.log(currentFilePath)</span><br><span class="line">    <span class="keyword">const</span> read = fs.createReadStream(currentFilePath)</span><br><span class="line">    <span class="keyword">const</span> write = fs.createWriteStream(archiveFilePath, &#123;</span><br><span class="line">      flags: <span class="string">'a'</span></span><br><span class="line">    &#125;)</span><br><span class="line">    read.pipe(write)</span><br><span class="line">    read.on(<span class="string">'data'</span>, (chunk) =&gt; &#123;</span><br><span class="line">      fmd5.update(chunk)</span><br><span class="line">    &#125;)</span><br><span class="line">    read.on(<span class="string">'end'</span>, () =&gt; &#123;</span><br><span class="line">      resolve()</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> index = <span class="number">0</span>; index &lt; chunks.length; index++)&#123;</span><br><span class="line">  <span class="keyword">await</span> getPartMergePromise(index)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> fmd5.digest(<span class="string">'hex'</span>)</span><br></pre></td></tr></table></figure>
 
 <p>最后附上github地址: <a href="https://github.com/wenxiongid/big-file-upload" target="_blank" rel="noopener">https://github.com/wenxiongid/big-file-upload</a></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>要实现一个断点续传的上传组件需要前后端配合作信息比对，从前是使用flash的api作本地的文件分割、md5计算，但现在新的web api已经可以做到这部分的工作，现时纯使用HTML5已可实现以往需要外挂程序才能实现的功能；另一个角度是，现在web程序从其他语言（as3、C等等）翻译过来的也越来越多，之后前端的一个短期趋势应该是从其他语言学习架构、功能实现的方法应用在web客户端中<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.6.5/flowchart.min.js"></script><textarea id="flowchart-0-code" style="display: none">st=>start: 选择文件
-e=>end: 文件已上传
-opLocalMd5=>operation: 计算文件md5，发送到服务器
-isServerFileExits=>condition: 检查文件是否存在
-opServerGetUploadedChunks=>operation: 检查已上传的文件块
-opSplit=>operation: 分割文件
-opPartMd5=>operation: 计算文件块md5
-isAllUploaded=>condition: 全部块上传完毕？
-opUploadPart=>operation: 上传文件块，上报文件块md5
-上报总文件md5
-isPartMd5Same=>condition: 比对文件块md5
-opSavePart=>operation: 存储文件块
-opMerge=>operation: 合并文件
-opServerMd5=>operation: 服务器计算md5
-isMd5Same=>condition: md5值相同？
-opError=>operation: 返回错误信息
-opSaveFile=>operation: 存储文件
-
-st->isServerFileExits
-isServerFileExits(yes)->e
-isServerFileExits(no)->opServerGetUploadedChunks->opSplit->opPartMd5->opUploadPart->isPartMd5Same
-isPartMd5Same(no)->opUploadPart
-isPartMd5Same(yes)->opSavePart->isAllUploaded
-isAllUploaded(no)->opSplit
-isAllUploaded(yes)->opMerge->opServerMd5->isMd5Same
-isMd5Same(no)->opError
-isMd5Same(yes)->opSaveFile(left)->e</textarea><textarea id="flowchart-0-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("flowchart-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-0-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-0", options);</script></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>要实现一个断点续传的上传组件需要前后端配合作信息比对，从前是使用flash的api作本地的文件分割、md5计算，但现在新的web api已经可以做到这部分的工作，现时纯使用HTML5已可实现以往需要外挂程序才能实现的功能；另一个角度是，现在web程序从其他语言（as3、C等等）翻译过来的也越来越多，之后前端的一个短期趋势应该是从其他语言学习架构、功能实现的方法应用在web客户端中</p>
 
     </div>
 
@@ -410,7 +384,7 @@ isMd5Same(yes)->opSaveFile(left)->e</textarea><textarea id="flowchart-0-options"
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -510,6 +484,56 @@ isMd5Same(yes)->opSaveFile(left)->e</textarea><textarea id="flowchart-0-options"
   
 
   
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
 
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
 
@@ -527,7 +551,7 @@ isMd5Same(yes)->opSaveFile(left)->e</textarea><textarea id="flowchart-0-options"
     });
     gitalk.render('gitalk-container');
   }, window.Gitalk);
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>
