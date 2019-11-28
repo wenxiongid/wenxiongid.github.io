@@ -59,7 +59,8 @@
 <meta property="og:description" content="先看一下效果是怎样的:  简单说就是固定两个点，元素从其中一个出发，到另一个点结束，中间的轨迹为随机曲线（包括直线） 从这个条件立刻想到的是二次函数的图像，经过x轴上的两个点，把两个固定的点当作是x轴与函数图像的交点，再随机取开口的大小($y=ax^2+bx+c$中a的取值)，就可以定义出这条随机曲线 这样实现分以下步骤来处理  先定义开始点和结束点 定义一个新座标系，以开始点为原点(0, 0)，">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https:&#x2F;&#x2F;img10.360buyimg.com&#x2F;imagetools&#x2F;jfs&#x2F;t1&#x2F;70114&#x2F;8&#x2F;16197&#x2F;1029481&#x2F;5dde4245E42155d9f&#x2F;e3bbd07edbeedc3e.gif">
-<meta property="og:updated_time" content="2019-11-27T10:42:18.395Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;img14.360buyimg.com&#x2F;n1&#x2F;jfs&#x2F;t1&#x2F;74892&#x2F;22&#x2F;1282&#x2F;345338&#x2F;5cf89187E2adf2d72&#x2F;83f4650700a302b8.jpg">
+<meta property="og:updated_time" content="2019-11-28T10:19:32.342Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;img10.360buyimg.com&#x2F;imagetools&#x2F;jfs&#x2F;t1&#x2F;70114&#x2F;8&#x2F;16197&#x2F;1029481&#x2F;5dde4245E42155d9f&#x2F;e3bbd07edbeedc3e.gif">
 
@@ -238,10 +239,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2019-11-27 17:24:36 / Modified: 18:42:18" itemprop="dateCreated datePublished" datetime="2019-11-27T17:24:36+08:00">2019-11-27</time>
+              <time title="Created: 2019-11-27 17:24:36" itemprop="dateCreated datePublished" datetime="2019-11-27T17:24:36+08:00">2019-11-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-11-28 18:19:32" itemprop="dateModified" datetime="2019-11-28T18:19:32+08:00">2019-11-28</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -308,6 +315,24 @@
 <p>代入曲线函数可求出<code>y</code>的值，再把$(x, y)$的座标通过变换矩阵映射回原座标系得到应该在屏幕上显示的座标</p>
 <h2 id="一些优化"><a href="#一些优化" class="headerlink" title="一些优化"></a>一些优化</h2><p>在使用上面的方法制作的效果中，发现在距离比较短的两点效果还好，距离比较大的两点，元素相对两点连线的偏移量相当大，效果很奇怪，结合当<code>a</code>的取值越小、函数图像的开口越大，曲线越平缓、最大偏移量也较小，所以考虑在对<code>a</code>取值时，使用<code>(Math.random() - 0.5) / d</code>的方法，使在距离较大的两点，也能使元素较聚拢在两点连线上</p>
 <p>在这次的效果中，元素表现为金币，不会自己作不规则的动作，所以使用二次函数的抛物线图像可以满足需求，但如果表现为鱼之类的动物时，可加上一些来回的动作丰富运动的曲线，例如在二次函数的基础上乘以一个三角函数<code>sin</code>，可作出较为丰富的运动轨迹（不过加在金币上会很魔性，大家可以试试）</p>
+<h3 id="如果想要速度渐变呢？"><a href="#如果想要速度渐变呢？" class="headerlink" title="如果想要速度渐变呢？"></a>如果想要速度渐变呢？</h3><p>如果期望元素飞行的速度从慢到快，那需要改写一下求给定时间点元素位置的方法</p>
+<p>例如我希望沿连线方向速度遵循$v = at$匀加速运动，给定最后进入的速度为$V_{max}$</p>
+<p>把到达终点时的情况代入上面的速度公式，得到$V_{max} = aT$</p>
+<p>根据匀速运动路程公式$s = \frac{at^2}{2}$，也把到达终点的情况代入，得到$d = \frac{aT^2}{2}$</p>
+<p>上面的$T$是从起点运动到终点经过的时间</p>
+<p>可以计算出$a = \frac{V^2_{max}}{2d}$</p>
+<p>代回进匀速运动路程公式可得$x = \frac{V^2_{max}}{4d}t^2$</p>
+<p>然后继续原来的计算就可以了</p>
+<h3 id="如果上面的速度渐变的运动，固定的是整个运动过程的时间呢？"><a href="#如果上面的速度渐变的运动，固定的是整个运动过程的时间呢？" class="headerlink" title="如果上面的速度渐变的运动，固定的是整个运动过程的时间呢？"></a>如果上面的速度渐变的运动，固定的是整个运动过程的时间呢？</h3><p>因为上面的方法固定的是最后的进入速度，所以在距离较远的时候，运动所需的时间会较多，速度提升的幅度也较少；在一般需求中，过渡动画的展示时间应该是固定的，对应到这个效果，就是元素从起点到终点运动的时间固定</p>
+<p>这个时候就可以直接使用匀速运动路程公式，代入终点的情况，得到$d = \frac{aT^2}{2}$，可计算得:</p>
+<p>$$a = \frac{2d}{T^2}$$</p>
+<p>然后代回路程公式就ok了</p>
+<p>$$x = \frac{d}{T^2}t^2$$</p>
+<h3 id="如果不是匀加速运动…"><a href="#如果不是匀加速运动…" class="headerlink" title="如果不是匀加速运动…"></a>如果不是匀加速运动…</h3><p>如果像ease-in之类，$v = f(t)$</p>
+<p>当然也可以求出来，像上面两个方法，需要用到的一个是速度对应时间<code>t</code>的函数，这个已经给定，另一个就是走过的路程对应<code>t</code>的函数，根据高中数学知识，使用积分可以列出:</p>
+<p>$$s = \int_0^Tf(t)dt$$</p>
+<p>至于具体的函数怎么算积分，可参考下面这本书:</p>
+<p><img src="https://img14.360buyimg.com/n1/jfs/t1/74892/22/1282/345338/5cf89187E2adf2d72/83f4650700a302b8.jpg" alt="https://img14.360buyimg.com/n1/jfs/t1/74892/22/1282/345338/5cf89187E2adf2d72/83f4650700a302b8.jpg"></p>
 
     </div>
 
@@ -371,7 +396,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#新座标系映射到原座标系的矩阵"><span class="nav-number">1.</span> <span class="nav-text">新座标系映射到原座标系的矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义曲线的方程"><span class="nav-number">2.</span> <span class="nav-text">定义曲线的方程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#求出某个时间点的元素位置"><span class="nav-number">3.</span> <span class="nav-text">求出某个时间点的元素位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些优化"><span class="nav-number">4.</span> <span class="nav-text">一些优化</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#新座标系映射到原座标系的矩阵"><span class="nav-number">1.</span> <span class="nav-text">新座标系映射到原座标系的矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义曲线的方程"><span class="nav-number">2.</span> <span class="nav-text">定义曲线的方程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#求出某个时间点的元素位置"><span class="nav-number">3.</span> <span class="nav-text">求出某个时间点的元素位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些优化"><span class="nav-number">4.</span> <span class="nav-text">一些优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如果想要速度渐变呢？"><span class="nav-number">4.1.</span> <span class="nav-text">如果想要速度渐变呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如果上面的速度渐变的运动，固定的是整个运动过程的时间呢？"><span class="nav-number">4.2.</span> <span class="nav-text">如果上面的速度渐变的运动，固定的是整个运动过程的时间呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如果不是匀加速运动…"><span class="nav-number">4.3.</span> <span class="nav-text">如果不是匀加速运动…</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
