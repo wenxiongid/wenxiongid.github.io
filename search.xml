@@ -6,6 +6,8 @@
     <content><![CDATA[<p>先看一下效果是怎样的:</p>
 <p><img src="https://img10.360buyimg.com/imagetools/jfs/t1/70114/8/16197/1029481/5dde4245E42155d9f/e3bbd07edbeedc3e.gif" alt="https://img10.360buyimg.com/imagetools/jfs/t1/70114/8/16197/1029481/5dde4245E42155d9f/e3bbd07edbeedc3e.gif"></p>
 <p>简单说就是固定两个点，元素从其中一个出发，到另一个点结束，中间的轨迹为随机曲线（包括直线）</p>
+<a id="more"></a>
+
 <p>从这个条件立刻想到的是二次函数的图像，经过x轴上的两个点，把两个固定的点当作是<code>x</code>轴与函数图像的交点，再随机取开口的大小($y=ax^2+bx+c$中a的取值)，就可以定义出这条随机曲线</p>
 <p>这样实现分以下步骤来处理</p>
 <ol>
