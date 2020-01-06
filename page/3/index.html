@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.0.0">
@@ -100,12 +100,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</noscript>
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+  <div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -268,7 +268,6 @@
       
           <p>今天在做把DRSOON@win客户端web化时，发现<code>mouseenter</code>, <code>mouseleave</code>事件的<code>target</code>为<code>a</code>中的<code>label</code></p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"label"</span>&gt;</span>label<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
 <p>多次测试后发现<code>a</code>在不设置<code>background</code>时触发不了事件，结果把<code>a</code>设上背景色后恢复预想交互</p>
 <p>事件是用<code>jQuery</code>绑定的，好像<code>mouseenter</code>, <code>mouseleave</code>原生只有在ie下有？以后再研究</p>
 
@@ -451,7 +450,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -558,7 +557,7 @@
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
     MathJax.Hub.Typeset();
   }, window.MathJax);
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
     
 

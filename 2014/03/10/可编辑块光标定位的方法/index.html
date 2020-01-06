@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.0.0">
@@ -104,12 +104,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</noscript>
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+  <div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -275,7 +275,6 @@
 <p>而今天就遇到这样一个应用场景，初步想的方法是先用<code>range.enOffset</code>得到当前光标的位置，再加上插入文本的长度，最后<code>range.setEnd(offset)</code>应该就可以了。</p>
 <p>实验后发现无论加多少在<code>endOffset</code>都提示输入的offset过大，代码如下：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">range.insertNode(frag);</span><br><span class="line">range.setEnd(range.endContainer, range.endOffset+insert_length);</span><br></pre></td></tr></table></figure>
-
 <p>检查了下，当编辑块为空时，运行到第二行时的<code>endOffset</code>为<code>1</code>，<code>startOffset</code>为<code>0</code>，这相当奇怪，因为在编辑框中光标是没有选中任何字符，即应该是<code>collapsed</code>，<code>startOffset</code>跟<code>endOffset</code>是相等的。</p>
 <p>后头检查代码后，这第二行取的<code>endOffset</code>是插入文本后的，于是在插入前取出<code>endOffset</code>检查，果然这次<code>start</code>跟<code>end</code>都是<code>0</code>了。这说明插入文本后，<code>range</code>的范围是包裹着插入的内容的，如果想把光标定位到插入内容后，只需要<code>range.collapse(false)</code>就可以了………………</p>
 <p>也就是上边这么多都是废话了，代码只需改成这样：</p>
@@ -401,7 +400,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -530,7 +529,7 @@
     });
     gitalk.render('gitalk-container');
   }, window.Gitalk);
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
 </body>
 </html>

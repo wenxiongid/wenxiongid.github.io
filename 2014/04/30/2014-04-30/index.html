@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.0.0">
@@ -104,12 +104,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</noscript>
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+  <div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -276,12 +276,10 @@
 <p>于是我查看了一下事件的属性，在<code>callback</code>中，查看了<code>e</code>的<code>type</code>，是<code>mouseenter</code>；但这只是<code>jQuery</code>的<code>Event</code>，再看一下此时的<code>window.event.type</code>，是<code>mouseover</code>。这就解开了上面的问题，<code>jQuery</code>用<code>mouseover</code>来模拟了<code>mouseenter</code>的事件（<code>mouseleave</code>是用了<code>mouseout</code>）。为什么是模拟而不是直接用<code>mouseover</code>/<code>mouseout</code>呢？</p>
 <p>测试后<code>mouseenter</code>/<code>mouseleave</code>与<code>mouseover</code>/<code>mouseout</code>的区别为，若我的dom如下：</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"outter"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"inner"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
 <p><code>callback</code>绑在<code>outter</code>的事件上，则进入、退出<code>outter</code>的时候，这两种事件的表现是一样的，都是会触发一次；但在进入、退出<code>outter</code>的子元素<code>inner</code>时，<code>mouseenter</code>/<code>mouseleave</code>不触发，<code>mouseouver</code>/<code>mouseout</code>触发了，就是因为这对事件是冒泡的，<code>inner</code>的事件冒泡到<code>outter</code>上触发了<code>callback</code>。正常的交互来说我们想要的触发方式就是<code>mouseenter</code>/<code>mouseleave</code>。</p>
 <p>那怎么模拟<code>mouseenter</code>/<code>mouseleave</code>事件呢？我的思路是触发的时候判断<code>event.target</code>是否是绑定的<code>dom</code>，不是的话就取消冒泡。</p>
 <p>看看jQuery是怎么写的：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Create mouseenter/leave events using mouseover/out and event-time checks</span></span><br><span class="line"><span class="comment">// Support: Chrome 15+</span></span><br><span class="line">jQuery.each(&#123;</span><br><span class="line">    mouseenter: <span class="string">"mouseover"</span>,</span><br><span class="line">    mouseleave: <span class="string">"mouseout"</span>,</span><br><span class="line">    pointerenter: <span class="string">"pointerover"</span>,</span><br><span class="line">    pointerleave: <span class="string">"pointerout"</span></span><br><span class="line">&#125;, <span class="function"><span class="keyword">function</span>(<span class="params"> orig, fix </span>) </span>&#123;</span><br><span class="line">    jQuery.event.special[ orig ] = &#123;</span><br><span class="line">        delegateType: fix,</span><br><span class="line">        bindType: fix,</span><br><span class="line">        handle: <span class="function"><span class="keyword">function</span>(<span class="params"> event </span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> ret,</span><br><span class="line">                target = <span class="keyword">this</span>,</span><br><span class="line">                related = event.relatedTarget,</span><br><span class="line">                handleObj = event.handleObj;</span><br><span class="line">            <span class="comment">// For mousenter/leave call the handler if related is outside the target.</span></span><br><span class="line">            <span class="comment">// NB: No relatedTarget if the mouse left/entered the browser window</span></span><br><span class="line">            <span class="keyword">if</span> ( !related || (related !== target &amp;&amp; !jQuery.contains( target, related )) ) &#123;</span><br><span class="line">                event.type = handleObj.origType;</span><br><span class="line">                ret = handleObj.handler.apply( <span class="keyword">this</span>, <span class="built_in">arguments</span> );</span><br><span class="line">                event.type = fix;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> ret;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
 <p><code>jQuery</code>的写法是判断移入、移出的对象是否都是绑定事件的子对象。这样说我上面的思路漏了这么一种情况：子元素占的区域与父元素分隔独立，移到子元素区域里<code>event</code>不会触发。</p>
 <p>这次研究解决了我之前的一点问题，但按之前提的问题来说，还有好多债要还……</p>
 
@@ -403,7 +401,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -532,7 +530,7 @@
     });
     gitalk.render('gitalk-container');
   }, window.Gitalk);
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
 </body>
 </html>

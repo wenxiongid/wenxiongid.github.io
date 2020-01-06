@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.0.0">
@@ -104,12 +104,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</noscript>
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+  <div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -280,7 +280,6 @@
 <p>google了tty，应该就是控制终端，就是登录的shell，但我现在是用的git的hooks触发的，没有登录的shell，于是就报上面的错了。</p>
 <p>然后加入的<code>Defaults visiblepw</code>呢？查到了<a href="http://www.sudo.ws/man/1.8.13/sudoers.man.html" target="_blank" rel="noopener">sudoers文档</a>：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">visiblepw</span><br><span class="line">By default, sudo will refuse to run if the user must enter a password but it is not possible to disable echo on the terminal. If the visiblepw flag is set, sudo will prompt for a password even when it would be visible on the screen. This makes it possible to run things like “ssh somehost sudo ls” since by default, ssh(1) does not allocate a tty when running a command. This flag is off by default.</span><br></pre></td></tr></table></figure>
-
 <p>好像是加了就不判断有没有tty了</p>
 
     </div>
@@ -403,7 +402,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -532,7 +531,7 @@
     });
     gitalk.render('gitalk-container');
   }, window.Gitalk);
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
 </body>
 </html>

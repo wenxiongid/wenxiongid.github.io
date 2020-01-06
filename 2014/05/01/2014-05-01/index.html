@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.0.0">
@@ -104,12 +104,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</noscript>
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+  <div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -273,10 +273,8 @@
 <p>源地址：<a href="https://github.com/mozilla/shumway/wiki/Trace-Output-with-Flash-Player-Debugger" target="_blank" rel="noopener">https://github.com/mozilla/shumway/wiki/Trace-Output-with-Flash-Player-Debugger</a></p>
 <p>一些要点记下来免得github出什么问题或作者删了</p>
 <ol>
-<li><p>首先装flash player debugger，地址么adobe官网，版本经常更新地址就不贴了</p>
-</li>
-<li><p>找到配置文件mm.cfg，OSX的就在用户目录~，其他的看   <a href="http://help.adobe.com/en_US/flex/using/WS2db454920e96a9e51e63e3d11c0bf69084-7fc9.html" target="_blank" rel="noopener">http://help.adobe.com/en_US/flex/using/WS2db454920e96a9e51e63e3d11c0bf69084-7fc9.html</a> 基本都是各自的用户目录</p>
-</li>
+<li>首先装flash player debugger，地址么adobe官网，版本经常更新地址就不贴了</li>
+<li>找到配置文件mm.cfg，OSX的就在用户目录~，其他的看   <a href="http://help.adobe.com/en_US/flex/using/WS2db454920e96a9e51e63e3d11c0bf69084-7fc9.html" target="_blank" rel="noopener">http://help.adobe.com/en_US/flex/using/WS2db454920e96a9e51e63e3d11c0bf69084-7fc9.html</a> 基本都是各自的用户目录</li>
 <li><p>mm.cfg里写上以下配置，就会记录trace输出和warning、AVM调用信息</p>
 <p> ErrorReportingEnable=1<br> TraceOutputFileEnable=1<br> MaxWarnings=50<br> AS3Trace=1</p>
 </li>
@@ -403,7 +401,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -532,7 +530,7 @@
     });
     gitalk.render('gitalk-container');
   }, window.Gitalk);
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.0.0">
@@ -113,12 +113,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</noscript>
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+  <div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -288,7 +288,6 @@
 <p>先说说解决方法，很简单的：把不显示的分页设成 <code>display: none;</code></p>
 <p>第二天想这是什么原因呢，就做了下面的测试：</p>
 <a id="more"></a>
-
 <h2 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h2><p>仿照解决bug前做的简单demo：</p>
 <p><a href="http://junewu.work/app/dreaming/cert/test1.html" target="_blank" rel="noopener">https://junewu.work/app/dreaming/cert/test1.html</a></p>
 <p><img src="https://img30.360buyimg.com/cms/jfs/t3055/121/5526296430/1973/931b58d7/5874bad7N1ac20430.png" alt=""></p>
@@ -319,6 +318,7 @@
 <p><img src="https://img11.360buyimg.com/cms/jfs/t3265/99/5772327361/1944/4e6e16f3/587f5a4bN7fc3f5e7.png" alt=""></p>
 <p>闪退提前在40~50个分页的时候出现。到了这步基本可以断定闪退跟「有硬件加速的非隐藏的元素总面积」有关了</p>
 <p>总结一下几个测试的结果：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -326,7 +326,8 @@
 <th>闪退情况</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>分页<code>translate3d</code>、<code>scale(0.35)</code>，退场不隐藏，有逐帧动画</td>
 <td>150~160个分页</td>
 </tr>
@@ -354,7 +355,9 @@
 <td>分页<code>translate3d</code>、<code>scale(1)</code>，退场不隐藏，无逐帧动画</td>
 <td>40~50个分页</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>按测试页面上元素的大小<code>1015px * 1000px</code>（应用scale前的大小）计算，造成闪退的元素总大小阈值应该在53287500~56840000之间，按iPhone 6 的屏幕大小计算，可以撑住两百多屏分页，当然实际项目页面可能会有多个动画、表现层叠加，可以支持的分页数量应该会比估计的少很多</p>
 <p>当然如果做好退场/未进场的页面隐藏，可以不用像这样拿着计算器去算还剩多少面积可以用，这个应该算是渲染方面的一种手动gc吧</p>
 
@@ -478,7 +481,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -607,7 +610,7 @@
     });
     gitalk.render('gitalk-container');
   }, window.Gitalk);
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
 </body>
 </html>

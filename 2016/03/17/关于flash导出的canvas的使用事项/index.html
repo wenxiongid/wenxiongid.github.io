@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.0.0">
@@ -104,12 +104,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</noscript>
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+  <div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -272,18 +272,14 @@
         <p>现在Flash可以很方便的导出canvas了，制作canvas动画比自己一行代码一行代码写要舒服多了，但输出的代码嵌入到具体的页面，还要做一些工作</p>
 <h2 id="1-依赖的引用"><a href="#1-依赖的引用" class="headerlink" title="1. 依赖的引用"></a>1. 依赖的引用</h2><p>输出的html文件会调用以下等等的外部js文件，如果flash中还调用了音频，还可能会有其它库文件（可能有一种stand alone的导出方式？），原代码如下：</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"http://code.createjs.com/easeljs-0.7.1.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"http://code.createjs.com/tweenjs-0.5.1.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"http://code.createjs.com/movieclip-0.7.1.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"http://code.createjs.com/preloadjs-0.4.1.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
 <p>由于国内访问速度问题和外链的限制，需要先把这批代码做本地CDN或内联处理</p>
 <h2 id="2-资源文件的重定位"><a href="#2-资源文件的重定位" class="headerlink" title="2. 资源文件的重定位"></a>2. 资源文件的重定位</h2><p>输出的项目js代码中，定义了一个<code>lib.properties</code>对象，里面存放的是整体动画的配置，如下：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// library properties:</span></span><br><span class="line">lib.properties = &#123;</span><br><span class="line">	width: <span class="number">250</span>,</span><br><span class="line">	height: <span class="number">528</span>,</span><br><span class="line">	fps: <span class="number">24</span>,</span><br><span class="line">	color: <span class="string">"#000000"</span>,</span><br><span class="line">	manifest: [</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/foryou.png"</span>, <span class="attr">id</span>:<span class="string">"foryou"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/照片1.jpg"</span>, <span class="attr">id</span>:<span class="string">"照片1"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/照片2.jpg"</span>, <span class="attr">id</span>:<span class="string">"照片2"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/happy.png"</span>, <span class="attr">id</span>:<span class="string">"happy"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/手机_.png"</span>, <span class="attr">id</span>:<span class="string">"手机"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/logo.png"</span>, <span class="attr">id</span>:<span class="string">"logo"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/_new.png"</span>, <span class="attr">id</span>:<span class="string">"_new"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/title.png"</span>, <span class="attr">id</span>:<span class="string">"title"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/title2016.png"</span>, <span class="attr">id</span>:<span class="string">"title2016"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/year.png"</span>, <span class="attr">id</span>:<span class="string">"year"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/云1.png"</span>, <span class="attr">id</span>:<span class="string">"云1"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/云2.png"</span>, <span class="attr">id</span>:<span class="string">"云2"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/云3.png"</span>, <span class="attr">id</span>:<span class="string">"云3"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/云4.png"</span>, <span class="attr">id</span>:<span class="string">"云4"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/云5.png"</span>, <span class="attr">id</span>:<span class="string">"云5"</span>&#125;</span><br><span class="line">	]</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
 <p>其中的文件也需要做CDN处理，替换其中的<code>src</code>属性即可，<code>id</code>的值不要修改</p>
 <h2 id="3-动画与外部js的数据交换"><a href="#3-动画与外部js的数据交换" class="headerlink" title="3. 动画与外部js的数据交换"></a>3. 动画与外部js的数据交换</h2><h3 id="flash暴露方法供外部调用"><a href="#flash暴露方法供外部调用" class="headerlink" title="flash暴露方法供外部调用"></a>flash暴露方法供外部调用</h3><p>flash中的外部方法需要通过内建的<code>exportRoot</code>对象暴露，如希望暴露一个<code>play()</code>方法，flash中的代码需要如下编写：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> play = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span>.play = play;</span><br></pre></td></tr></table></figure>
-
 <p>当嵌入到项目代码中后，会定义一个<code>exportRoot</code>的全局对象，所有flash暴露的外部方法都在此对象中，如需调用上面的<code>play</code>方法，项目中的js代码只需这样写：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exportRoot.play();</span><br></pre></td></tr></table></figure>
-
 <h3 id="flash调用外部方法"><a href="#flash调用外部方法" class="headerlink" title="flash调用外部方法"></a>flash调用外部方法</h3><p>外部定义全局方法，如<code>isReady()</code>，flash中直接调用<code>isReady()</code>就可以</p>
 <h2 id="flash状态判断"><a href="#flash状态判断" class="headerlink" title="flash状态判断"></a>flash状态判断</h2><p>由于flash中也需要引用外部资源，但暴露的方法在代码执行的时候就定义到<code>exportRoot</code>中了</p>
 <p>于是有可能出现暴露的方法需要外部资源，但这些外部资源还没加载好，导致方法不能成功执行</p>
@@ -414,7 +410,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -543,7 +539,7 @@
     });
     gitalk.render('gitalk-container');
   }, window.Gitalk);
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
 </body>
 </html>

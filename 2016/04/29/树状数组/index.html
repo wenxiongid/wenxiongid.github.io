@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.0.0">
@@ -104,12 +104,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</noscript>
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+  <div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -273,11 +273,11 @@
 <p>数状数组的定义：</p>
 <p>结合维基百科的条目与<a href="http://www.cnblogs.com/zichi/p/4806998.html" target="_blank" rel="noopener">别人的博客</a>，理解数状数组<code>C</code>与原数组<code>A</code>的关系为：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">C[n] = (<span class="function"><span class="keyword">function</span>(<span class="params">i</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> ret = A[n];</span><br><span class="line">	</span><br><span class="line">  <span class="keyword">for</span>(j = i - <span class="number">1</span>; j &gt; i - lowbit(i); j--)&#123;</span><br><span class="line">    ret += A[j];</span><br><span class="line">  &#125;</span><br><span class="line">	</span><br><span class="line">  <span class="keyword">return</span> ret;</span><br><span class="line">&#125;)(n);</span><br></pre></td></tr></table></figure>
-
 <p>这<code>lowbit</code>是什么鬼呢？是表示一个数<code>n</code>使用二进制表示时，最右边的<code>1</code>所在表示的值</p>
 <p>如<code>6</code>的二进制表示为<code>110</code>，从个位开始数的第一个<code>1</code>在第二位，表示的数就是<code>2 ^ 2 = 4</code>，所以<code>lowbit(6) = 4</code></p>
 <p>代入上面的公式，<code>C[6] = A[6] + A[5]</code></p>
 <p>用二进制表示會清晰一点：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -286,7 +286,8 @@
 <th>A</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>十进制</td>
 <td>6</td>
 <td>6 + 5</td>
@@ -296,16 +297,16 @@
 <td>110</td>
 <td>110 + 101</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p><code>110</code>减去<code>lowbit</code>的操作相当于把二进制表示的值的最右边一位<code>1</code>置<code>0</code>，得到<code>100</code>，<code>C[6]</code>的值包含<code>110</code>到<code>100</code>(不含)的值的和</p>
 <p>这样定义的好处是可快速的算出<code>A[1]~A[n]</code>的和，同样用二进制表示前缀，如<code>n = 40</code>，二进制表示为<code>101000</code>，可快速算出<code>A[1]~A[40]</code>的和为<code>C[40] + C[32]</code>（即二进制表示的<code>C[101000] + C[100000]</code>），代码公式表示为：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">SUM[n] = (<span class="function"><span class="keyword">function</span>(<span class="params">i</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> ret = <span class="number">0</span>;</span><br><span class="line">	</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">var</span> j = i; i &gt; <span class="number">0</span>; i -= lowbit(i))&#123;</span><br><span class="line">    ret += C[i];</span><br><span class="line">  &#125;</span><br><span class="line">	</span><br><span class="line">  <span class="keyword">return</span> ret;</span><br><span class="line">&#125;)(n);</span><br></pre></td></tr></table></figure>
-
 <p>构造和求和的方法都有了，还需要当<code>A[n]</code>数组更新时<code>C[n]</code>数组的更新方法</p>
 <p>从<code>C[n]</code>的构造方法看到，<code>A[n]</code>的变化首先影响到<code>C[n]</code>的值，然后向上影响<code>C[n + lowbit(n)]</code>的值，然后继续向上迭代影响<code>i + lowbit(i)</code>的值（<code>i</code>为每次更新的<code>C[i]</code>的前綴）</p>
 <p>因此值变化的公式有：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">update</span>(<span class="params">i, diff</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">var</span> j = i; j &lt; MAX_N; j += lowbit(j))&#123;</span><br><span class="line">    C[j] += diff;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>其中<code>diff</code>为<code>A[n]</code>变化的值</p>
 
     </div>
@@ -426,7 +427,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -555,7 +556,7 @@
     });
     gitalk.render('gitalk-container');
   }, window.Gitalk);
-</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</script>
 
 </body>
 </html>
