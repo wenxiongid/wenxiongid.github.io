@@ -210,6 +210,98 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2015/08/27/OSX%E4%B8%8B%E7%9A%84dircolor/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="June Wu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JuneWu's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/08/27/OSX%E4%B8%8B%E7%9A%84dircolor/" class="post-title-link" itemprop="url">OSX下的dircolor</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-08-27 18:24:00" itemprop="dateCreated datePublished" datetime="2015-08-27T18:24:00+08:00">2015-08-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-10-29 14:17:18" itemprop="dateModified" datetime="2019-10-29T14:17:18+08:00">2019-10-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/life/" itemprop="url" rel="index">
+                    <span itemprop="name">life</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>偶然看到一个github库<a href="https://github.com/seebi/dircolors-solarized" target="_blank" rel="noopener">dircolors-solarized</a>，刚好我在iTerm用的也是solarized的配色，OSX下终端的ls出来也只有简单的几种颜色，一眼看过去密密麻麻的都不知道是什么文件，看到这个心想终于有个好的解决方案了，立刻看着installation来做</p>
+<p>把仓库clone到本地，把<code>dircolors.ansi-universal</code>复制到<code>~/.dir_colors</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp dircolors.ansi-universal ~/.dir_colors</span><br></pre></td></tr></table></figure>
+<p>然后运行<code>eval &#39;dircolors ~/.dir_colors&#39;</code></p>
+<p>咦？出现错误<code>zsh: command not found: dircolors</code></p>
+<p>没有<code>dircolors</code>这个命令？说明里没说有这个情况的啊，google一下，得到了<a href="http://unix.stackexchange.com/questions/91937/mac-os-x-dircolors-not-found" target="_blank" rel="noopener">说明</a>是：<code>dircolors</code>是<code>GNU coreutils</code>的专有命令，OSX就没有咯。那就是这个库的方法用不了了？</p>
+<p>再google一下，发现GNU的<code>ls</code>是可以通过<code>brew install coreutils</code>安装的，刚输完前面的命令发现以前已经装过了，er…</p>
+<p>好吧，那直接在shell的配置文件加上<code>alias ls=&quot;gls --color=auto&quot;</code>应该就可以了，我用的是<code>zsh</code>，于是加进<code>~/.zshrc</code>。加上后，晕了，弹出这么一个错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/bin/ls: illegal option -- -</span><br><span class="line">usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]</span><br></pre></td></tr></table></figure>
+<p>这是什么鬼回事？明明都加了alias了啊？看这错误提示调用的还是<code>/bin/ls</code>，这是OSX自带的<code>ls</code>喔…</p>
+<p>想起了<code>which -a</code>命令可以查看一个命令的全部版本（还是同名的文件？不会表达），那alias的命令能不能列出来呢？试一下<code>which -a ls</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls: aliased to ls -G</span><br><span class="line">/bin/ls</span><br></pre></td></tr></table></figure>
+<p>噢，真的有！什么时候<code>ls</code> alias成<code>ls -G</code>了？我的<code>gls</code>呢？看来在我的alias后面又被其他文件里的配置被alias了，唉，这个<code>which</code>只能看被alias成什么，看不到在哪里被alias的啊，google一轮后也找不到，那只能每次打开终端都输一次<code>alias ls=&quot;gls --color=auto&quot;</code>吗？</p>
+<p>想起我在用的iTerm有个<code>Send text at start</code>选项（在Preferences—&gt;Profile—&gt;General），可以在每次打开终端窗口的时候输入这行指令，那我想到最后的方法就是把这行命令放到这里了，总比每次手输要好吧，吧</p>
+<p>啊，最后忘记了，还要运行<code>dircolor</code>的，现在要改成<code>gdircolor</code>了，完整的命令是<code>gdircolor ~/.dir_colors</code>，这行代码就加到<code>~/.zshrc</code>中。修改好后再执行<code>source ~/.zshrc</code></p>
+<p>好了，最后重启iTerm，<code>ls</code>一下，终于搞定了</p>
+<p>最后还是没找到这<code>ls -G</code>是在哪里被alias的，有没有一个命令是可以找到alias的配置文件的呢？</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2015/08/06/Hexo-blog%E6%90%AD%E5%BB%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -983,83 +1075,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2014/02/25/2014-02-25-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="June Wu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JuneWu's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/02/25/2014-02-25-1/" class="post-title-link" itemprop="url">IE6/7下父元素设为display:none，子元素仍出现的bug</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2014-02-25 21:31:00" itemprop="dateCreated datePublished" datetime="2014-02-25T21:31:00+08:00">2014-02-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-10-29 14:17:18" itemprop="dateModified" datetime="2019-10-29T14:17:18+08:00">2019-10-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/work/" itemprop="url" rel="index">
-                    <span itemprop="name">work</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>子元素<code>position</code>为<code>relative</code>/<code>absolute</code>时，先隐藏父元素，再隐藏子元素会出现这个bug，还好这次调一下js顺序就好了…</p>
-<p>资料：<br><a href="http://www.positioniseverything.net/explorer/ienondisappearcontentbugPIE/index.htm" target="_blank" rel="noopener">http://www.positioniseverything.net/explorer/ienondisappearcontentbugPIE/index.htm</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1110,7 +1125,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1123,7 +1138,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
