@@ -210,6 +210,156 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2015/12/16/rem%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="June Wu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JuneWu's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/12/16/rem%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" class="post-title-link" itemprop="url">rem使用注意事项</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-12-16 10:27:42" itemprop="dateCreated datePublished" datetime="2015-12-16T10:27:42+08:00">2015-12-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-10-29 14:17:18" itemprop="dateModified" datetime="2019-10-29T14:17:18+08:00">2019-10-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/work/" itemprop="url" rel="index">
+                    <span itemprop="name">work</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近在用rem做mobile webpage的开发，途中遇到不少坑，为防年纪大记性差留个记录。</p>
+<p>rem的使用：</p>
+<p>原理上来说是使用根元素（<code>html</code>）的font-size大小来计算每一个元素的所有跟尺寸有关的数值，包括但不限于<code>width</code>、<code>height</code>、<code>margin</code>、<code>padding</code>、<code>font-size</code>、<code>line-height</code>、<code>top</code>、<code>left</code>、<code>right</code>、<code>bottom</code>、<code>background-position</code>、<code>background-size</code>……</p>
+<p>在LESS上使用的话换算挺简单的，定义一个转换函数，参数传入原始的像素值，返回计算后的rem值就好了。</p>
+<p>先定义各个情况下的rem值，这里直接用了腾讯isux的配置<a href="http://isux.tencent.com/web-app-rem.html" target="_blank" rel="noopener">http://isux.tencent.com/web-app-rem.html</a>：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">html</span> &#123;</span><br><span class="line">  <span class="attribute">font-size </span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br><span class="line">@<span class="keyword">media</span> only screen and (min-width: <span class="number">401px</span>)&#123;</span><br><span class="line">  <span class="selector-tag">html</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">25px</span> <span class="meta">!important</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">@<span class="keyword">media</span> only screen and (min-width: <span class="number">428px</span>)&#123;</span><br><span class="line">  <span class="selector-tag">html</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">26.75px</span> <span class="meta">!important</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">@<span class="keyword">media</span> only screen and (min-width: <span class="number">481px</span>)&#123;</span><br><span class="line">  <span class="selector-tag">html</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">30px</span> <span class="meta">!important</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">@<span class="keyword">media</span> only screen and (min-width: <span class="number">569px</span>)&#123;</span><br><span class="line">  <span class="selector-tag">html</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">35px</span> <span class="meta">!important</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">@<span class="keyword">media</span> only screen and (min-width: <span class="number">641px</span>)&#123;</span><br><span class="line">  <span class="selector-tag">html</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">40px</span> <span class="meta">!important</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再定义我们的转换函数，因为我们的移动端设计稿是按640的宽度做的，所以除以的系数为页面宽度<code>640px</code>时的rem <code>40px</code>：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">@px2rem:</span> <span class="built_in">~`px2rem = function(size)&#123; return (size / 40) + 'rem'; &#125;`</span>;</span><br></pre></td></tr></table></figure>
+<p>准备工作完成了，然后下面的元素本来用<code>px</code>表示的尺寸的换成调用函数就好了。比如：</p>
+<p>原来的写法：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.text</span>&#123;</span><br><span class="line">  <span class="attribute">display</span>: inline-block;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">36px</span>;</span><br><span class="line">  <span class="attribute">line-height</span>: <span class="number">36px</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">0</span> <span class="number">6px</span>;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#030303</span>;</span><br><span class="line">  <span class="attribute">vertical-align</span>: top;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>带转换的写法：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.text</span>&#123;</span><br><span class="line">  <span class="attribute">display</span>: inline-block;</span><br><span class="line">  <span class="attribute">height</span>: <span class="built_in">~`px2rem(36)`</span>;</span><br><span class="line">  <span class="attribute">line-height</span>: <span class="built_in">~`px2rem(36)`</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">0</span> <span class="built_in">~`px2rem(6)`</span>;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="built_in">~`px2rem(20)`</span>;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#030303</span>;</span><br><span class="line">  <span class="attribute">vertical-align</span>: top;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改写方法很简单，下面来看一个具体例子，通常活动的头图都很大，我们回切成好几片做拼接：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"header"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"img-content"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://img12.360buyimg.com/cms/jfs/t2512/97/854580732/40093/bd85d483/566e5ea9N9ec31fc7.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"img-content"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://img11.360buyimg.com/cms/jfs/t2125/71/1650398095/36549/20121f4a/566e5eaaN83135a5c.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:;"</span> <span class="attr">class</span>=<span class="string">"android-link"</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:;"</span> <span class="attr">class</span>=<span class="string">"ios-link"</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>以前的css写法：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.header</span>&#123;</span><br><span class="line">  <span class="selector-class">.header-bg</span>&#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">200px</span>;</span><br><span class="line">    <span class="attribute">background-repeat</span>: no-repeat;</span><br><span class="line">    <span class="attribute">background-size</span>: <span class="number">100%</span> auto;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.header-bg1</span>&#123;</span><br><span class="line">    <span class="attribute">background-image</span>: url(<span class="string">'http://img12.360buyimg.com/cms/jfs/t2512/97/854580732/40093/bd85d483/566e5ea9N9ec31fc7.jpg'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.header-bg2</span>&#123;</span><br><span class="line">    <span class="attribute">background-image</span>: url(<span class="string">'http://img11.360buyimg.com/cms/jfs/t2125/71/1650398095/36549/20121f4a/566e5eaaN83135a5c.jpg'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>把px改成rem：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.header</span>&#123;</span><br><span class="line">  <span class="selector-class">.header-bg</span>&#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="built_in">~`px2rem(200)`</span>;</span><br><span class="line">    <span class="attribute">background-repeat</span>: no-repeat;</span><br><span class="line">    <span class="attribute">background-size</span>: <span class="number">100%</span> auto;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.header-bg1</span>&#123;</span><br><span class="line">    <span class="attribute">background-image</span>: url(<span class="string">'http://img12.360buyimg.com/cms/jfs/t2512/97/854580732/40093/bd85d483/566e5ea9N9ec31fc7.jpg'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.header-bg2</span>&#123;</span><br><span class="line">    <span class="attribute">background-image</span>: url(<span class="string">'http://img11.360buyimg.com/cms/jfs/t2125/71/1650398095/36549/20121f4a/566e5eaaN83135a5c.jpg'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>demo页面：<a href="http://junewu.work/app/dreaming/rem_demo/demo1.html" target="_blank" rel="noopener">demo1.html</a></p>
+<p>现在页面在iPhone4~5上看应该是正常的，但是如果你用了另一种分辨率看，两张图｀出现错位了；为什么呢？这样的写法是严格按照<code>320/640px</code>的分辨率写的，在iPhone4~5这些分辨率宽度是320的设备上表现会是正常，但在其他分辨率出错，因为这两张图的容器没有按比例缩放，我们再看回之前写的css，只定义了高度的rem，没定义宽度，块元素的宽度默认是<code>100%</code>，问题就在这宽跟高用了不同的单位，所以容器没有按比例缩放</p>
+<p>=========</p>
+<p>所以要注意的第一个点：</p>
+<h3 id="需要按比例缩放的元素，宽高单位需统一"><a href="#需要按比例缩放的元素，宽高单位需统一" class="headerlink" title="需要按比例缩放的元素，宽高单位需统一"></a>需要按比例缩放的元素，宽高单位需统一</h3><p>=========</p>
+<p>怎么解决这个问题呢？</p>
+<hr>
+<h4 id="方法一：用原生的img元素等比缩放特性来撑起高度"><a href="#方法一：用原生的img元素等比缩放特性来撑起高度" class="headerlink" title="方法一：用原生的img元素等比缩放特性来撑起高度"></a>方法一：用原生的<code>img</code>元素等比缩放特性来撑起高度</h4><p>html代码改成如下，图片改成行内<code>&lt;img&gt;</code>元素</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"header-bg header-bg1"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://img12.360buyimg.com/cms/jfs/t2512/97/854580732/40093/bd85d483/566e5ea9N9ec31fc7.jpg"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"header-bg header-bg2"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://img11.360buyimg.com/cms/jfs/t2125/71/1650398095/36549/20121f4a/566e5eaaN83135a5c.jpg"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>注意<code>&lt;img&gt;</code>元素的<code>vertical-align</code>要设成<code>baseline</code>以外的值，不然<code>&lt;img&gt;</code>元素与容器会有间隙，容器的<code>line-height</code>要设成<code>0</code>，不然容器的最小高度等于行高，再小就会出现间隙，最后的css如下：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.header</span>&#123;</span><br><span class="line">  <span class="selector-class">.header-bg</span>&#123;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="selector-tag">img</span>&#123;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">      <span class="attribute">vertical-align</span>: top;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>demo页面：<a href="http://junewu.work/app/dreaming/rem_demo/demo2.html" target="_blank" rel="noopener">demo2.html</a></p>
+<p>这种方法优点是css代码简单，缩放使用浏览器原生表现；缺点是图片加载前到完成的过程高度会一直变化</p>
+<hr>
+<h4 id="方法二：高度也使用百分比定义"><a href="#方法二：高度也使用百分比定义" class="headerlink" title="方法二：高度也使用百分比定义"></a>方法二：高度也使用百分比定义</h4><p>由于宽度必须是100%，定义高度的单位也需统一成百分比。高度的数值也像<code>rem</code>一样通过计算出来，计算的分母是该容器父容器的高度。在这个例子里就是<code>.header</code>的高度。</p>
+<p>=========</p>
+<p>注意：如果该容器的<code>position</code>值<strong>不是</strong><code>static</code>或<code>relative</code>，那百分比的相对尺寸元素会是对应定位元素，如<code>fixed</code>的元素对应的是<code>body</code>元素的宽高；<code>absolute</code>的元素对应的是它的上级元素中最近的<code>position</code>不为<code>static</code>的元素</p>
+<p>=========</p>
+<p>但是，这时候父容器（这里是<code>.header</code>）的高度需要定义，但又需要用百分比表示，但<code>.header</code>的父容器就是<code>body</code>了，<code>body</code>的高度会随着页面的内容变化，所以这里就不能用<code>height: xx%</code>定义高度了；这里用一个特殊的属性<code>padding-bottom</code>(<code>padding</code>、<code>margin</code>属性使用百分比时，竖直方向的数值计算时使用的不是父元素的高度，<strong>而是父元素的宽度</strong>)，<code>.header</code>里加一个<code>.placeholder</code>，<code>height</code>设为<code>0</code>，<code>padding-bottom</code>设成<code>.hedaer高度 / body宽度</code>，此处为<code>350 / 640 = 54.6875%</code>，现在<code>.header</code>的高度就被撑起来了。</p>
+<p>现在高度撑起来了，但原来放图的地方被<code>.placeholder</code>君占了，原来的<code>.header-bg</code>只能用绝对定位放回它们该在的位置了，不要忘记<code>top</code>的值也要用百分比定义，这里就用<code>切片y位置 / 父容器高度</code>就可以算出来了。</p>
+<p>html代码沿用demo1的，再加上<code>.placeholder</code>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"header"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"placeholder"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"header-bg header-bg1"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"header-bg header-bg2"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>设计稿中，这个头部在设计稿的高度是<code>350px</code>，每块切片的高度是<code>200px</code>，所以高度应该是<code>200 / 350 = 57.142857%</code></p>
+<p>css代码如下：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.header</span>&#123;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">  <span class="selector-class">.placeholder</span>&#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">padding-bottom</span>: <span class="number">54.6875%</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.header-bg</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">57.142857%</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">background-repeat</span>: no-repeat;</span><br><span class="line">    <span class="attribute">background-size</span>: <span class="number">100%</span> auto;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.header-bg1</span>&#123;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">background-image</span>: url(<span class="string">'http://img12.360buyimg.com/cms/jfs/t2512/97/854580732/40093/bd85d483/566e5ea9N9ec31fc7.jpg'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.header-bg2</span>&#123;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">57.142857%</span>;</span><br><span class="line">    <span class="attribute">background-image</span>: url(<span class="string">'http://img11.360buyimg.com/cms/jfs/t2125/71/1650398095/36549/20121f4a/566e5eaaN83135a5c.jpg'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>demo页面：<a href="http://junewu.work/app/dreaming/rem_demo/demo3.html" target="_blank" rel="noopener">demo3.html</a></p>
+<p>这种方法可以避免在图片没装载出来的时候高度坍塌的问题，缺点是计算量增多，html里也多了个元素。</p>
+<hr>
+<h4 id="方法三：使用多个background-image"><a href="#方法三：使用多个background-image" class="headerlink" title="方法三：使用多个background-image"></a>方法三：使用多个<code>background-image</code></h4><p>如果在我们的<code>.header</code>里没有其他子元素，只是一个纯展示图片的区域，可以把<code>padding-bottom</code>写在<code>.header</code>上，图片用多个<code>background-image</code>的形式展示</p>
+<p>html代码很简单，就一个元素：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"header"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>css部分麻烦点，<code>background-image</code>使用百分数定位时，表现的形式是图的百分比对齐容器的百分比，例如<code>background-position: 0 20%</code>表示图片竖直方向<code>20%</code>的位置对齐容器<code>20%</code>的位置，计算方式可参照以下方程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">图片竖直方向位移 + 图片高度 * x = 容器高度 * x</span><br></pre></td></tr></table></figure>
+<p>方程的解即为<code>background-position</code>的值</p>
+<p>计算得出的css为：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.header</span>&#123;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">padding-bottom</span>: <span class="number">54.6875%</span>;</span><br><span class="line">  <span class="attribute">background-image</span>: url(<span class="string">'http://img12.360buyimg.com/cms/jfs/t2512/97/854580732/40093/bd85d483/566e5ea9N9ec31fc7.jpg'</span>),</span><br><span class="line">    url(<span class="string">'http://img11.360buyimg.com/cms/jfs/t2125/71/1650398095/36549/20121f4a/566e5eaaN83135a5c.jpg'</span>);</span><br><span class="line">  <span class="attribute">background-position</span>: <span class="number">0</span> <span class="number">0</span>,</span><br><span class="line">    <span class="number">0</span> <span class="number">100</span> / <span class="number">101</span> * <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">background-size</span>: <span class="number">100%</span> auto;</span><br><span class="line">  <span class="attribute">background-repeat</span>: no-repeat;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个方法的优点是html代码简单，高度的问题也解决了；缺点是限制了不能有子元素，计算量也多，设计稿一修改都要重新算</p>
+<hr>
+<p>好了，搞了这么久终于搞定图片的拼接显示问题，那如果我们在这区域内还要加上子元素（例如一些链接）呢？</p>
+<p>由于要加子元素，前面的方法三就不能用了，方法一跟方法二都可以，在这里先使用方法一的写法做示例。</p>
+<p>我们不信邪在子元素上用rem试试</p>
+<p>html代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"header"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"header-bg header-bg1"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://img12.360buyimg.com/cms/jfs/t2512/97/854580732/40093/bd85d483/566e5ea9N9ec31fc7.jpg"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"header-bg header-bg2"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://img11.360buyimg.com/cms/jfs/t2125/71/1650398095/36549/20121f4a/566e5eaaN83135a5c.jpg"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:;"</span> <span class="attr">class</span>=<span class="string">"android-link"</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:;"</span> <span class="attr">class</span>=<span class="string">"ios-link"</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>css代码，这里子元素的两个链接背景用了<code>rgba(0, 0, 0, 0.5)</code>标示，让我们更好观察它们：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.header</span>&#123;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">  <span class="selector-class">.header-bg</span>&#123;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="selector-tag">img</span>&#123;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">      <span class="attribute">vertical-align</span>: top;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.android-link</span>,</span><br><span class="line">  <span class="selector-class">.ios-link</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">width</span>: <span class="built_in">~`px2rem(174)`</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="built_in">~`px2rem(48)`</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="built_in">~`px2rem(144)`</span>;</span><br><span class="line">    <span class="attribute">background</span>: rgba(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.5</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.android-link</span>&#123;</span><br><span class="line">    <span class="attribute">top</span>: <span class="built_in">~`px2rem(198)`</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.ios-link</span>&#123;</span><br><span class="line">    <span class="attribute">top</span>: <span class="built_in">~`px2rem(257)`</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>demo页面：<a href="http://junewu.work/app/dreaming/rem_demo/demo5.html" target="_blank" rel="noopener">demo5</a></p>
+<p>唔……还是跟我们之前混用单位一样，在<code>320/640px</code>时表现正常，其他情况嘛……就跟一只停了的手表一样，每天只有两次是准时的。</p>
+<p>原因大概大家也猜到了，是父元素、子元素单位混用引起的</p>
+<p>=========</p>
+<p>所以要注意的第二个点：</p>
+<h3 id="需要按比例缩放的元素，其子元素的单位也要与父元素统一"><a href="#需要按比例缩放的元素，其子元素的单位也要与父元素统一" class="headerlink" title="需要按比例缩放的元素，其子元素的单位也要与父元素统一"></a>需要按比例缩放的元素，其子元素的单位也要与父元素统一</h3><p>=========</p>
+<p>这次解决方法就没这么多花样了，<code>.header</code>是用百分比指定宽高的，子元素也用百分比指定就好了。不只是宽高，定位的数值也要使用百分比。</p>
+<p>css改成这样：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.header</span>&#123;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">  <span class="selector-class">.header-bg</span>&#123;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="selector-tag">img</span>&#123;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">      <span class="attribute">vertical-align</span>: top;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.android-link</span>,</span><br><span class="line">  <span class="selector-class">.ios-link</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">width</span>: (<span class="number">174</span> / <span class="number">640</span> * <span class="number">100%</span>);</span><br><span class="line">    <span class="attribute">height</span>: (<span class="number">48</span> / <span class="number">350</span> * <span class="number">100%</span>);</span><br><span class="line">    <span class="attribute">left</span>: (<span class="number">144</span> / <span class="number">640</span> * <span class="number">100%</span>);</span><br><span class="line">    <span class="attribute">background</span>: rgba(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0.5</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.android-link</span>&#123;</span><br><span class="line">    <span class="attribute">top</span>: (<span class="number">198</span> / <span class="number">350</span> * <span class="number">100%</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.ios-link</span>&#123;</span><br><span class="line">    <span class="attribute">top</span>: (<span class="number">257</span> / <span class="number">350</span> * <span class="number">100%</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>好了，现在这两个链接跟背景图紧密结合了</p>
+<p>demo页面：<a href="http://junewu.work/app/dreaming/rem_demo/demo6.html" target="_blank" rel="noopener">demo6</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2015/08/27/OSX%E4%B8%8B%E7%9A%84dircolor/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -997,84 +1147,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2014/02/27/%E5%88%B0ie6%E4%BA%86%EF%BC%8C%E6%96%87%E5%AD%97%E4%B8%8Einline-block%E7%9B%B8%E6%8E%A5%E6%97%B6line-height%E6%97%A0%E6%95%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="June Wu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JuneWu's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/02/27/%E5%88%B0ie6%E4%BA%86%EF%BC%8C%E6%96%87%E5%AD%97%E4%B8%8Einline-block%E7%9B%B8%E6%8E%A5%E6%97%B6line-height%E6%97%A0%E6%95%88/" class="post-title-link" itemprop="url">到ie6了，文字与inline-block相接时line-height无效</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2014-02-27 11:51:00" itemprop="dateCreated datePublished" datetime="2014-02-27T11:51:00+08:00">2014-02-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-10-29 14:17:18" itemprop="dateModified" datetime="2019-10-29T14:17:18+08:00">2019-10-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/work/" itemprop="url" rel="index">
-                    <span itemprop="name">work</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">	abcabcabc<span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"icon"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>DOM结构如上，<code>.icon</code>设为<code>display:inline-block</code>后，<code>p</code>的行高时效了，变得跟<code>.icon</code>的高度一样</p>
-<p>找到的<a href="http://www.cssbox.net/ie6-line-height.html" target="_blank" rel="noopener">解决方案</a>是<code>.icon</code>用上下<code>margin</code>把行高撑回去……当然是要手动算的</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1125,7 +1197,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1138,7 +1210,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
