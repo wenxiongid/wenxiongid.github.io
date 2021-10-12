@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.0.0">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -51,24 +51,27 @@
 </script>
 
   <meta name="description" content="最近做一个移动页面闯了个祸，先看看长什么样子的： https:&#x2F;&#x2F;h5.m.jd.com&#x2F;dev&#x2F;V4vE962o9aCGtEhB5xc5RyePqxp&#x2F;index.html  在最终上线前，出现了这样的一个bug： 在 iPhone 6 Plus 的机型上，手Q和微信的 webview 中访问这个页面，翻到第三、四页的时候必定闪退 之前在我的 iPhone 6 上测试时也偶尔会出现这个情况，但在">
-<meta name="keywords" content="CSS,Mobile">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微信H5页面动画与闪退">
-<meta property="og:url" content="https:&#x2F;&#x2F;wenxiongid.github.io&#x2F;2017&#x2F;01&#x2F;10&#x2F;%E5%BE%AE%E4%BF%A1H5%E9%A1%B5%E9%9D%A2%E5%8A%A8%E7%94%BB%E4%B8%8E%E9%97%AA%E9%80%80&#x2F;index.html">
+<meta property="og:url" content="https://wenxiongid.github.io/2017/01/10/%E5%BE%AE%E4%BF%A1H5%E9%A1%B5%E9%9D%A2%E5%8A%A8%E7%94%BB%E4%B8%8E%E9%97%AA%E9%80%80/index.html">
 <meta property="og:site_name" content="JuneWu&#39;s Blog">
 <meta property="og:description" content="最近做一个移动页面闯了个祸，先看看长什么样子的： https:&#x2F;&#x2F;h5.m.jd.com&#x2F;dev&#x2F;V4vE962o9aCGtEhB5xc5RyePqxp&#x2F;index.html  在最终上线前，出现了这样的一个bug： 在 iPhone 6 Plus 的机型上，手Q和微信的 webview 中访问这个页面，翻到第三、四页的时候必定闪退 之前在我的 iPhone 6 上测试时也偶尔会出现这个情况，但在">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https:&#x2F;&#x2F;img14.360buyimg.com&#x2F;cms&#x2F;jfs&#x2F;t3961&#x2F;157&#x2F;1563697734&#x2F;2018&#x2F;373b0a49&#x2F;58803996Neb893b04.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;img30.360buyimg.com&#x2F;cms&#x2F;jfs&#x2F;t3055&#x2F;121&#x2F;5526296430&#x2F;1973&#x2F;931b58d7&#x2F;5874bad7N1ac20430.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;img12.360buyimg.com&#x2F;cms&#x2F;jfs&#x2F;t4108&#x2F;218&#x2F;1443315332&#x2F;1962&#x2F;4f20d841&#x2F;58772df1N6ab0f389.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;img12.360buyimg.com&#x2F;cms&#x2F;jfs&#x2F;t3889&#x2F;35&#x2F;1457657261&#x2F;1906&#x2F;bc52dfe8&#x2F;58774367Nead82b1b.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;img10.360buyimg.com&#x2F;cms&#x2F;jfs&#x2F;t3103&#x2F;246&#x2F;5615113485&#x2F;1948&#x2F;89a59553&#x2F;58774407Ncb39def7.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;img30.360buyimg.com&#x2F;cms&#x2F;jfs&#x2F;t3982&#x2F;64&#x2F;1446522174&#x2F;1938&#x2F;44da7eec&#x2F;587897afN856d9f68.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;img11.360buyimg.com&#x2F;cms&#x2F;jfs&#x2F;t4111&#x2F;56&#x2F;1560323884&#x2F;1918&#x2F;4f9af8a4&#x2F;5878aaf6N30697253.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;img11.360buyimg.com&#x2F;cms&#x2F;jfs&#x2F;t3265&#x2F;99&#x2F;5772327361&#x2F;1944&#x2F;4e6e16f3&#x2F;587f5a4bN7fc3f5e7.png">
-<meta property="og:updated_time" content="2019-11-20T08:25:43.964Z">
+<meta property="og:locale">
+<meta property="og:image" content="https://img14.360buyimg.com/cms/jfs/t3961/157/1563697734/2018/373b0a49/58803996Neb893b04.png">
+<meta property="og:image" content="https://img30.360buyimg.com/cms/jfs/t3055/121/5526296430/1973/931b58d7/5874bad7N1ac20430.png">
+<meta property="og:image" content="https://img12.360buyimg.com/cms/jfs/t4108/218/1443315332/1962/4f20d841/58772df1N6ab0f389.png">
+<meta property="og:image" content="https://img12.360buyimg.com/cms/jfs/t3889/35/1457657261/1906/bc52dfe8/58774367Nead82b1b.png">
+<meta property="og:image" content="https://img10.360buyimg.com/cms/jfs/t3103/246/5615113485/1948/89a59553/58774407Ncb39def7.png">
+<meta property="og:image" content="https://img30.360buyimg.com/cms/jfs/t3982/64/1446522174/1938/44da7eec/587897afN856d9f68.png">
+<meta property="og:image" content="https://img11.360buyimg.com/cms/jfs/t4111/56/1560323884/1918/4f9af8a4/5878aaf6N30697253.png">
+<meta property="og:image" content="https://img11.360buyimg.com/cms/jfs/t3265/99/5772327361/1944/4e6e16f3/587f5a4bN7fc3f5e7.png">
+<meta property="article:published_time" content="2017-01-10T09:34:23.000Z">
+<meta property="article:modified_time" content="2019-11-20T08:25:43.964Z">
+<meta property="article:author" content="June Wu">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="Mobile">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;img14.360buyimg.com&#x2F;cms&#x2F;jfs&#x2F;t3961&#x2F;157&#x2F;1563697734&#x2F;2018&#x2F;373b0a49&#x2F;58803996Neb893b04.png">
+<meta name="twitter:image" content="https://img14.360buyimg.com/cms/jfs/t3961/157/1563697734/2018/373b0a49/58803996Neb893b04.png">
 
 <link rel="canonical" href="https://wenxiongid.github.io/2017/01/10/%E5%BE%AE%E4%BF%A1H5%E9%A1%B5%E9%9D%A2%E5%8A%A8%E7%94%BB%E4%B8%8E%E9%97%AA%E9%80%80/">
 
@@ -115,10 +118,12 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -152,6 +157,11 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
 
   </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
         <li class="menu-item menu-item-about">
 
     <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
@@ -165,11 +175,6 @@
         <li class="menu-item menu-item-categories">
 
     <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -443,7 +448,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -456,7 +461,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -492,13 +497,13 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">June Wu</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.0.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
@@ -526,9 +531,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
@@ -537,7 +550,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 
@@ -621,7 +636,7 @@
     });
     gitalk.render('gitalk-container');
   }, window.Gitalk);
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.0.0">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -52,9 +52,10 @@
 
   <meta property="og:type" content="website">
 <meta property="og:title" content="JuneWu&#39;s Blog">
-<meta property="og:url" content="https:&#x2F;&#x2F;wenxiongid.github.io&#x2F;page&#x2F;3&#x2F;index.html">
+<meta property="og:url" content="https://wenxiongid.github.io/page/3/index.html">
 <meta property="og:site_name" content="JuneWu&#39;s Blog">
-<meta property="og:locale" content="zh-Hans">
+<meta property="og:locale">
+<meta property="article:author" content="June Wu">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://wenxiongid.github.io/page/3/">
@@ -102,10 +103,12 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -139,6 +142,11 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
 
   </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
         <li class="menu-item menu-item-about">
 
     <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
@@ -152,11 +160,6 @@
         <li class="menu-item menu-item-categories">
 
     <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -206,6 +209,173 @@
             
 
   <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2014/02/28/ie%E4%B8%8B%E5%BC%82%E6%AD%A5%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6%E7%9A%84%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="June Wu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JuneWu's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/02/28/ie%E4%B8%8B%E5%BC%82%E6%AD%A5%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6%E7%9A%84%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">ie下异步上传文件的问题</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2014-02-28 18:45:00" itemprop="dateCreated datePublished" datetime="2014-02-28T18:45:00+08:00">2014-02-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-10-29 14:17:18" itemprop="dateModified" datetime="2019-10-29T14:17:18+08:00">2019-10-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/work/" itemprop="url" rel="index">
+                    <span itemprop="name">work</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>遇到一个奇葩插件：<code>ajaxfileupload.js</code></p>
+<p>作用是异步上传文件，实现方法是动态生成<code>form</code>和<code>form</code>提交的目标<code>iframe</code>，再从<code>iframe</code>的<code>body</code>取回服务器返回</p>
+<p>问题是：</p>
+<ol>
+<li>这个插件没任何作者信息，js文件内版本号都没有，有问题得google半天</li>
+<li>这个插件有点历史了，当年配套的是<code>jQuery 1.2.1</code>，用现在的新版本会使<code>catch</code>到的错误没有<code>handler</code></li>
+<li>这个插件是个半成品，作者大概没有全面测试过就放出来了，事实证明ie6~8是使用不了的</li>
+<li>国内竟然有好多网站在用这个插件，google到的信息多半是中文的</li>
+</ol>
+<p>这个插件在ie6～8的症状如下：</p>
+<p>动态插入<code>iframe</code>，<code>src</code>设为<code>javascript:false</code>；<code>form</code>的<code>target</code>设为这个<code>iframe</code>，再把<code>handler</code>绑定在<code>iframe</code>的<code>load</code>事件上。在其他浏览器上这个流程都没问题，但就是在那几个ie上，<code>load</code>事件竟然就在load完<code>javascript:false;</code>就<code>trigger</code>了……然后……就没然后了</p>
+<p>这个问题倒还好，我在<code>handler</code>里加了个判断，若<code>src</code>是<code>javascript:false;</code>就不做处理，等到真正的返回。但是，等了十年那<code>load</code>事件再也没有<code>trigger</code>过，查了network是根本没有<code>post</code>请求……于是我尝试手动<code>$(form).submit()</code>，终于在第二次手动submit后发出了请求然后有了返回，还要每次都是两次……</p>
+<p>于是我加上了重试<code>handler</code>，在没收到返回前，隔一定时间再作提交，不过这个时间不好定，使用起来也不现实，但起码有个方法了。于是把这套代码放到虚拟机的真ie8上去试……对，之前都是在ie11里把文档模式设成ie8去试的……结果就是提交的文件为空……为空为空为空为空为空为空为空为空为空为空为空</p>
+<p>google结果是ie阻止了<code>javascript</code>调用的<code>submit</code>事件，防止后台自动上传……我试了下<code>$(&#39;input[type=submit]&#39;).click()</code>也不行……</p>
+<p>结果是ie6～8这个功能不做了……</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2014/02/28/ie6%E3%80%817%E4%B8%8B%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8D%E8%83%BD%E4%BD%BF%E7%94%A8%E6%95%B0%E7%BB%84%E7%B4%A2%E5%BC%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="June Wu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JuneWu's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/02/28/ie6%E3%80%817%E4%B8%8B%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8D%E8%83%BD%E4%BD%BF%E7%94%A8%E6%95%B0%E7%BB%84%E7%B4%A2%E5%BC%95/" class="post-title-link" itemprop="url">ie6、7下字符串不能使用数组索引</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2014-02-28 17:33:00" itemprop="dateCreated datePublished" datetime="2014-02-28T17:33:00+08:00">2014-02-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-10-29 14:17:18" itemprop="dateModified" datetime="2019-10-29T14:17:18+08:00">2019-10-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/work/" itemprop="url" rel="index">
+                    <span itemprop="name">work</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>ie6/7下字符串是不能用数组索引的，就是不能<code>str[i]</code>这样取第<code>i-1</code>个的字符</p>
+<p>解决方法是用<code>str.charAt(i)</code>或<code>str.clice(0,1)</code>这样取</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
         
   
   
@@ -567,7 +737,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -580,7 +750,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -616,13 +786,13 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">June Wu</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.0.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
@@ -650,9 +820,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
@@ -661,7 +839,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 
@@ -723,7 +903,7 @@
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
     MathJax.Hub.Typeset();
   }, window.MathJax);
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
     
 

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.0.0">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -52,9 +52,10 @@
 
   <meta property="og:type" content="website">
 <meta property="og:title" content="JuneWu&#39;s Blog">
-<meta property="og:url" content="https:&#x2F;&#x2F;wenxiongid.github.io&#x2F;index.html">
+<meta property="og:url" content="https://wenxiongid.github.io/index.html">
 <meta property="og:site_name" content="JuneWu&#39;s Blog">
-<meta property="og:locale" content="zh-Hans">
+<meta property="og:locale">
+<meta property="article:author" content="June Wu">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://wenxiongid.github.io/">
@@ -102,10 +103,12 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -139,6 +142,11 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
 
   </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
         <li class="menu-item menu-item-about">
 
     <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
@@ -152,11 +160,6 @@
         <li class="menu-item menu-item-categories">
 
     <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -206,6 +209,190 @@
             
 
   <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2021/10/11/WebGl%E6%B8%B2%E6%9F%93%E5%99%A8%E5%B0%8F%E6%B8%B8%E6%88%8F%E5%AE%9E%E6%88%98%EF%BC%88%E4%B8%8A%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="June Wu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JuneWu's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/11/WebGl%E6%B8%B2%E6%9F%93%E5%99%A8%E5%B0%8F%E6%B8%B8%E6%88%8F%E5%AE%9E%E6%88%98%EF%BC%88%E4%B8%8A%EF%BC%89/" class="post-title-link" itemprop="url">WebGl着色器渲染小游戏实战（上）</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-10-11 10:43:05" itemprop="dateCreated datePublished" datetime="2021-10-11T10:43:05+08:00">2021-10-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-10-12 16:55:14" itemprop="dateModified" datetime="2021-10-12T16:55:14+08:00">2021-10-12</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="项目起因"><a href="#项目起因" class="headerlink" title="项目起因"></a>项目起因</h2><p>经过对GLSL的了解，以及shadertoy上各种项目的洗礼，现在开发简单交互图形应该不是一个怎么困难的问题了。下面开始来对一些已有业务逻辑的项目做GLSL渲染器替换开发。</p>
+<p>起因是看到某些小游戏广告，感觉机制有趣，实现起来应该也不会很复杂，就尝试自己开发一个</p>
+<p><img src="https://img10.360buyimg.com/imagetools/jfs/t1/207524/37/4741/35790/6163e375Eb238479c/8ac7051a21d0cdad.jpg" alt="https://img10.360buyimg.com/imagetools/jfs/t1/207524/37/4741/35790/6163e375Eb238479c/8ac7051a21d0cdad.jpg"></p>
+<p>游戏十分简单，类似泡泡龙一样的从屏幕下方中间射出不同颜色大小的泡泡，泡泡上浮到顶部，相同颜色的泡泡可以合并成大一级的不同颜色泡泡。简单说就是一个上下反过来的合成大西瓜</p>
+<p>较特别的地方是为了表现泡泡的质感，在颜色相同的泡泡靠近时，会有水滴表面先合并的效果，这一部分就需要用到着色器渲染来实现了</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/10/11/WebGl%E6%B8%B2%E6%9F%93%E5%99%A8%E5%B0%8F%E6%B8%B8%E6%88%8F%E5%AE%9E%E6%88%98%EF%BC%88%E4%B8%8A%EF%BC%89/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2021/03/23/GLSL%E7%9D%80%E8%89%B2%E5%99%A8%E4%BB%8B%E7%BB%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="June Wu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JuneWu's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/23/GLSL%E7%9D%80%E8%89%B2%E5%99%A8%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">GLSL着色器，来玩</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-03-23 19:11:14" itemprop="dateCreated datePublished" datetime="2021-03-23T19:11:14+08:00">2021-03-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-01 15:35:48" itemprop="dateModified" datetime="2021-04-01T15:35:48+08:00">2021-04-01</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>对实现动画的前端同学们来说，<code>canvas</code>可以说是最自由，最能全面控制的一个动画实现载体。不但能通过<code>javascript</code>控制点、线、面的绘制，使用图片资源填充；还能改变输入参数作出交互动画，完全控制动画过程中的动作轨迹、速度、弹性等要素。</p>
+<p>但使用<code>canvas</code>开发过较复杂一点的动画的同学，可能会发现，完全使用<code>javascript</code>绘制、控制的动画，某些效果不太好实现（这篇文章只讨论2D），像模糊，光照，水滴等效果。虽然用逐像素处理的方法也可以实现，但<code>javascript</code>对这类型大量数据的计算并不擅长，实现出来每一帧绘制的时间十分感人，用他实现动画并不现实。</p>
+<p>但<code>canvas</code>除了最常用的<code>javascript</code> API绘制方式（<code>getContext(&#39;2d&#39;)</code>），还有WebGL的方式（<code>getContext(webgl)</code>），对前面说到的大量数据计算的场景，可以说是最适合发挥的地方。WebGL对很多同学来说就是实现3D场景的，其实对2D绘图来说，也有很大的发挥场景</p>
+<h2 id="为什么WebGL会比较厉害"><a href="#为什么WebGL会比较厉害" class="headerlink" title="为什么WebGL会比较厉害"></a>为什么WebGL会比较厉害</h2><p>我们来看看<code>javascript</code> API绘制和webGL绘制原理上的不同之处：</p>
+<p>如果使用<code>javascript</code>对画布的逐个像素进行处理，那这部分处理工作就需要在<code>javascript</code>的运行环境里进行，我们知道<code>javascript</code>的执行是单线程的，所以只能逐个逐个像素进行计算和绘制。就像一个细长的漏斗，一滴一滴水的往下漏</p>
+<p><img src="https://img11.360buyimg.com/imagetools/jfs/t1/159690/37/16529/250457/60632138E30fd5df7/882e91ba77e3a9b6.jpg" alt="https://img11.360buyimg.com/imagetools/jfs/t1/159690/37/16529/250457/60632138E30fd5df7/882e91ba77e3a9b6.jpg"></p>
+<p>而WebGL的处理方式，是用GPU驱动的，对每一个像素的处理，都是在GPU上执行，而GPU有许多渲染管道，这些处理可以在这些管道中并行执行，这就是WebGL擅长这种大量数据计算场景的原因</p>
+<p><img src="https://img12.360buyimg.com/imagetools/jfs/t1/163279/8/15220/308469/60632138E3bea6a6b/8b3372eeb42cc6bb.jpg" alt="https://img12.360buyimg.com/imagetools/jfs/t1/163279/8/15220/308469/60632138E3bea6a6b/8b3372eeb42cc6bb.jpg"></p>
+<h2 id="WebGL那么厉害，都用它绘图就好喇"><a href="#WebGL那么厉害，都用它绘图就好喇" class="headerlink" title="WebGL那么厉害，都用它绘图就好喇"></a>WebGL那么厉害，都用它绘图就好喇</h2><p>WebGL虽然有上面说的优点，但也有个致命的缺点：不好学，想要简单画根线也要费一番力气。</p>
+<p>GPU并行管道之间是不知道另一个管道输出的是什么，只知道自己管道的输入和需要执行的程序；而且不保留状态，管道自己并不知道在这次任务之前执行过什么程序，有什么输入输出值，类似现在纯函数的概念。这些观念上的不同就提升了使用WebGL绘图的门槛</p>
+<p>另外这些跑在GPU里的程序不是<code>javascript</code>，是一种类C语言，这也需要前端同学们另外再学习</p>
+<h2 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello, world"></a>Hello, world</h2><p>那门槛再高也总有需要跨过去的一天的，下面一步一步控制WebGL去<code>画</code>一点图案，大家也可以体会一下，适合在什么时候使用这一门技术</p>
+<h3 id="基础环境——大荧幕"><a href="#基础环境——大荧幕" class="headerlink" title="基础环境——大荧幕"></a>基础环境——大荧幕</h3><p>为尽快进入GLSL着色器的阶段，这里基础WebGL环境搭建用了<code>Three.js</code>，大家可以研究下这个基础环境的搭建，不用第三方库其实用不了多少代码量</p>
+<p>以下是基础环境的搭建:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">init</span>(<span class="params">canvas</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> renderer = <span class="keyword">new</span> THREE.WebGLRenderer(&#123;canvas&#125;);</span><br><span class="line">  renderer.autoClearColor = <span class="literal">false</span>;</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">const</span> camera = <span class="keyword">new</span> THREE.OrthographicCamera(</span><br><span class="line">    <span class="number">-1</span>, <span class="comment">// left</span></span><br><span class="line">     <span class="number">1</span>, <span class="comment">// right</span></span><br><span class="line">     <span class="number">1</span>, <span class="comment">// top</span></span><br><span class="line">    <span class="number">-1</span>, <span class="comment">// bottom</span></span><br><span class="line">    <span class="number">-1</span>, <span class="comment">// near,</span></span><br><span class="line">     <span class="number">1</span>, <span class="comment">// far</span></span><br><span class="line">  );</span><br><span class="line">  <span class="keyword">const</span> scene = <span class="keyword">new</span> THREE.Scene();</span><br><span class="line">  <span class="keyword">const</span> plane = <span class="keyword">new</span> THREE.PlaneGeometry(<span class="number">2</span>, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> fragmentShader = <span class="string">'............'</span></span><br><span class="line">  <span class="keyword">const</span> uniforms = &#123;</span><br><span class="line">    u_resolution:  &#123; <span class="attr">value</span>: <span class="keyword">new</span> THREE.Vector2(canvas.width, canvas.height) &#125;,</span><br><span class="line">    u_time: &#123; <span class="attr">value</span>: <span class="number">0</span> &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">const</span> material = <span class="keyword">new</span> THREE.ShaderMaterial(&#123;</span><br><span class="line">    fragmentShader,</span><br><span class="line">    uniforms,</span><br><span class="line">  &#125;);</span><br><span class="line">  scene.add(<span class="keyword">new</span> THREE.Mesh(plane, material));</span><br><span class="line"> </span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">render</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    material.uniforms.u_time.value++;</span><br><span class="line">    renderer.render(scene, camera);</span><br><span class="line">    requestAnimationFrame(render);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解释一下上面这段代码做了什么：创建了一个3D场景（说好的2D呢？），把一个矩形平面糊在摄像机前面，占满摄像机视觉范围，就像看IMAX坐最前排，你能看到的就只有面前的屏幕的感觉，屏幕上的画面就是你的整个世界。我们的绘图就在这个屏幕上。</p>
+<p>再说明一下，着色器分为顶点着色器<code>VERTEX_SHADER</code>和片段着色器<code>FRAGMENT_SHADER</code></p>
+<p>顶点着色器对3D场景里物体的每个顶点计算值，如颜色、法线向量等，在这里我们只讨论2D画面，顶点着色器的部分就由<code>Three.js</code>代劳了，实现的作用就是固定了场景中镜头和屏幕的位置</p>
+<p>而片段着色器的作用就是计算平面上每一个片段（在这里是屏幕上每一个像素）输出的颜色值，也是这篇文章研究的对象。</p>
+<p>片段着色器入参有<code>varying</code>和<code>uniform</code>两种，<code>varying</code>简单说一下是由顶点着色器传入的，每个片段输入的值由相关的顶点线性插值得到，所以每个片段上的值不一样，本文先不讨论这部分（不然写不完了）。<code>uniform</code>是统一值，由着色器外部传入，每个片段得到的值是一样的，在这里就是我们从<code>javascript</code>输入变量的入口。上面的代码我们就为片段着色器传入了<code>u_resolution</code>，包含画布的宽高值。</p>
+<h3 id="第一个着色器"><a href="#第一个着色器" class="headerlink" title="第一个着色器"></a>第一个着色器</h3><p><code>fragmentShader</code>为着色器的程序代码，一般的构成为:</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#ifdef GL_ES</span></span><br><span class="line"><span class="keyword">precision</span> <span class="keyword">mediump</span> <span class="type">float</span>;</span><br><span class="line"><span class="meta">#endif</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">uniform</span> <span class="type">vec2</span> u_resolution;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> main() &#123;</span><br><span class="line">  <span class="built_in">gl_FragColor</span> = <span class="type">vec4</span>(<span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在前3行检查了是否定义了<code>GL_ES</code>，这通常在移动端或浏览器下会定义，第2行指定了浮点数<code>float</code>的精度为中等，也可以指定为低精度<code>lowp</code>或高精度<code>highp</code>，精度越低执行速度越快，但质量会降低。值得一提的是，同样的设置在不同的执行环境下可能会表现不一样，例如某些移动端的浏览器环境，需要指定为高精度才能获得和PC端浏览器里中等精度一样的表现。</p>
+<p>第5行指定了着色器可以接收哪些入参，这里就只有一个入参：类型为vec2的<code>u_resolution</code></p>
+<p>最后3行描述了着色器的主程序，其中可以对入参和其他信息作处理，最后输出颜色到<code>gl_FragColor</code>，代表这个片段显示的颜色，其中4个数值代表<code>RGBA</code>（红、绿、蓝、透明度），数值范围为<code>0.0 ~ 1.0</code></p>
+<p>为什么要写<code>0.0</code>而不是<code>0</code>呢，因为<code>GLSL</code>里不像<code>javascript</code>数字只有一个类型，而是分成整形(<code>int</code>)和浮点数(<code>float</code>)，而浮点数必须包含小数点，当小数点前是0的时候，写成<code>.0</code>也可以</p>
+<p>那大家看完这段解说，应该能猜到上面的着色器会输出什么吧，对，就是全屏的红色</p>
+<p>这就是最基础的片段着色器</p>
+<h3 id="使用uniform"><a href="#使用uniform" class="headerlink" title="使用uniform"></a>使用uniform</h3><p>大家应该注意到上面的例子没有用到传入的uniform值，下面来说一下这些值怎么用。</p>
+<p>看之前搭建基础环境的<code>javascript</code>代码可以看到，<code>u_resolution</code>存储了画布的宽高，这个值在着色器有什么用呢？</p>
+<p>这要说到片元着色器的另一个内建的值<code>gl_FragCoord</code>，这个值存储的是片段（像素）的座标<code>x</code>，<code>y</code>值，使用这两个值就可以知道当前着色器计算的是画布上哪个位置的颜色。举个例子：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#ifdef GL_ES</span></span><br><span class="line"><span class="keyword">precision</span> <span class="keyword">mediump</span> <span class="type">float</span>;</span><br><span class="line"><span class="meta">#endif</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">uniform</span> <span class="type">vec2</span> u_resolution;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> main() &#123;</span><br><span class="line">  <span class="type">vec2</span> st = <span class="built_in">gl_FragCoord</span>.xy / u_resolution;</span><br><span class="line">  <span class="built_in">gl_FragColor</span> = <span class="type">vec4</span>(st, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到这样的图像：</p>
+<p><img src="https://img12.360buyimg.com/imagetools/jfs/t1/156235/37/18839/33609/6062ffeaE37643d53/3cb9bd3ca9299815.png" alt="https://img12.360buyimg.com/imagetools/jfs/t1/156235/37/18839/33609/6062ffeaE37643d53/3cb9bd3ca9299815.png"></p>
+<p>上面的着色器代码，使用归一化后的<code>x</code>、<code>y</code>座标输出到<code>gl_FragColor</code>的红、绿色部分</p>
+<p>从图中可以看出，<code>gl_FragCoord</code>的<code>(0, 0)</code>点在左下角，x轴和y轴方向分别为向右和向上</p>
+<p>另一个uniform值<code>u_time</code>就是一个随着时间不断增加的值，利用这个值可以使图像随时间变化，实现动画的效果</p>
+<p>上面的着色器再改写一下：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#ifdef GL_ES</span></span><br><span class="line"><span class="keyword">precision</span> <span class="keyword">mediump</span> <span class="type">float</span>;</span><br><span class="line"><span class="meta">#endif</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">uniform</span> <span class="type">vec2</span> u_resolution;</span><br><span class="line"><span class="keyword">uniform</span> <span class="type">float</span> u_time;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> main() &#123;</span><br><span class="line">  <span class="type">vec2</span> st = <span class="built_in">gl_FragCoord</span>.xy / u_resolution;</span><br><span class="line">  <span class="built_in">gl_FragColor</span> = <span class="type">vec4</span>(st, <span class="built_in">sin</span>(u_time / <span class="number">100.0</span>), <span class="number">1.0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到下图的效果：</p>
+<p><a href="http://storage.360buyimg.com/element-video/QQ20210330-195823.mp4" target="_blank" rel="noopener">http://storage.360buyimg.com/element-video/QQ20210330-195823.mp4</a></p>
+<p>着色器中使用三角函数<code>sin</code>，在颜色输出的蓝色通道做一个从0到1的周期变化</p>
+<h2 id="还能做什么？"><a href="#还能做什么？" class="headerlink" title="还能做什么？"></a>还能做什么？</h2><p>掌握基本的原理后，就是开始从大师的作品中学习了。<a href="https://www.shadertoy.com/" target="_blank" rel="noopener">shadertoy</a>是一个类似codepen的着色器playgroud，上面的着色器都是利用上面的基本工具，还有一些造型函数，造出各种眼花缭乱的特效、动画</p>
+<p>上面就是GLSL着色器基本的开发工具，现在就可以开始开发你自己的着色器，剩下就是使用数学方面的技能了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
         
   
   
@@ -997,216 +1184,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2016/04/29/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="June Wu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JuneWu's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/04/29/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/" class="post-title-link" itemprop="url">树状数组</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2016-04-29 17:48:54" itemprop="dateCreated datePublished" datetime="2016-04-29T17:48:54+08:00">2016-04-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-10-29 14:17:18" itemprop="dateModified" datetime="2019-10-29T14:17:18+08:00">2019-10-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/life/" itemprop="url" rel="index">
-                    <span itemprop="name">life</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>近日在<a href="http://www.qlcoder.com/" target="_blank" rel="noopener">千里码</a>刷题，做到一道<a href="http://www.qlcoder.com/task/7542" target="_blank" rel="noopener">数据统计问题</a>的时候，发现粗暴的做法费时又费电（风扇狂响了数分钟），看看别人的方法一秒不到就解出了，然后看<a href="https://zh.wikipedia.org/wiki/树状数组" target="_blank" rel="noopener">数状数组</a>的定义发觉脑子太久没用了转不过来，特纪录下理解过程。</p>
-<p>数状数组的定义：</p>
-<p>结合维基百科的条目与<a href="http://www.cnblogs.com/zichi/p/4806998.html" target="_blank" rel="noopener">别人的博客</a>，理解数状数组<code>C</code>与原数组<code>A</code>的关系为：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">C[n] = (<span class="function"><span class="keyword">function</span>(<span class="params">i</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> ret = A[n];</span><br><span class="line">	</span><br><span class="line">  <span class="keyword">for</span>(j = i - <span class="number">1</span>; j &gt; i - lowbit(i); j--)&#123;</span><br><span class="line">    ret += A[j];</span><br><span class="line">  &#125;</span><br><span class="line">	</span><br><span class="line">  <span class="keyword">return</span> ret;</span><br><span class="line">&#125;)(n);</span><br></pre></td></tr></table></figure>
-<p>这<code>lowbit</code>是什么鬼呢？是表示一个数<code>n</code>使用二进制表示时，最右边的<code>1</code>所在表示的值</p>
-<p>如<code>6</code>的二进制表示为<code>110</code>，从个位开始数的第一个<code>1</code>在第二位，表示的数就是<code>2 ^ 2 = 4</code>，所以<code>lowbit(6) = 4</code></p>
-<p>代入上面的公式，<code>C[6] = A[6] + A[5]</code></p>
-<p>用二进制表示會清晰一点：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>进制</th>
-<th>C</th>
-<th>A</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>十进制</td>
-<td>6</td>
-<td>6 + 5</td>
-</tr>
-<tr>
-<td>二进制</td>
-<td>110</td>
-<td>110 + 101</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><code>110</code>减去<code>lowbit</code>的操作相当于把二进制表示的值的最右边一位<code>1</code>置<code>0</code>，得到<code>100</code>，<code>C[6]</code>的值包含<code>110</code>到<code>100</code>(不含)的值的和</p>
-<p>这样定义的好处是可快速的算出<code>A[1]~A[n]</code>的和，同样用二进制表示前缀，如<code>n = 40</code>，二进制表示为<code>101000</code>，可快速算出<code>A[1]~A[40]</code>的和为<code>C[40] + C[32]</code>（即二进制表示的<code>C[101000] + C[100000]</code>），代码公式表示为：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">SUM[n] = (<span class="function"><span class="keyword">function</span>(<span class="params">i</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> ret = <span class="number">0</span>;</span><br><span class="line">	</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">var</span> j = i; i &gt; <span class="number">0</span>; i -= lowbit(i))&#123;</span><br><span class="line">    ret += C[i];</span><br><span class="line">  &#125;</span><br><span class="line">	</span><br><span class="line">  <span class="keyword">return</span> ret;</span><br><span class="line">&#125;)(n);</span><br></pre></td></tr></table></figure>
-<p>构造和求和的方法都有了，还需要当<code>A[n]</code>数组更新时<code>C[n]</code>数组的更新方法</p>
-<p>从<code>C[n]</code>的构造方法看到，<code>A[n]</code>的变化首先影响到<code>C[n]</code>的值，然后向上影响<code>C[n + lowbit(n)]</code>的值，然后继续向上迭代影响<code>i + lowbit(i)</code>的值（<code>i</code>为每次更新的<code>C[i]</code>的前綴）</p>
-<p>因此值变化的公式有：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">update</span>(<span class="params">i, diff</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">var</span> j = i; j &lt; MAX_N; j += lowbit(j))&#123;</span><br><span class="line">    C[j] += diff;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>其中<code>diff</code>为<code>A[n]</code>变化的值</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2016/03/17/%E5%85%B3%E4%BA%8Eflash%E5%AF%BC%E5%87%BA%E7%9A%84canvas%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BA%8B%E9%A1%B9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="June Wu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JuneWu's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/03/17/%E5%85%B3%E4%BA%8Eflash%E5%AF%BC%E5%87%BA%E7%9A%84canvas%E7%9A%84%E4%BD%BF%E7%94%A8%E4%BA%8B%E9%A1%B9/" class="post-title-link" itemprop="url">关于flash导出的canvas的使用事项</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2016-03-17 10:48:47" itemprop="dateCreated datePublished" datetime="2016-03-17T10:48:47+08:00">2016-03-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-10-29 14:17:18" itemprop="dateModified" datetime="2019-10-29T14:17:18+08:00">2019-10-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/work/" itemprop="url" rel="index">
-                    <span itemprop="name">work</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>现在Flash可以很方便的导出canvas了，制作canvas动画比自己一行代码一行代码写要舒服多了，但输出的代码嵌入到具体的页面，还要做一些工作</p>
-<h2 id="1-依赖的引用"><a href="#1-依赖的引用" class="headerlink" title="1. 依赖的引用"></a>1. 依赖的引用</h2><p>输出的html文件会调用以下等等的外部js文件，如果flash中还调用了音频，还可能会有其它库文件（可能有一种stand alone的导出方式？），原代码如下：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"http://code.createjs.com/easeljs-0.7.1.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"http://code.createjs.com/tweenjs-0.5.1.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"http://code.createjs.com/movieclip-0.7.1.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"http://code.createjs.com/preloadjs-0.4.1.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>由于国内访问速度问题和外链的限制，需要先把这批代码做本地CDN或内联处理</p>
-<h2 id="2-资源文件的重定位"><a href="#2-资源文件的重定位" class="headerlink" title="2. 资源文件的重定位"></a>2. 资源文件的重定位</h2><p>输出的项目js代码中，定义了一个<code>lib.properties</code>对象，里面存放的是整体动画的配置，如下：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// library properties:</span></span><br><span class="line">lib.properties = &#123;</span><br><span class="line">	width: <span class="number">250</span>,</span><br><span class="line">	height: <span class="number">528</span>,</span><br><span class="line">	fps: <span class="number">24</span>,</span><br><span class="line">	color: <span class="string">"#000000"</span>,</span><br><span class="line">	manifest: [</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/foryou.png"</span>, <span class="attr">id</span>:<span class="string">"foryou"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/照片1.jpg"</span>, <span class="attr">id</span>:<span class="string">"照片1"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/照片2.jpg"</span>, <span class="attr">id</span>:<span class="string">"照片2"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/happy.png"</span>, <span class="attr">id</span>:<span class="string">"happy"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/手机_.png"</span>, <span class="attr">id</span>:<span class="string">"手机"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/logo.png"</span>, <span class="attr">id</span>:<span class="string">"logo"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/_new.png"</span>, <span class="attr">id</span>:<span class="string">"_new"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/title.png"</span>, <span class="attr">id</span>:<span class="string">"title"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/title2016.png"</span>, <span class="attr">id</span>:<span class="string">"title2016"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/year.png"</span>, <span class="attr">id</span>:<span class="string">"year"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/云1.png"</span>, <span class="attr">id</span>:<span class="string">"云1"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/云2.png"</span>, <span class="attr">id</span>:<span class="string">"云2"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/云3.png"</span>, <span class="attr">id</span>:<span class="string">"云3"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/云4.png"</span>, <span class="attr">id</span>:<span class="string">"云4"</span>&#125;,</span><br><span class="line">		&#123;<span class="attr">src</span>:<span class="string">"images/云5.png"</span>, <span class="attr">id</span>:<span class="string">"云5"</span>&#125;</span><br><span class="line">	]</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>其中的文件也需要做CDN处理，替换其中的<code>src</code>属性即可，<code>id</code>的值不要修改</p>
-<h2 id="3-动画与外部js的数据交换"><a href="#3-动画与外部js的数据交换" class="headerlink" title="3. 动画与外部js的数据交换"></a>3. 动画与外部js的数据交换</h2><h3 id="flash暴露方法供外部调用"><a href="#flash暴露方法供外部调用" class="headerlink" title="flash暴露方法供外部调用"></a>flash暴露方法供外部调用</h3><p>flash中的外部方法需要通过内建的<code>exportRoot</code>对象暴露，如希望暴露一个<code>play()</code>方法，flash中的代码需要如下编写：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> play = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span>.play = play;</span><br></pre></td></tr></table></figure>
-<p>当嵌入到项目代码中后，会定义一个<code>exportRoot</code>的全局对象，所有flash暴露的外部方法都在此对象中，如需调用上面的<code>play</code>方法，项目中的js代码只需这样写：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exportRoot.play();</span><br></pre></td></tr></table></figure>
-<h3 id="flash调用外部方法"><a href="#flash调用外部方法" class="headerlink" title="flash调用外部方法"></a>flash调用外部方法</h3><p>外部定义全局方法，如<code>isReady()</code>，flash中直接调用<code>isReady()</code>就可以</p>
-<h2 id="flash状态判断"><a href="#flash状态判断" class="headerlink" title="flash状态判断"></a>flash状态判断</h2><p>由于flash中也需要引用外部资源，但暴露的方法在代码执行的时候就定义到<code>exportRoot</code>中了</p>
-<p>于是有可能出现暴露的方法需要外部资源，但这些外部资源还没加载好，导致方法不能成功执行</p>
-<p>为避免这一现象可用以下方法：</p>
-<ol>
-<li><p>在外部js中定义一个<code>isReady()</code>方法，当这个方法被调用时即表示flash的资源已准备好 </p>
-</li>
-<li><p>在flash的第一帧中调用外部的<code>isReady()</code>方法，把本flash的准备状态通知外部js</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1257,7 +1234,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1270,7 +1247,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -1306,13 +1283,13 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">June Wu</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.0.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
@@ -1340,9 +1317,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
@@ -1351,7 +1336,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 
@@ -1413,7 +1400,7 @@
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
     MathJax.Hub.Typeset();
   }, window.MathJax);
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
     
 

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.0.0">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -50,15 +50,17 @@
   };
 </script>
 
-  <meta name="description" content="近日在千里码刷题，做到一道数据统计问题的时候，发现粗暴的做法费时又费电（风扇狂响了数分钟），看看别人的方法一秒不到就解出了，然后看数状数组的定义发觉脑子太久没用了转不过来，特纪录下理解过程。 数状数组的定义： 结合维基百科的条目与别人的博客，理解数状数组C与原数组A的关系为： 123456789C[n] = (function(i)&amp;#123;  var ret = A[n];	  for(j =">
-<meta name="keywords" content="Data Structures &amp; Algorithms">
+  <meta name="description" content="近日在千里码刷题，做到一道数据统计问题的时候，发现粗暴的做法费时又费电（风扇狂响了数分钟），看看别人的方法一秒不到就解出了，然后看数状数组的定义发觉脑子太久没用了转不过来，特纪录下理解过程。 数状数组的定义： 结合维基百科的条目与别人的博客，理解数状数组C与原数组A的关系为： 123456789C[n] &#x3D; (function(i)&amp;#123;  var ret &#x3D; A[n];	  for(j &#x3D;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="树状数组">
-<meta property="og:url" content="https:&#x2F;&#x2F;wenxiongid.github.io&#x2F;2016&#x2F;04&#x2F;29&#x2F;%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84&#x2F;index.html">
+<meta property="og:url" content="https://wenxiongid.github.io/2016/04/29/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/index.html">
 <meta property="og:site_name" content="JuneWu&#39;s Blog">
-<meta property="og:description" content="近日在千里码刷题，做到一道数据统计问题的时候，发现粗暴的做法费时又费电（风扇狂响了数分钟），看看别人的方法一秒不到就解出了，然后看数状数组的定义发觉脑子太久没用了转不过来，特纪录下理解过程。 数状数组的定义： 结合维基百科的条目与别人的博客，理解数状数组C与原数组A的关系为： 123456789C[n] = (function(i)&amp;#123;  var ret = A[n];	  for(j =">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-10-29T06:17:18.227Z">
+<meta property="og:description" content="近日在千里码刷题，做到一道数据统计问题的时候，发现粗暴的做法费时又费电（风扇狂响了数分钟），看看别人的方法一秒不到就解出了，然后看数状数组的定义发觉脑子太久没用了转不过来，特纪录下理解过程。 数状数组的定义： 结合维基百科的条目与别人的博客，理解数状数组C与原数组A的关系为： 123456789C[n] &#x3D; (function(i)&amp;#123;  var ret &#x3D; A[n];	  for(j &#x3D;">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-04-29T09:48:54.000Z">
+<meta property="article:modified_time" content="2019-10-29T06:17:18.227Z">
+<meta property="article:author" content="June Wu">
+<meta property="article:tag" content="Data Structures &amp; Algorithms">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://wenxiongid.github.io/2016/04/29/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/">
@@ -106,10 +108,12 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -143,6 +147,11 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
 
   </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
         <li class="menu-item menu-item-about">
 
     <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
@@ -156,11 +165,6 @@
         <li class="menu-item menu-item-categories">
 
     <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -389,7 +393,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -402,7 +406,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -438,13 +442,13 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">June Wu</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.0.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
@@ -472,9 +476,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
@@ -483,7 +495,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 
@@ -567,7 +581,7 @@
     });
     gitalk.render('gitalk-container');
   }, window.Gitalk);
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>

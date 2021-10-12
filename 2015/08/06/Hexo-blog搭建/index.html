@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.0.0">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -51,14 +51,18 @@
 </script>
 
   <meta name="description" content="前几天终于狠下心来把vps配了个域名，然后就开始想把blog的东西从farbox转回来了；逛V2EX看见了Hexo这一静态博客也是用markdown写的，习惯了markdown后就不想再用那些富文本，迁移工作量也少，就用它了。 Hexo卖点是用Node.js能快速生成站点，且自带Node.js的web服务器。web服务器我vps上已有一个nginx的站点了，参照了这篇博文的介绍，仿照他的做法，使用">
-<meta name="keywords" content="linux,nginx,git">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo blog搭建">
-<meta property="og:url" content="https:&#x2F;&#x2F;wenxiongid.github.io&#x2F;2015&#x2F;08&#x2F;06&#x2F;Hexo-blog%E6%90%AD%E5%BB%BA&#x2F;index.html">
+<meta property="og:url" content="https://wenxiongid.github.io/2015/08/06/Hexo-blog%E6%90%AD%E5%BB%BA/index.html">
 <meta property="og:site_name" content="JuneWu&#39;s Blog">
 <meta property="og:description" content="前几天终于狠下心来把vps配了个域名，然后就开始想把blog的东西从farbox转回来了；逛V2EX看见了Hexo这一静态博客也是用markdown写的，习惯了markdown后就不想再用那些富文本，迁移工作量也少，就用它了。 Hexo卖点是用Node.js能快速生成站点，且自带Node.js的web服务器。web服务器我vps上已有一个nginx的站点了，参照了这篇博文的介绍，仿照他的做法，使用">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-10-29T06:17:18.224Z">
+<meta property="og:locale">
+<meta property="article:published_time" content="2015-08-06T02:17:07.000Z">
+<meta property="article:modified_time" content="2019-10-29T06:17:18.224Z">
+<meta property="article:author" content="June Wu">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="nginx">
+<meta property="article:tag" content="git">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://wenxiongid.github.io/2015/08/06/Hexo-blog%E6%90%AD%E5%BB%BA/">
@@ -106,10 +110,12 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -143,6 +149,11 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
 
   </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
         <li class="menu-item menu-item-about">
 
     <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
@@ -156,11 +167,6 @@
         <li class="menu-item menu-item-categories">
 
     <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -364,7 +370,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -377,7 +383,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -413,13 +419,13 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">June Wu</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.0.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
@@ -447,9 +453,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
@@ -458,7 +472,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 
@@ -542,7 +558,7 @@
     });
     gitalk.render('gitalk-container');
   }, window.Gitalk);
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>

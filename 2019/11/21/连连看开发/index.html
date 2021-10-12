@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.0.0">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -51,21 +51,24 @@
 </script>
 
   <meta name="description" content="因为不可描述的原因，过了没两天，又要开发另一个小游戏喇～（我好兴奋呀.jpg） 消消乐开发完没两天，渲染就用同一套，也是用Vue了 同样先理一下游戏的逻辑 选取两个相同类型的块 两个块之间沿行、列连线，线只能经过空白的格子，且最多只能转向两次 如果存在这样的连线，则两个块消除成空白的格子；若不存在则不作改变  描述的有点绕，但玩过的应该都知道是什么一种机制，其中比较困难的一点应该是怎么找出两块的连">
-<meta name="keywords" content="Javascript,Vue">
 <meta property="og:type" content="article">
 <meta property="og:title" content="连连看开发">
-<meta property="og:url" content="https:&#x2F;&#x2F;wenxiongid.github.io&#x2F;2019&#x2F;11&#x2F;21&#x2F;%E8%BF%9E%E8%BF%9E%E7%9C%8B%E5%BC%80%E5%8F%91&#x2F;index.html">
+<meta property="og:url" content="https://wenxiongid.github.io/2019/11/21/%E8%BF%9E%E8%BF%9E%E7%9C%8B%E5%BC%80%E5%8F%91/index.html">
 <meta property="og:site_name" content="JuneWu&#39;s Blog">
 <meta property="og:description" content="因为不可描述的原因，过了没两天，又要开发另一个小游戏喇～（我好兴奋呀.jpg） 消消乐开发完没两天，渲染就用同一套，也是用Vue了 同样先理一下游戏的逻辑 选取两个相同类型的块 两个块之间沿行、列连线，线只能经过空白的格子，且最多只能转向两次 如果存在这样的连线，则两个块消除成空白的格子；若不存在则不作改变  描述的有点绕，但玩过的应该都知道是什么一种机制，其中比较困难的一点应该是怎么找出两块的连">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https:&#x2F;&#x2F;img13.360buyimg.com&#x2F;imagetools&#x2F;jfs&#x2F;t1&#x2F;62865&#x2F;39&#x2F;15954&#x2F;8653&#x2F;5dd65007E895af7ab&#x2F;14153b56d8c8999f.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;img13.360buyimg.com&#x2F;imagetools&#x2F;jfs&#x2F;t1&#x2F;86207&#x2F;17&#x2F;2795&#x2F;16692&#x2F;5dd657fbE0d4492eb&#x2F;427ac3e70d45784e.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;img13.360buyimg.com&#x2F;imagetools&#x2F;jfs&#x2F;t1&#x2F;64254&#x2F;40&#x2F;16068&#x2F;16725&#x2F;5dd65c22E831565d1&#x2F;276896502b2abb4f.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;img13.360buyimg.com&#x2F;imagetools&#x2F;jfs&#x2F;t1&#x2F;54177&#x2F;4&#x2F;16387&#x2F;14957&#x2F;5dd65ce5E11070f30&#x2F;c922a018c22c691c.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;img13.360buyimg.com&#x2F;imagetools&#x2F;jfs&#x2F;t1&#x2F;71284&#x2F;27&#x2F;15844&#x2F;15557&#x2F;5dd65ce5E781cdf91&#x2F;c530d237655d9770.png">
-<meta property="og:updated_time" content="2020-01-06T06:53:04.857Z">
+<meta property="og:locale">
+<meta property="og:image" content="https://img13.360buyimg.com/imagetools/jfs/t1/62865/39/15954/8653/5dd65007E895af7ab/14153b56d8c8999f.png">
+<meta property="og:image" content="https://img13.360buyimg.com/imagetools/jfs/t1/86207/17/2795/16692/5dd657fbE0d4492eb/427ac3e70d45784e.png">
+<meta property="og:image" content="https://img13.360buyimg.com/imagetools/jfs/t1/64254/40/16068/16725/5dd65c22E831565d1/276896502b2abb4f.png">
+<meta property="og:image" content="https://img13.360buyimg.com/imagetools/jfs/t1/54177/4/16387/14957/5dd65ce5E11070f30/c922a018c22c691c.png">
+<meta property="og:image" content="https://img13.360buyimg.com/imagetools/jfs/t1/71284/27/15844/15557/5dd65ce5E781cdf91/c530d237655d9770.png">
+<meta property="article:published_time" content="2019-11-21T08:12:36.000Z">
+<meta property="article:modified_time" content="2020-01-06T06:53:04.857Z">
+<meta property="article:author" content="June Wu">
+<meta property="article:tag" content="Javascript">
+<meta property="article:tag" content="Vue">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;img13.360buyimg.com&#x2F;imagetools&#x2F;jfs&#x2F;t1&#x2F;62865&#x2F;39&#x2F;15954&#x2F;8653&#x2F;5dd65007E895af7ab&#x2F;14153b56d8c8999f.png">
+<meta name="twitter:image" content="https://img13.360buyimg.com/imagetools/jfs/t1/62865/39/15954/8653/5dd65007E895af7ab/14153b56d8c8999f.png">
 
 <link rel="canonical" href="https://wenxiongid.github.io/2019/11/21/%E8%BF%9E%E8%BF%9E%E7%9C%8B%E5%BC%80%E5%8F%91/">
 
@@ -112,10 +115,12 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -149,6 +154,11 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
 
   </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
         <li class="menu-item menu-item-about">
 
     <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
@@ -162,11 +172,6 @@
         <li class="menu-item menu-item-categories">
 
     <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -389,7 +394,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#同样先理一下游戏的逻辑"><span class="nav-number">1.</span> <span class="nav-text">同样先理一下游戏的逻辑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#游戏逻辑实现"><span class="nav-number">2.</span> <span class="nav-text">游戏逻辑实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-生成一张能全部消除的图"><span class="nav-number">2.1.</span> <span class="nav-text">0. 生成一张能全部消除的图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-两个格子的连线"><span class="nav-number">2.2.</span> <span class="nav-text">1. 两个格子的连线</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#不转向"><span class="nav-number">2.2.1.</span> <span class="nav-text">不转向</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#转一次"><span class="nav-number">2.2.2.</span> <span class="nav-text">转一次</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#转两次"><span class="nav-number">2.2.3.</span> <span class="nav-text">转两次</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#游戏渲染"><span class="nav-number">3.</span> <span class="nav-text">游戏渲染</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E6%A0%B7%E5%85%88%E7%90%86%E4%B8%80%E4%B8%8B%E6%B8%B8%E6%88%8F%E7%9A%84%E9%80%BB%E8%BE%91"><span class="nav-number">1.</span> <span class="nav-text">同样先理一下游戏的逻辑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%B8%E6%88%8F%E9%80%BB%E8%BE%91%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">游戏逻辑实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-%E7%94%9F%E6%88%90%E4%B8%80%E5%BC%A0%E8%83%BD%E5%85%A8%E9%83%A8%E6%B6%88%E9%99%A4%E7%9A%84%E5%9B%BE"><span class="nav-number">2.1.</span> <span class="nav-text">0. 生成一张能全部消除的图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%B8%A4%E4%B8%AA%E6%A0%BC%E5%AD%90%E7%9A%84%E8%BF%9E%E7%BA%BF"><span class="nav-number">2.2.</span> <span class="nav-text">1. 两个格子的连线</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E8%BD%AC%E5%90%91"><span class="nav-number">2.2.1.</span> <span class="nav-text">不转向</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%AC%E4%B8%80%E6%AC%A1"><span class="nav-number">2.2.2.</span> <span class="nav-text">转一次</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%AC%E4%B8%A4%E6%AC%A1"><span class="nav-number">2.2.3.</span> <span class="nav-text">转两次</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%B8%E6%88%8F%E6%B8%B2%E6%9F%93"><span class="nav-number">3.</span> <span class="nav-text">游戏渲染</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -405,7 +410,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -418,7 +423,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -454,13 +459,13 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">June Wu</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.0.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
@@ -488,9 +493,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
@@ -499,7 +512,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 
@@ -583,7 +598,7 @@
     });
     gitalk.render('gitalk-container');
   }, window.Gitalk);
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>

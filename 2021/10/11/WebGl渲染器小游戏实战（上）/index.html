@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.2',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="项目起因经过对GLSL的了解，以及shadertoy上各种项目的洗礼，现在开发简单交互图形应该不是一个怎么困难的问题了。下面开始来对一些已有业务逻辑的项目做GLSL渲染器替换开发。 起因是看到某些小游戏广告，感觉机制有趣，实现起来应该也不会很复杂，就尝试自己开发一个  游戏十分简单，类似泡泡龙一样的从屏幕下方中间射出不同颜色大小的泡泡，泡泡上浮到顶部，相同颜色的泡泡可以合并成大一级的不同颜色泡泡。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WebGl着色器渲染小游戏实战（上）">
+<meta property="og:url" content="https://wenxiongid.github.io/2021/10/11/WebGl%E6%B8%B2%E6%9F%93%E5%99%A8%E5%B0%8F%E6%B8%B8%E6%88%8F%E5%AE%9E%E6%88%98%EF%BC%88%E4%B8%8A%EF%BC%89/index.html">
+<meta property="og:site_name" content="JuneWu&#39;s Blog">
+<meta property="og:description" content="项目起因经过对GLSL的了解，以及shadertoy上各种项目的洗礼，现在开发简单交互图形应该不是一个怎么困难的问题了。下面开始来对一些已有业务逻辑的项目做GLSL渲染器替换开发。 起因是看到某些小游戏广告，感觉机制有趣，实现起来应该也不会很复杂，就尝试自己开发一个  游戏十分简单，类似泡泡龙一样的从屏幕下方中间射出不同颜色大小的泡泡，泡泡上浮到顶部，相同颜色的泡泡可以合并成大一级的不同颜色泡泡。">
+<meta property="og:locale">
+<meta property="og:image" content="https://img10.360buyimg.com/imagetools/jfs/t1/207524/37/4741/35790/6163e375Eb238479c/8ac7051a21d0cdad.jpg">
+<meta property="og:image" content="https://img14.360buyimg.com/imagetools/jfs/t1/170197/18/21022/8817/61652fddEe3cece96/061103b9d55086fe.png">
+<meta property="og:image" content="https://img10.360buyimg.com/imagetools/jfs/t1/204405/29/10874/61763/61654ca6E47188742/c37609dd575a6226.jpg">
+<meta property="article:published_time" content="2021-10-11T02:43:05.000Z">
+<meta property="article:modified_time" content="2021-10-12T08:55:14.110Z">
+<meta property="article:author" content="June Wu">
+<meta property="article:tag" content="GLSL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img10.360buyimg.com/imagetools/jfs/t1/207524/37/4741/35790/6163e375Eb238479c/8ac7051a21d0cdad.jpg">
+
+<link rel="canonical" href="https://wenxiongid.github.io/2021/10/11/WebGl%E6%B8%B2%E6%9F%93%E5%99%A8%E5%B0%8F%E6%B8%B8%E6%88%8F%E5%AE%9E%E6%88%98%EF%BC%88%E4%B8%8A%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>WebGl着色器渲染小游戏实战（上） | JuneWu's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">JuneWu's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="Searching..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2021/10/11/WebGl%E6%B8%B2%E6%9F%93%E5%99%A8%E5%B0%8F%E6%B8%B8%E6%88%8F%E5%AE%9E%E6%88%98%EF%BC%88%E4%B8%8A%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="June Wu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JuneWu's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          WebGl着色器渲染小游戏实战（上）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-10-11 10:43:05" itemprop="dateCreated datePublished" datetime="2021-10-11T10:43:05+08:00">2021-10-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-10-12 16:55:14" itemprop="dateModified" datetime="2021-10-12T16:55:14+08:00">2021-10-12</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="项目起因"><a href="#项目起因" class="headerlink" title="项目起因"></a>项目起因</h2><p>经过对GLSL的了解，以及shadertoy上各种项目的洗礼，现在开发简单交互图形应该不是一个怎么困难的问题了。下面开始来对一些已有业务逻辑的项目做GLSL渲染器替换开发。</p>
+<p>起因是看到某些小游戏广告，感觉机制有趣，实现起来应该也不会很复杂，就尝试自己开发一个</p>
+<p><img src="https://img10.360buyimg.com/imagetools/jfs/t1/207524/37/4741/35790/6163e375Eb238479c/8ac7051a21d0cdad.jpg" alt="https://img10.360buyimg.com/imagetools/jfs/t1/207524/37/4741/35790/6163e375Eb238479c/8ac7051a21d0cdad.jpg"></p>
+<p>游戏十分简单，类似泡泡龙一样的从屏幕下方中间射出不同颜色大小的泡泡，泡泡上浮到顶部，相同颜色的泡泡可以合并成大一级的不同颜色泡泡。简单说就是一个上下反过来的合成大西瓜</p>
+<p>较特别的地方是为了表现泡泡的质感，在颜色相同的泡泡靠近时，会有水滴表面先合并的效果，这一部分就需要用到着色器渲染来实现了</p>
+<span id="more"></span>
+<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><p>先对逻辑分层</p>
+<p>最上层为游戏业务逻辑<code>Game</code>，管理游戏开始、结束状态，响应用户输入，记录游戏分数等</p>
+<p>其次为游戏逻辑驱动层<code>Engine</code>，管理游戏元素，暴露可由用户控制的动作，引用渲染器控制游戏场景渲染更新</p>
+<p>再往下是物理引擎模块<code>Physics</code>，管理游戏元素之间的关系，以及实现<code>Engine</code>需要的接口</p>
+<p>与引擎模块并列的是渲染器模块<code>Renderer</code>，读取从<code>Engine</code>输入的游戏元素，渲染游戏场景</p>
+<p>这样分层的好处是，各个模块可以独立替换/修改；例如在GLSL渲染器开发完成前，可以替换成其他的渲染器，如<code>2D canvas</code>渲染器，甚至使用HTML DOM来渲染</p>
+<p>结构图如下：</p>
+<p><img src="https://img14.360buyimg.com/imagetools/jfs/t1/170197/18/21022/8817/61652fddEe3cece96/061103b9d55086fe.png" alt="https://img14.360buyimg.com/imagetools/jfs/t1/170197/18/21022/8817/61652fddEe3cece96/061103b9d55086fe.png"></p>
+<h2 id="游戏逻辑实现"><a href="#游戏逻辑实现" class="headerlink" title="游戏逻辑实现"></a>游戏逻辑实现</h2><h3 id="游戏业务逻辑-Game"><a href="#游戏业务逻辑-Game" class="headerlink" title="游戏业务逻辑 Game"></a>游戏业务逻辑 Game</h3><p>因为游戏业务比较简单，这一层只负责做这几件事：</p>
+<ol>
+<li>输入HTML canvas元素，指定游戏渲染范围</li>
+<li>初始化驱动层<code>Engine</code></li>
+<li>监听用户操作事件<code>touchend/click</code>，调用<code>Engine</code>控制射出泡泡</li>
+<li>循环调用<code>Engine</code>的<code>update</code>更新方法，并检查超过指定高度的泡泡数量，如数量超过0则停止游戏</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Game</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">canvas</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.engine = <span class="keyword">new</span> Engine(canvas)</span><br><span class="line">    <span class="built_in">document</span>.addEventListener(<span class="string">&#x27;touchend&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span>(!<span class="built_in">this</span>.isEnd) &#123;</span><br><span class="line">        <span class="built_in">this</span>.shoot(&#123;</span><br><span class="line">          <span class="attr">x</span>: e.pageX,</span><br><span class="line">          <span class="attr">y</span>: e.pageY</span><br><span class="line">        &#125;, randomLevel())</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">shoot</span>(<span class="params">pos, newBallLevel</span>)</span> &#123;</span><br><span class="line">    <span class="comment">// 已准备好的泡泡射出去</span></span><br><span class="line">    <span class="built_in">this</span>.engine.shoot(pos, START_V)</span><br><span class="line">    <span class="comment">// 在初始点生成新的泡泡</span></span><br><span class="line">    <span class="built_in">this</span>.engine.addStillBall(BALL_INFO[newBallLevel])</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">update</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.engine.update()</span><br><span class="line">    <span class="keyword">let</span> point = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> overflowCount = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">this</span>.engine.physics.getAllBall().forEach(<span class="function"><span class="params">ball</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span>(!ball.isStatic)&#123;</span><br><span class="line">        point += <span class="built_in">Math</span>.pow(<span class="number">2</span>, ball.level);</span><br><span class="line">        <span class="keyword">if</span> (ball.position.y &gt; _this.sceneSize.width * <span class="number">1.2</span>) &#123;</span><br><span class="line">          overflowCount++</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">if</span>(overflowCount &gt; <span class="number">1</span>)&#123;</span><br><span class="line">      <span class="built_in">this</span>.gameEnd(point);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">gameEnd</span>(<span class="params">point</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.isEnd = <span class="literal">true</span></span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="驱动层-Engine"><a href="#驱动层-Engine" class="headerlink" title="驱动层 Engine"></a>驱动层 Engine</h3><p>这一层的逻辑负责管理物理引擎<code>Physics</code>和渲染器模块<code>Renderer</code>，并暴露交互方法供<code>Game</code>调用</p>
+<p>指定了物理引擎模块需提供以下接口方法：</p>
+<ol>
+<li>在指定的位置生成固定的泡泡，供用户作下一次操作时使用</li>
+<li>把固定的泡泡按指定的方向射出</li>
+</ol>
+<p>在更新方法<code>update</code>里，读取所有泡泡所在的位置和大小、等级颜色信息，再调用渲染器渲染泡泡</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Engine</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">canvas</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.renderer = <span class="keyword">new</span> Renderer(canvas)</span><br><span class="line">    <span class="built_in">this</span>.physics = <span class="keyword">new</span> Physics()</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">addStillBall</span>(<span class="params">&#123; pos, radius, level &#125;</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.physics.createBall(pos, radius, level, <span class="literal">true</span>)</span><br><span class="line">    <span class="built_in">this</span>.updateRender()</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">shoot</span>(<span class="params">pos, startV</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.physics.shoot(pos, startV)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">updateRender</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="comment">// 更新渲染器渲染信息</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">update</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="comment">// 调用渲染器更新场景渲染</span></span><br><span class="line">    <span class="built_in">this</span>.renderer.draw()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="物理引擎模块-Physics"><a href="#物理引擎模块-Physics" class="headerlink" title="物理引擎模块 Physics"></a>物理引擎模块 Physics</h3><p>物理引擎使用了<code>matter.js</code>，没别的原因，就是因为之前有项目经验，并且自带一个渲染器，可以拿来辅助我们自己渲染的开发</p>
+<p><code>Physics</code>模块在初始化的时候先初始化场景：</p>
+<p>左、右、下的边框使用普通的矩形碰撞体实现</p>
+<p>顶部的半圆使用预先画好的<code>SVG</code>图形，使用<code>matter.js</code>里<code>SVG</code>类的<code>pathToVertices</code>方法生成碰撞体，插入到场景中</p>
+<p>因为泡泡都是向上漂浮的，所以置重力方向为y轴的负方向</p>
+<p>以上完成了物理引擎中的场景搭设</p>
+<p>上文提到的物理引擎需要提供的两个方法：</p>
+<blockquote>
+<p>1.在指定的位置生成固定的泡泡，供用户作下一次操作时使用</p>
+</blockquote>
+<p>创建一个圆型碰撞体放到场景的指定位置，并记录为<code>Physics</code>的内部属性供射出方法使用</p>
+<blockquote>
+<p>2.把固定的泡泡按指定的方向射出</p>
+</blockquote>
+<p>射出的方向由用户的点击位置决定，但射出的速度是固定的</p>
+<p>可以通过点击位置和原始位置连线的向量，作归一化后乘以初速度大小计算</p>
+<h4 id="另外在游戏运行过程中，还需要实现以下功能："><a href="#另外在游戏运行过程中，还需要实现以下功能：" class="headerlink" title="另外在游戏运行过程中，还需要实现以下功能："></a>另外在游戏运行过程中，还需要实现以下功能：</h4><blockquote>
+<p>3.检查是否有相同颜色的泡泡相撞</p>
+</blockquote>
+<p>其实<code>matter.js</code>是有提供两个碰撞体碰撞时触发的<code>collisionStart</code>事件的，但是对于碰撞后合并生成的泡泡，即使与相同颜色的泡泡触碰，也不会触发这个事件，所以只能手动去检测两个泡泡是否碰撞</p>
+<p>这里使用的方法是判断两个圆形的中心距离，是否小于等于半径之和，是则判断为碰撞</p>
+<blockquote>
+<p>4.相撞的相同颜色泡泡合并为高一级的泡泡</p>
+</blockquote>
+<p>碰撞的两个泡泡，取y座标靠上的一个作为合并的目标，靠下的一个作为源泡泡，合并后的泡泡座标设在目标泡泡座标上</p>
+<p>源泡泡碰撞设为关闭，并设为固定位置；</p>
+<p>只实现合并的功能的话，只需要把源泡泡的位置设为目标泡泡的座标就可以，但为了实现动画过渡，源泡泡的位置移动做了如下的处理：</p>
+<ol>
+<li>在每个更新周期计算源泡泡和目标泡泡位置的差值，得到源泡泡需要移动的向量</li>
+<li>移动向量的<code>1/8</code>，在下一个更新周期重复1、2的操作</li>
+<li>当两个泡泡的位置差值小于一个较小的值（这里设为5）时，视为合并完成，销毁源泡泡，并更新目标泡泡的等级信息</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Physics</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.matterEngine = Matter.Engine.create()</span><br><span class="line">    <span class="comment">// 置重力方向为y轴负方向（即为上）</span></span><br><span class="line">    <span class="built_in">this</span>.matterEngine.world.gravity.y = -<span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加三面墙</span></span><br><span class="line">    Matter.World.add(<span class="built_in">this</span>.matterEngine.world, Matter.Bodies.rectangle(...))</span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加上方圆顶</span></span><br><span class="line">    <span class="keyword">const</span> path = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line">    <span class="keyword">const</span> points = Matter.Svg.pathToVertices(path, <span class="number">30</span>)</span><br><span class="line">    Matter.World.add(<span class="built_in">this</span>.matterEngine.world, Matter.Bodies.fromVertices(x, y, [points], ...))</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 因为需要使用自定义的碰撞检测方法，在物理引擎的beforeUpdate事件上绑定检测碰撞和合并泡泡方法调用</span></span><br><span class="line">    Matter.Events.on(<span class="built_in">this</span>.matterEngine, <span class="string">&#x27;beforeUpdate&#x27;</span>, <span class="function"><span class="params">e</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// 检查是否有正在合并的泡泡，没有则检测是否有相同颜色的泡泡碰撞</span></span><br><span class="line">      <span class="keyword">if</span>(!<span class="built_in">this</span>.collisionInfo) &#123;</span><br><span class="line">        <span class="built_in">this</span>.collisionInfo = <span class="built_in">this</span>.checkCollision()</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span>(<span class="built_in">this</span>.collisionInfo) &#123;</span><br><span class="line">        <span class="comment">// 若有正在合并的泡泡，（继续）调用合并方法，在合并完成后清空属性</span></span><br><span class="line">        <span class="built_in">this</span>.mergeBall(<span class="built_in">this</span>.collisionInfo.srcBody, <span class="built_in">this</span>.collisionInfo.targetBody, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">          <span class="built_in">this</span>.collistionInfo = <span class="literal">null</span></span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    Matter.Engine.run(<span class="built_in">this</span>.matterEngine)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 在指定位置生成泡泡</span></span><br><span class="line">  <span class="function"><span class="title">createBall</span>(<span class="params">pos, radius, level, isStatic</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> ball = Matter.Bodies.circle(pos.x, pos.y, radius, &#123;</span><br><span class="line">      ...<span class="comment">// 不同等级不同的大小通过scale区分</span></span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="comment">// 如果生成的是固定的泡泡，则记录在属性上供下次射出时使用</span></span><br><span class="line">    <span class="keyword">if</span>(isStatic) &#123;</span><br><span class="line">      <span class="built_in">this</span>.stillBall = ball</span><br><span class="line">    &#125;</span><br><span class="line">    Matter.World.add(<span class="built_in">this</span>.matterEngine.world, [ball])</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 射出泡泡</span></span><br><span class="line">  <span class="function"><span class="title">shoot</span>(<span class="params">pos, startV</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">this</span>.stillBall) &#123;</span><br><span class="line">      <span class="comment">// 计算点击位置与原始位置的向量，归一化（使长度为1）之后乘以初始速度大小</span></span><br><span class="line">      <span class="keyword">let</span> v = Matter.Vector.create(pos.x - <span class="built_in">this</span>.stillBall.position.x, pos.y - <span class="built_in">this</span>.stillBall.position.y) </span><br><span class="line">      v = Matter.Vector.normalise(v)</span><br><span class="line">      v = Vector.mult(v, startV)</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 设置泡泡为可活动的，并把初速度赋予泡泡</span></span><br><span class="line">      Body.setStatic(<span class="built_in">this</span>.stillBall, <span class="literal">false</span>);</span><br><span class="line">      Body.setVelocity(<span class="built_in">this</span>.stillBall, v);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 检测是否有相同颜色的泡泡碰撞</span></span><br><span class="line">  <span class="function"><span class="title">checkCollision</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="comment">// 拿到活动中的泡泡碰撞体的列表</span></span><br><span class="line">    <span class="keyword">const</span> bodies = <span class="built_in">this</span>.getAllBall()</span><br><span class="line">    <span class="keyword">let</span> targetBody, srcBody</span><br><span class="line">    <span class="comment">// 逐对泡泡碰撞体遍历</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; bodies.length; i++) &#123;</span><br><span class="line">      <span class="keyword">const</span> bodyA = bodies[i]</span><br><span class="line">      <span class="keyword">for</span>(<span class="keyword">let</span> j = i + <span class="number">1</span>; j &lt; bodies.length; j++) &#123;</span><br><span class="line">        <span class="keyword">const</span> bodyB = bodies[j]</span><br><span class="line">        <span class="keyword">if</span>(bodyA.level === bodyB.level) &#123;</span><br><span class="line">          <span class="comment">// 用距离的平方比较，避免计算开平方</span></span><br><span class="line">          <span class="keyword">if</span>(getDistSq(bodyA.position, bodyB.position) &lt;= <span class="number">4</span> * bodyA.circleRadius * bodyA.circleRadius) &#123;</span><br><span class="line">            <span class="comment">// 使用靠上的泡泡作为目标泡泡</span></span><br><span class="line">            <span class="keyword">if</span>(bodyA.position.y &lt; bodyB.position.y) &#123;</span><br><span class="line">              targetBody = bodyA</span><br><span class="line">              srcBody = bodyB</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">              targetBody = bodyB</span><br><span class="line">              srcBody = bodyA</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">              srcBody,</span><br><span class="line">              targetBody</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">mergeBall</span>(<span class="params">srcBody, targetBody, callback</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> dist = <span class="built_in">Math</span>.sqrt(getDistSq(srcBody.position, targetBody.position))</span><br><span class="line">    <span class="comment">// 源泡泡位置设为固定的，且不参与碰撞</span></span><br><span class="line">    Matter.Body.setStatic(srcBody, <span class="literal">true</span>)</span><br><span class="line">    srcBody.collisionFilter.mask = mergeCategory</span><br><span class="line">    <span class="comment">// 如果两个泡泡合并到距离小于5的时候, 目标泡泡升级为上一级的泡泡</span></span><br><span class="line">    <span class="keyword">if</span>(dist &lt; <span class="number">5</span>) &#123;</span><br><span class="line">      <span class="comment">// 合并后的泡泡的等级</span></span><br><span class="line">      <span class="keyword">const</span> newLevel = <span class="built_in">Math</span>.min(targetBody.level + <span class="number">1</span>, <span class="number">8</span>)</span><br><span class="line">      <span class="keyword">const</span> scale = BallRadiusMap[newLevel] / BallRaiusMap[targetBody.level]</span><br><span class="line">      <span class="comment">// 更新目标泡泡信息</span></span><br><span class="line">      Matter.Body.scale(targetBody, scale, scale)</span><br><span class="line">      Matter.Body.set(targetBody, &#123;<span class="attr">level</span>: newLevel&#125;)</span><br><span class="line">      Matter.World.remove(<span class="built_in">this</span>.matterEngine.world, srcBody)</span><br><span class="line">      callback()</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 需要继续播放泡泡靠近动画</span></span><br><span class="line">    <span class="keyword">const</span> velovity = &#123;</span><br><span class="line">      <span class="attr">x</span>: targetBody.position.x - srcBody.position.x,</span><br><span class="line">      <span class="attr">y</span>: targetBody.position.y - srcBody.position.y</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">// 泡泡移动速度先慢后快</span></span><br><span class="line">    velovity.x /= dist / <span class="number">8</span>;</span><br><span class="line">    velovity.y /= dist / <span class="number">8</span>;</span><br><span class="line">    Matter.Body.translate(srcBody, Matter.Vector.create(velovity.x, velovity.y));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="渲染器模块"><a href="#渲染器模块" class="headerlink" title="渲染器模块"></a>渲染器模块</h3><p>GLSL渲染器的实现比较复杂，当前可以先使用<code>matter.js</code>自带的渲染器调试一下</p>
+<p>在<code>Physics</code>模块中，再初始化一个<code>matter.js</code>的<code>render</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Physics</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">...</span>)</span> &#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="built_in">this</span>.render = Matter.Render.create(...)</span><br><span class="line">    Matter.Render.run(<span class="built_in">this</span>.render)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://img10.360buyimg.com/imagetools/jfs/t1/204405/29/10874/61763/61654ca6E47188742/c37609dd575a6226.jpg" alt="https://img10.360buyimg.com/imagetools/jfs/t1/204405/29/10874/61763/61654ca6E47188742/c37609dd575a6226.jpg"></p>
+<p>跑起来符合预想的游戏逻辑</p>
+<p>下篇再继续讲解渲染器的实现过程</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GLSL/" rel="tag"># GLSL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2021/03/23/GLSL%E7%9D%80%E8%89%B2%E5%99%A8%E4%BB%8B%E7%BB%8D/" rel="next" title="GLSL着色器，来玩">
+                  <i class="fa fa-chevron-left"></i> GLSL着色器，来玩
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E8%B5%B7%E5%9B%A0"><span class="nav-number">1.</span> <span class="nav-text">项目起因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">项目结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%B8%E6%88%8F%E9%80%BB%E8%BE%91%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">游戏逻辑实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%B8%E6%88%8F%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91-Game"><span class="nav-number">3.1.</span> <span class="nav-text">游戏业务逻辑 Game</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A9%B1%E5%8A%A8%E5%B1%82-Engine"><span class="nav-number">3.2.</span> <span class="nav-text">驱动层 Engine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%BC%95%E6%93%8E%E6%A8%A1%E5%9D%97-Physics"><span class="nav-number">3.3.</span> <span class="nav-text">物理引擎模块 Physics</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%A6%E5%A4%96%E5%9C%A8%E6%B8%B8%E6%88%8F%E8%BF%90%E8%A1%8C%E8%BF%87%E7%A8%8B%E4%B8%AD%EF%BC%8C%E8%BF%98%E9%9C%80%E8%A6%81%E5%AE%9E%E7%8E%B0%E4%BB%A5%E4%B8%8B%E5%8A%9F%E8%83%BD%EF%BC%9A"><span class="nav-number">3.3.1.</span> <span class="nav-text">另外在游戏运行过程中，还需要实现以下功能：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%B2%E6%9F%93%E5%99%A8%E6%A8%A1%E5%9D%97"><span class="nav-number">3.4.</span> <span class="nav-text">渲染器模块</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="June Wu"
+    src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">June Wu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://winniecjy.github.io/" title="https:&#x2F;&#x2F;winniecjy.github.io&#x2F;" rel="noopener" target="_blank">呆</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">June Wu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '89487a94f5c6b491d160',
+      clientSecret: 'a69f582367a08d3edd0281c7234d4ca8dbca1f2c',
+      repo: 'wenxiongid.github.io',
+      owner: 'wenxiongid',
+      admin: ['wenxiongid'],
+      id: '724048a2b7df48b5894a318399d3dbe2',
+        language: '',
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

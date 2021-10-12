@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.0.0">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -51,19 +51,21 @@
 </script>
 
   <meta name="description" content="原文链接: https:&#x2F;&#x2F;rigor.com&#x2F;blog&#x2F;optimizing-mp4-video-for-fast-streaming 随着Flash的逐渐息微，和移动设备的爆炸式增长，越来越多的内容通过HTML5视频分发。你可以通过把GIF动图替换成HTML5视频来提升你网站的访问速度。在此之上，视频文件本身也有很多能优化的地方来提高表现。 一个最重要的点是，视频文件必须为H5线上流式传输作优">
-<meta name="keywords" content="translate">
 <meta property="og:type" content="article">
 <meta property="og:title" content="优化流式MP4视频">
-<meta property="og:url" content="https:&#x2F;&#x2F;wenxiongid.github.io&#x2F;2020&#x2F;03&#x2F;30&#x2F;%E4%BC%98%E5%8C%96%E6%B5%81%E5%BC%8FMP4%E8%A7%86%E9%A2%91&#x2F;index.html">
+<meta property="og:url" content="https://wenxiongid.github.io/2020/03/30/%E4%BC%98%E5%8C%96%E6%B5%81%E5%BC%8FMP4%E8%A7%86%E9%A2%91/index.html">
 <meta property="og:site_name" content="JuneWu&#39;s Blog">
 <meta property="og:description" content="原文链接: https:&#x2F;&#x2F;rigor.com&#x2F;blog&#x2F;optimizing-mp4-video-for-fast-streaming 随着Flash的逐渐息微，和移动设备的爆炸式增长，越来越多的内容通过HTML5视频分发。你可以通过把GIF动图替换成HTML5视频来提升你网站的访问速度。在此之上，视频文件本身也有很多能优化的地方来提高表现。 一个最重要的点是，视频文件必须为H5线上流式传输作优">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https:&#x2F;&#x2F;img12.360buyimg.com&#x2F;imagetools&#x2F;jfs&#x2F;t1&#x2F;108902&#x2F;5&#x2F;10771&#x2F;28425&#x2F;5e81bd63Eef511a23&#x2F;1124327743c781e3.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;img10.360buyimg.com&#x2F;imagetools&#x2F;jfs&#x2F;t1&#x2F;105128&#x2F;19&#x2F;16965&#x2F;11571&#x2F;5e81c1cdE17d11753&#x2F;8c0ec3e8dc01a8c0.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;img12.360buyimg.com&#x2F;imagetools&#x2F;jfs&#x2F;t1&#x2F;109096&#x2F;23&#x2F;10753&#x2F;48416&#x2F;5e81c3ecE01563d87&#x2F;b07afb992de1e529.png">
-<meta property="og:updated_time" content="2020-03-30T10:41:26.705Z">
+<meta property="og:locale">
+<meta property="og:image" content="https://img12.360buyimg.com/imagetools/jfs/t1/108902/5/10771/28425/5e81bd63Eef511a23/1124327743c781e3.png">
+<meta property="og:image" content="https://img10.360buyimg.com/imagetools/jfs/t1/105128/19/16965/11571/5e81c1cdE17d11753/8c0ec3e8dc01a8c0.png">
+<meta property="og:image" content="https://img12.360buyimg.com/imagetools/jfs/t1/109096/23/10753/48416/5e81c3ecE01563d87/b07afb992de1e529.png">
+<meta property="article:published_time" content="2020-03-30T03:07:44.000Z">
+<meta property="article:modified_time" content="2020-03-30T10:41:26.705Z">
+<meta property="article:author" content="June Wu">
+<meta property="article:tag" content="translate">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;img12.360buyimg.com&#x2F;imagetools&#x2F;jfs&#x2F;t1&#x2F;108902&#x2F;5&#x2F;10771&#x2F;28425&#x2F;5e81bd63Eef511a23&#x2F;1124327743c781e3.png">
+<meta name="twitter:image" content="https://img12.360buyimg.com/imagetools/jfs/t1/108902/5/10771/28425/5e81bd63Eef511a23/1124327743c781e3.png">
 
 <link rel="canonical" href="https://wenxiongid.github.io/2020/03/30/%E4%BC%98%E5%8C%96%E6%B5%81%E5%BC%8FMP4%E8%A7%86%E9%A2%91/">
 
@@ -110,10 +112,12 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -147,6 +151,11 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
 
   </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
         <li class="menu-item menu-item-about">
 
     <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
@@ -160,11 +169,6 @@
         <li class="menu-item menu-item-categories">
 
     <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -357,7 +361,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MP4流是怎么工作的"><span class="nav-number">1.</span> <span class="nav-text">MP4流是怎么工作的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#怎样为流式视频作优化？"><span class="nav-number">2.</span> <span class="nav-text">怎样为流式视频作优化？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MP4%E6%B5%81%E6%98%AF%E6%80%8E%E4%B9%88%E5%B7%A5%E4%BD%9C%E7%9A%84"><span class="nav-number">1.</span> <span class="nav-text">MP4流是怎么工作的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%8E%E6%A0%B7%E4%B8%BA%E6%B5%81%E5%BC%8F%E8%A7%86%E9%A2%91%E4%BD%9C%E4%BC%98%E5%8C%96%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">怎样为流式视频作优化？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -373,7 +377,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -386,7 +390,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -422,13 +426,13 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">June Wu</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.0.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
@@ -456,9 +460,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
@@ -467,7 +479,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 
@@ -551,7 +565,7 @@
     });
     gitalk.render('gitalk-container');
   }, window.Gitalk);
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>

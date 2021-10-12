@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.0.0">
+<meta name="generator" content="Hexo 5.4.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -51,14 +51,17 @@
 </script>
 
   <meta name="description" content="最近在用rem做mobile webpage的开发，途中遇到不少坑，为防年纪大记性差留个记录。 rem的使用： 原理上来说是使用根元素（html）的font-size大小来计算每一个元素的所有跟尺寸有关的数值，包括但不限于width、height、margin、padding、font-size、line-height、top、left、right、bottom、background-positi">
-<meta name="keywords" content="CSS,Mobile">
 <meta property="og:type" content="article">
 <meta property="og:title" content="rem使用注意事项">
-<meta property="og:url" content="https:&#x2F;&#x2F;wenxiongid.github.io&#x2F;2015&#x2F;12&#x2F;16&#x2F;rem%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9&#x2F;index.html">
+<meta property="og:url" content="https://wenxiongid.github.io/2015/12/16/rem%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/index.html">
 <meta property="og:site_name" content="JuneWu&#39;s Blog">
 <meta property="og:description" content="最近在用rem做mobile webpage的开发，途中遇到不少坑，为防年纪大记性差留个记录。 rem的使用： 原理上来说是使用根元素（html）的font-size大小来计算每一个元素的所有跟尺寸有关的数值，包括但不限于width、height、margin、padding、font-size、line-height、top、left、right、bottom、background-positi">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-10-29T06:17:18.225Z">
+<meta property="og:locale">
+<meta property="article:published_time" content="2015-12-16T02:27:42.000Z">
+<meta property="article:modified_time" content="2019-10-29T06:17:18.225Z">
+<meta property="article:author" content="June Wu">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="Mobile">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://wenxiongid.github.io/2015/12/16/rem%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/">
@@ -106,10 +109,12 @@
   </style>
 </noscript>
 
-</head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -143,6 +148,11 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
 
   </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
         <li class="menu-item menu-item-about">
 
     <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
@@ -156,11 +166,6 @@
         <li class="menu-item menu-item-categories">
 
     <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -411,7 +416,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#需要按比例缩放的元素，宽高单位需统一"><span class="nav-number">1.</span> <span class="nav-text">需要按比例缩放的元素，宽高单位需统一</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方法一：用原生的img元素等比缩放特性来撑起高度"><span class="nav-number">1.1.</span> <span class="nav-text">方法一：用原生的img元素等比缩放特性来撑起高度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法二：高度也使用百分比定义"><span class="nav-number">1.2.</span> <span class="nav-text">方法二：高度也使用百分比定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法三：使用多个background-image"><span class="nav-number">1.3.</span> <span class="nav-text">方法三：使用多个background-image</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#需要按比例缩放的元素，其子元素的单位也要与父元素统一"><span class="nav-number">2.</span> <span class="nav-text">需要按比例缩放的元素，其子元素的单位也要与父元素统一</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E6%8C%89%E6%AF%94%E4%BE%8B%E7%BC%A9%E6%94%BE%E7%9A%84%E5%85%83%E7%B4%A0%EF%BC%8C%E5%AE%BD%E9%AB%98%E5%8D%95%E4%BD%8D%E9%9C%80%E7%BB%9F%E4%B8%80"><span class="nav-number">1.</span> <span class="nav-text">需要按比例缩放的元素，宽高单位需统一</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%9A%E7%94%A8%E5%8E%9F%E7%94%9F%E7%9A%84img%E5%85%83%E7%B4%A0%E7%AD%89%E6%AF%94%E7%BC%A9%E6%94%BE%E7%89%B9%E6%80%A7%E6%9D%A5%E6%92%91%E8%B5%B7%E9%AB%98%E5%BA%A6"><span class="nav-number">1.1.</span> <span class="nav-text">方法一：用原生的img元素等比缩放特性来撑起高度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%9A%E9%AB%98%E5%BA%A6%E4%B9%9F%E4%BD%BF%E7%94%A8%E7%99%BE%E5%88%86%E6%AF%94%E5%AE%9A%E4%B9%89"><span class="nav-number">1.2.</span> <span class="nav-text">方法二：高度也使用百分比定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%89%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%A4%9A%E4%B8%AAbackground-image"><span class="nav-number">1.3.</span> <span class="nav-text">方法三：使用多个background-image</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E6%8C%89%E6%AF%94%E4%BE%8B%E7%BC%A9%E6%94%BE%E7%9A%84%E5%85%83%E7%B4%A0%EF%BC%8C%E5%85%B6%E5%AD%90%E5%85%83%E7%B4%A0%E7%9A%84%E5%8D%95%E4%BD%8D%E4%B9%9F%E8%A6%81%E4%B8%8E%E7%88%B6%E5%85%83%E7%B4%A0%E7%BB%9F%E4%B8%80"><span class="nav-number">2.</span> <span class="nav-text">需要按比例缩放的元素，其子元素的单位也要与父元素统一</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -427,7 +432,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -440,7 +445,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -476,13 +481,13 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">June Wu</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.0.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
@@ -510,9 +515,17 @@
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
+
+
 <script src="/js/next-boot.js"></script>
+
 
 
 
@@ -521,7 +534,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 
@@ -605,7 +620,7 @@
     });
     gitalk.render('gitalk-container');
   }, window.Gitalk);
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>
