@@ -276,7 +276,7 @@
 
       
         <p>前几天终于狠下心来把vps配了个域名，然后就开始想把blog的东西从farbox转回来了；逛V2EX看见了Hexo这一静态博客也是用markdown写的，习惯了markdown后就不想再用那些富文本，迁移工作量也少，就用它了。</p>
-<p>Hexo卖点是用Node.js能快速生成站点，且自带Node.js的web服务器。web服务器我vps上已有一个nginx的站点了，参照了<a href="http://blog.berry10086.com/Tech/deploy-hexo-to-vps/" target="_blank" rel="noopener">这篇博文</a>的介绍，仿照他的做法，使用git部署页面文件到nginx的网站目录</p>
+<p>Hexo卖点是用Node.js能快速生成站点，且自带Node.js的web服务器。web服务器我vps上已有一个nginx的站点了，参照了<a target="_blank" rel="noopener" href="http://blog.berry10086.com/Tech/deploy-hexo-to-vps/">这篇博文</a>的介绍，仿照他的做法，使用git部署页面文件到nginx的网站目录</p>
 <p>一路照做下来，觉得里面写到的服务器有页面文件替换部分有些繁琐（clone到tmp目录—&gt;清空站点目录—&gt;复制tmp文件到站点目录），就想直接在站点目录做<code>git pull</code>操作就好了，不是手动修改过站点目录的文件的话<code>pull</code>操作应该是不会有错误出现的，而且文章里的做法git帐号需要有操作站点目录的权限、总觉得有哪里不对……</p>
 <p>于是改了一下方法，想是<code>cd</code>到站点目录执行<code>git pull</code>，但这样做其实也是需要修改站点目录的权限的，而且修改后即等于修改了文件，执行<code>pull</code>操作会报错文件不符需<code>commit</code>和<code>merge</code>，那怎么办呢？在vps上捣弄半天，不如用<code>sudo git pull</code>吧，一行解决了两个问题，root权限操作站点目录不需修改权限，用pull命令也不用把文件弄来弄去了，好，写脚本去了</p>
 <p>试验了下用git帐号用不了<code>sudo</code>命令，说不在sudoers列表什么的，好嘛那就加进去嘛，google一下，sudoers列表在<code>/etc/sudoers</code>文件里，加上一行<code>git ALL=(ALL:ALL) ALL</code>，期间要用<code>chmod u+x /etc/sudoers</code>去掉写保护，修改后<code>chmod u-X /etc/sudoers</code>加回来。好了，<code>sudo</code>名令能用了，但是后面要输root密码，在shell脚本里该怎么处理呢？</p>
@@ -284,8 +284,8 @@
 <p>好，都配好了那本地hexo这边<code>hexo d</code>一下试试部署，发现这服务器文件没有更新嘛，又没什么错误提示，于是我又clone了一份到其他地方再捣弄几下，加个文件直接<code>git push</code>试试看，这次有错误提示了，<code>sudo: no tty present and no askpass program specified</code>什么的。再放google看看，说是在<code>/etc/sudoers</code>加入一行<code>Defaults visiblepw</code>就好了，加了之后果然好了，顺利push成功，站点文件也更新了，顺利完成部署工作</p>
 <p>但这tty是什么鬼呢？加入的这个<code>Defaults visiblepw</code>又是干什么的？不弄清楚不放心啊。</p>
 <p>google了tty，应该就是控制终端，就是登录的shell，但我现在是用的git的hooks触发的，没有登录的shell，于是就报上面的错了。</p>
-<p>然后加入的<code>Defaults visiblepw</code>呢？查到了<a href="http://www.sudo.ws/man/1.8.13/sudoers.man.html" target="_blank" rel="noopener">sudoers文档</a>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">visiblepw</span><br><span class="line">By default, sudo will refuse to run if the user must enter a password but it is not possible to disable echo on the terminal. If the visiblepw flag is set, sudo will prompt for a password even when it would be visible on the screen. This makes it possible to run things like “ssh somehost sudo ls” since by default, ssh(1) does not allocate a tty when running a command. This flag is off by default.</span><br></pre></td></tr></table></figure>
+<p>然后加入的<code>Defaults visiblepw</code>呢？查到了<a target="_blank" rel="noopener" href="http://www.sudo.ws/man/1.8.13/sudoers.man.html">sudoers文档</a>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">visiblepw</span><br><span class="line">By default, sudo will refuse to run if the user must enter a password but it is not possible to disable echo on the terminal. If the visiblepw flag is set, sudo will prompt for a password even when it would be visible on the screen. This makes it possible to run things like “ssh somehost sudo ls” since by default, ssh(1) does not allocate a tty when running a command. This flag is off by default.</span><br></pre></td></tr></table></figure>
 <p>好像是加了就不判断有没有tty了</p>
 
     </div>

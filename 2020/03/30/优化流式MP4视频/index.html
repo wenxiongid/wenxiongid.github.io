@@ -271,28 +271,28 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>原文链接: <a href="https://rigor.com/blog/optimizing-mp4-video-for-fast-streaming" target="_blank" rel="noopener">https://rigor.com/blog/optimizing-mp4-video-for-fast-streaming</a></p>
-<p>随着Flash的逐渐息微，和移动设备的爆炸式增长，越来越多的内容通过HTML5视频分发。你可以通过<a href="https://rigor.com/blog/optimizing-animated-gifs-with-html5-video" target="_blank" rel="noopener">把GIF动图替换成HTML5视频来提升你网站的访问速度</a>。在此之上，视频文件本身也有很多能优化的地方来提高表现。</p>
+        <p>原文链接: <a target="_blank" rel="noopener" href="https://rigor.com/blog/optimizing-mp4-video-for-fast-streaming">https://rigor.com/blog/optimizing-mp4-video-for-fast-streaming</a></p>
+<p>随着Flash的逐渐息微，和移动设备的爆炸式增长，越来越多的内容通过HTML5视频分发。你可以通过<a target="_blank" rel="noopener" href="https://rigor.com/blog/optimizing-animated-gifs-with-html5-video">把GIF动图替换成HTML5视频来提升你网站的访问速度</a>。在此之上，视频文件本身也有很多能优化的地方来提高表现。</p>
 <p>一个最重要的点是，视频文件必须为H5线上流式传输作优化。缺少这些优化，会在用户尝试播放视频时，有几百毫秒的延迟，还会浪费数兆的流量。在这篇文章中会介绍怎样去做优化。</p>
-<h2 id="MP4流是怎么工作的"><a href="#MP4流是怎么工作的" class="headerlink" title="MP4流是怎么工作的"></a>MP4流是怎么工作的</h2><p>在<a href="https://rigor.com/blog/2015/12/optimizing-animated-gifs-with-html5-video" target="_blank" rel="noopener">上一篇文章</a>的讨论中，HTML5视频是一个不需要第三方插件（如Flash）的跨平台看视频的方式。在2016年，<a href="https://en.wikipedia.org/wiki/MPEG-4_Part_14" target="_blank" rel="noopener">使用H264编码的MP4文件</a>（下面简称MP4视频）成为所有线上HTML5视频的标准格式。所以当我们讨论优化HTML5视频的时候，我们实际上是讨论如何更快的播放MP4视频。我们需要了解MP4视频的结构，和流式传输是怎样工作的。</p>
+<h2 id="MP4流是怎么工作的"><a href="#MP4流是怎么工作的" class="headerlink" title="MP4流是怎么工作的"></a>MP4流是怎么工作的</h2><p>在<a target="_blank" rel="noopener" href="https://rigor.com/blog/2015/12/optimizing-animated-gifs-with-html5-video">上一篇文章</a>的讨论中，HTML5视频是一个不需要第三方插件（如Flash）的跨平台看视频的方式。在2016年，<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/MPEG-4_Part_14">使用H264编码的MP4文件</a>（下面简称MP4视频）成为所有线上HTML5视频的标准格式。所以当我们讨论优化HTML5视频的时候，我们实际上是讨论如何更快的播放MP4视频。我们需要了解MP4视频的结构，和流式传输是怎样工作的。</p>
 <p>构成MP4文件的文件块，称为<code>原子块</code>。有些原子块存储字幕、章节，当然还有些存储视频、音频数据。其中有一个特别的原子块，存储<code>元数据</code>，包括文件中哪些原子块是视频、音频数据，视频文件的长宽、帧率，称为<code>moov</code>原子块。可以想象成moov原子块是整个文件的目录。</p>
 <p>当你播放一个视频的时候，程序扫描整个MP4文件，找到moov原子块，然后用这个目录找到视频和音频开始的文件块，然后开始播放。不幸的是，moov原子块可以存放在文件中的任何一个地方，所以程序不知道moov原子块什么时候才会出现。当整个文件存储下来的时候，搜索moov原子块的工作能很顺利的进行。但有些情况是你并没有存储整个文件，例如流式HTML5视频。这是流式HTML5的一个重要优点，你可以在没有下载完整个文件的时候开始播放。</p>
 <p>在播放流式视频的时候，浏览器请求视频文件，开始按顺序接收文件，并搜索moov文件块。如果moov文件块并不是在文件开始的部分，浏览器要么下载整个文件搜索moov文件块；要么把文件分拆成多个小文件，尝试找到moov文件块。</p>
 <p>上述的两种方法都浪费了很多的时间和流量。不幸的是，在找到moov文件块之前，是平时不能播放的。在下面的截图中，可以看到浏览器在尝试流式播放一个未经优化的HTML5视频。</p>
 <p><img src="https://img12.360buyimg.com/imagetools/jfs/t1/108902/5/10771/28425/5e81bd63Eef511a23/1124327743c781e3.png" alt="https://img12.360buyimg.com/imagetools/jfs/t1/108902/5/10771/28425/5e81bd63Eef511a23/1124327743c781e3.png"></p>
 <p>可以看到在视频可以播放前，浏览器做了3个请求。</p>
-<p>第一个请求，通过返回码<code>206 Partial Content</code>，和查看请求头知道，浏览器使用<a href="https://en.wikipedia.org/wiki/Byte_serving" target="_blank" rel="noopener">HTTP range request</a>下载视频文件的前552KB。但是moov文件块并不在这部分中，所以视频还不能开始播放。</p>
+<p>第一个请求，通过返回码<code>206 Partial Content</code>，和查看请求头知道，浏览器使用<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Byte_serving">HTTP range request</a>下载视频文件的前552KB。但是moov文件块并不在这部分中，所以视频还不能开始播放。</p>
 <p>第二个请求，浏览器使用了另一个<code>HTTP range request</code>请求下载了视频文件的最后21KB。这部分包含了moov原子块，告诉了浏览器视频音频数据开始的地方。</p>
 <p>最后，浏览器做了第三个请求，下载视频音频数据，并可以开始播放。整个流程浪费了半兆的流量和造成了210毫秒的延迟。只是因为浏览器找不到moov原子块。</p>
-<p>更糟的情况是，服务器可能不支持<code>HTTP range request</code>，浏览器不能跳过去寻找moov文件块，只能下载整个文件。这是另一个原因驱使服务器<a href="https://zoompf.com/blog/2010/03/performance-tip-for-http-downloads" target="_blank" rel="noopener">优化去支持部分文件下载（partial download）</a></p>
+<p>更糟的情况是，服务器可能不支持<code>HTTP range request</code>，浏览器不能跳过去寻找moov文件块，只能下载整个文件。这是另一个原因驱使服务器<a target="_blank" rel="noopener" href="https://zoompf.com/blog/2010/03/performance-tip-for-http-downloads">优化去支持部分文件下载（partial download）</a></p>
 <p>HTML5使用的理想的视频文件是，moov文件块在文件最开始的地方。这样浏览器可以避免下载整个文件或者发起额外的请求去寻找moov文件块。一个优化过的视频文件下载过程的截图如下：</p>
 <p><img src="https://img10.360buyimg.com/imagetools/jfs/t1/105128/19/16965/11571/5e81c1cdE17d11753/8c0ec3e8dc01a8c0.png" alt="https://img10.360buyimg.com/imagetools/jfs/t1/105128/19/16965/11571/5e81c1cdE17d11753/8c0ec3e8dc01a8c0.png"></p>
 <p>这个文件的moov文件块在文件最初始的地方，视频可以非常快地加载和播放，带来更好的用户体验</p>
-<h2 id="怎样为流式视频作优化？"><a href="#怎样为流式视频作优化？" class="headerlink" title="怎样为流式视频作优化？"></a>怎样为流式视频作优化？</h2><p>如上所述，我们优化用作流式传输的视频文件的方向是，把视频文件的原子块重新组织，把moov文件块放在最前的地方。那我们该怎么做？大部分视频编码软件有一个<code>为web作优化（optimize for web）</code>或<code>为流式传输作优化（optimize for streaming）</code>的选项，为我们做这个工作。在输出视频的时候，必须在输出选项中确认是优化过的。例如，在下面的截图中，<a href="https://handbrake.fr/" target="_blank" rel="noopener">开源视频编码软件Handbrake</a>有一个<code>Web Optimized</code>的选项，可以使输出文件的moov原子块在文件的开始位置。</p>
+<h2 id="怎样为流式视频作优化？"><a href="#怎样为流式视频作优化？" class="headerlink" title="怎样为流式视频作优化？"></a>怎样为流式视频作优化？</h2><p>如上所述，我们优化用作流式传输的视频文件的方向是，把视频文件的原子块重新组织，把moov文件块放在最前的地方。那我们该怎么做？大部分视频编码软件有一个<code>为web作优化（optimize for web）</code>或<code>为流式传输作优化（optimize for streaming）</code>的选项，为我们做这个工作。在输出视频的时候，必须在输出选项中确认是优化过的。例如，在下面的截图中，<a target="_blank" rel="noopener" href="https://handbrake.fr/">开源视频编码软件Handbrake</a>有一个<code>Web Optimized</code>的选项，可以使输出文件的moov原子块在文件的开始位置。</p>
 <p><img src="https://img12.360buyimg.com/imagetools/jfs/t1/109096/23/10753/48416/5e81c3ecE01563d87/b07afb992de1e529.png" alt="https://img12.360buyimg.com/imagetools/jfs/t1/109096/23/10753/48416/5e81c3ecE01563d87/b07afb992de1e529.png"></p>
 <p>这是从源视频输出优化MP4文件的一个可行的方案，但如果你已经有一个MP4文件呢？</p>
-<p>你也可以重新组织现有的文件去为流式传输做优化。例如，<a href="https://www.ffmpeg.org/" target="_blank" rel="noopener">开源命令行视频编码器FFMpeg</a>可以重新组织MP4文件的结构，把moov文件块移到文件头部。不像重新编码视频文件那样花时间和占用CPU，重组文件是一个比较简单的操作，并且不会改变视频的品质。下面是一个使用ffmpeg优化名为<code>input.mp4</code>的视频文件的例子。输出的文件命名为<code>output.mp4</code>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i input.mp4 -movflags faststart -acodec copy -vcodec copy output.mp4</span><br></pre></td></tr></table></figure>
+<p>你也可以重新组织现有的文件去为流式传输做优化。例如，<a target="_blank" rel="noopener" href="https://www.ffmpeg.org/">开源命令行视频编码器FFMpeg</a>可以重新组织MP4文件的结构，把moov文件块移到文件头部。不像重新编码视频文件那样花时间和占用CPU，重组文件是一个比较简单的操作，并且不会改变视频的品质。下面是一个使用ffmpeg优化名为<code>input.mp4</code>的视频文件的例子。输出的文件命名为<code>output.mp4</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i input.mp4 -movflags faststart -acodec copy -vcodec copy output.mp4</span><br></pre></td></tr></table></figure>
 <p><code>-movflags faststart</code>参数是告诉ffmpeg去重新排序MP4视频文件原子块，把moov原子块移到最前面。并规定ffmpeg复制视频和音频数据，不作重新编码，所以不会有质量改变。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>不管是把GIF动画转成MP4，还是有很多的现有MP4文件。当优化它们的结构后，可以更加快速地加载和播放它们。重新编排原子块的顺序，把moov原子块移到最前面后，浏览器就可以避免做额外的<code>HTTP range request</code>请求去寻找moov原子块。这可以使浏览器立即开始流式播放视频。你可以在输出视频的时候对流式传输作优化。也可以对现有的视频文件使用例如ffmpeg的工具做整理，而不影响视频文件的质量。</p>
 

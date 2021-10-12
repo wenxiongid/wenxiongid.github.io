@@ -273,9 +273,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>近日在<a href="http://www.qlcoder.com/" target="_blank" rel="noopener">千里码</a>刷题，做到一道<a href="http://www.qlcoder.com/task/7542" target="_blank" rel="noopener">数据统计问题</a>的时候，发现粗暴的做法费时又费电（风扇狂响了数分钟），看看别人的方法一秒不到就解出了，然后看<a href="https://zh.wikipedia.org/wiki/树状数组" target="_blank" rel="noopener">数状数组</a>的定义发觉脑子太久没用了转不过来，特纪录下理解过程。</p>
+        <p>近日在<a target="_blank" rel="noopener" href="http://www.qlcoder.com/">千里码</a>刷题，做到一道<a target="_blank" rel="noopener" href="http://www.qlcoder.com/task/7542">数据统计问题</a>的时候，发现粗暴的做法费时又费电（风扇狂响了数分钟），看看别人的方法一秒不到就解出了，然后看<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/树状数组">数状数组</a>的定义发觉脑子太久没用了转不过来，特纪录下理解过程。</p>
 <p>数状数组的定义：</p>
-<p>结合维基百科的条目与<a href="http://www.cnblogs.com/zichi/p/4806998.html" target="_blank" rel="noopener">别人的博客</a>，理解数状数组<code>C</code>与原数组<code>A</code>的关系为：</p>
+<p>结合维基百科的条目与<a target="_blank" rel="noopener" href="http://www.cnblogs.com/zichi/p/4806998.html">别人的博客</a>，理解数状数组<code>C</code>与原数组<code>A</code>的关系为：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">C[n] = (<span class="function"><span class="keyword">function</span>(<span class="params">i</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> ret = A[n];</span><br><span class="line">	</span><br><span class="line">  <span class="keyword">for</span>(j = i - <span class="number">1</span>; j &gt; i - lowbit(i); j--)&#123;</span><br><span class="line">    ret += A[j];</span><br><span class="line">  &#125;</span><br><span class="line">	</span><br><span class="line">  <span class="keyword">return</span> ret;</span><br><span class="line">&#125;)(n);</span><br></pre></td></tr></table></figure>
 <p>这<code>lowbit</code>是什么鬼呢？是表示一个数<code>n</code>使用二进制表示时，最右边的<code>1</code>所在表示的值</p>
 <p>如<code>6</code>的二进制表示为<code>110</code>，从个位开始数的第一个<code>1</code>在第二位，表示的数就是<code>2 ^ 2 = 4</code>，所以<code>lowbit(6) = 4</code></p>

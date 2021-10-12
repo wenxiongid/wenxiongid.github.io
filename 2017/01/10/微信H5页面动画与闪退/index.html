@@ -284,7 +284,7 @@
 
       
         <p>最近做一个移动页面闯了个祸，先看看长什么样子的：</p>
-<p><a href="https://h5.m.jd.com/dev/V4vE962o9aCGtEhB5xc5RyePqxp/index.html" target="_blank" rel="noopener">https://h5.m.jd.com/dev/V4vE962o9aCGtEhB5xc5RyePqxp/index.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://h5.m.jd.com/dev/V4vE962o9aCGtEhB5xc5RyePqxp/index.html">https://h5.m.jd.com/dev/V4vE962o9aCGtEhB5xc5RyePqxp/index.html</a></p>
 <p><img src="https://img14.360buyimg.com/cms/jfs/t3961/157/1563697734/2018/373b0a49/58803996Neb893b04.png" alt=""></p>
 <p>在最终上线前，出现了这样的一个bug：</p>
 <p>在 iPhone 6 Plus 的机型上，手Q和微信的 webview 中访问这个页面，翻到第三、四页的时候必定闪退</p>
@@ -292,34 +292,34 @@
 <p>但测试在 6 Plus 上始终能重现这个bug，就想这次奶野了，没多少个小时就要上线了，就用上之前想的一个没加上优化方法，还好解决了</p>
 <p>先说说解决方法，很简单的：把不显示的分页设成 <code>display: none;</code></p>
 <p>第二天想这是什么原因呢，就做了下面的测试：</p>
-<a id="more"></a>
+<span id="more"></span>
 <h2 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h2><p>仿照解决bug前做的简单demo：</p>
-<p><a href="http://junewu.work/app/dreaming/cert/test1.html" target="_blank" rel="noopener">https://junewu.work/app/dreaming/cert/test1.html</a></p>
+<p><a target="_blank" rel="noopener" href="http://junewu.work/app/dreaming/cert/test1.html">https://junewu.work/app/dreaming/cert/test1.html</a></p>
 <p><img src="https://img30.360buyimg.com/cms/jfs/t3055/121/5526296430/1973/931b58d7/5874bad7N1ac20430.png" alt=""></p>
 <p>跟原来的H5一样，采取分页式展示，每页有一个keyframes动画，demo用了一个两帧的逐帧动画模拟，动画只在屏幕显示的时候做动作，未进入屏幕和退出屏幕后停止动作</p>
 <p>在 iPhone 6 的 QQ 里的 webview 打开此页面，测试添加分页，当添加到160左右出现闪退现象，微信的 webview 也差不多，150个分页后出现闪退，比较意外的是 safari 浏览器打开，到130个分页左右就页面重置了，比上面的表现都差点</p>
 <p>然后是根据之前的解决方法，把不在当前屏幕显示的分页都做<code>display: none</code>处理</p>
-<p><a href="http://junewu.work/app/dreaming/cert/test2.html" target="_blank" rel="noopener">https://junewu.work/app/dreaming/cert/test1.html</a></p>
+<p><a target="_blank" rel="noopener" href="http://junewu.work/app/dreaming/cert/test2.html">https://junewu.work/app/dreaming/cert/test1.html</a></p>
 <p><img src="https://img12.360buyimg.com/cms/jfs/t4108/218/1443315332/1962/4f20d841/58772df1N6ab0f389.png" alt=""></p>
 <p>在几个webview、浏览器中都顺利超过数百个分页，性能还没有降低；两个测试对比，说明影响闪退发生的是分页是否显示；猜测是屏幕外的分页还在渲染导致资源占用过高造成</p>
 <h2 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h2><p>是不是逐帧动画影响了资源占用？本来按照CSS样式，不在屏幕里的分页动画是停止的，但浏览器的表现总有这样那样的差错，第二个测试就把所有的动画都停止</p>
 <p>这个页面把所有的动画都取消了：</p>
-<p><a href="http://junewu.work/app/dreaming/cert/test1_1.html" target="_blank" rel="noopener">https://junewu.work/app/dreaming/cert/test1_1.html</a></p>
+<p><a target="_blank" rel="noopener" href="http://junewu.work/app/dreaming/cert/test1_1.html">https://junewu.work/app/dreaming/cert/test1_1.html</a></p>
 <p><img src="https://img12.360buyimg.com/cms/jfs/t3889/35/1457657261/1906/bc52dfe8/58774367Nead82b1b.png" alt=""></p>
 <p>作为对比，下面的页面停止了动画，在屏幕外的分页也做了<code>display:none</code>处理</p>
-<p><a href="http://junewu.work/app/dreaming/cert/test1_1.html" target="_blank" rel="noopener">https://junewu.work/app/dreaming/cert/test1_1.html</a></p>
+<p><a target="_blank" rel="noopener" href="http://junewu.work/app/dreaming/cert/test1_1.html">https://junewu.work/app/dreaming/cert/test1_1.html</a></p>
 <p><img src="https://img10.360buyimg.com/cms/jfs/t3103/246/5615113485/1948/89a59553/58774407Ncb39def7.png" alt=""></p>
 <p>结果是，跟有动画时一样，在150~160个分页左右出现闪退，那其实这几个浏览器的渲染应该还是没有问题的，只是闪退跟当前是否显示动画没关</p>
 <h2 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h2><p>上面的测试说明，在现在测试的几个变量中，闪退只跟不是<code>display:none</code>的分页数量有关，想到每个分页的切换位置是使用<code>transform: translate3d</code>来实现的，那如果换成<code>top</code>来实现，是否能改善呢？下面再做个测试</p>
-<p><a href="http://junewu.work/app/dreaming/cert/test1_3.html" target="_blank" rel="noopener">https://junewu.work/app/dreaming/cert/test1_3.html</a></p>
+<p><a target="_blank" rel="noopener" href="http://junewu.work/app/dreaming/cert/test1_3.html">https://junewu.work/app/dreaming/cert/test1_3.html</a></p>
 <p><img src="https://img30.360buyimg.com/cms/jfs/t3982/64/1446522174/1938/44da7eec/587897afN856d9f68.png" alt=""></p>
 <p>把<code>transform: translate3d</code>换成用<code>top</code>之后闪退的现象没出现了，一直增加到1000个分页以上都还很稳定；在这里闻到了一点「硬件加速」的味道，大概闪退的根源差不多快要找到了</p>
 <p>之后再把<code>transform</code>用回来，不过用<code>translateY</code>替换原来的<code>translate3d</code>:</p>
-<p><a href="http://junewu.work/app/dreaming/cert/test2_3.html" target="_blank" rel="noopener">https://junewu.work/app/dreaming/cert/test2_3.html</a></p>
+<p><a target="_blank" rel="noopener" href="http://junewu.work/app/dreaming/cert/test2_3.html">https://junewu.work/app/dreaming/cert/test2_3.html</a></p>
 <p><img src="https://img11.360buyimg.com/cms/jfs/t4111/56/1560323884/1918/4f9af8a4/5878aaf6N30697253.png" alt=""></p>
 <p>闪退现象也没重现了，熟悉CSS3属性的应该都了解过，使一个元素使用硬件加速的简单方法就是为它加上<code>transform: translate3d(0, 0, 0)</code>，那么现在我们就可以确定，闪退的出现就跟使用了「硬件加速」的元素数量有关了</p>
 <h2 id="4"><a href="#4" class="headerlink" title="4."></a>4.</h2><p>之前的H5为什么在 iPhone 6上较难重现，在iPhone 6 Plus 上又必定能重现呢？回看一下屏幕分辨率自适应的实现方式，是通过获取屏幕宽高来定义分页的<code>transform: scale</code>属性来实现类似<code>background-size: contain</code>的适应方式的。于是得出在两台手机上，只有元素占的面积不同！6 Plus 上占的面积比 6 上的大，于是最后做了以下的测试页来验证猜想：</p>
-<p><a href="http://junewu.work/app/dreaming/cert/test1_4.html" target="_blank" rel="noopener">https://junewu.work/app/dreaming/cert/test1_4.html</a></p>
+<p><a target="_blank" rel="noopener" href="http://junewu.work/app/dreaming/cert/test1_4.html">https://junewu.work/app/dreaming/cert/test1_4.html</a></p>
 <p><img src="https://img11.360buyimg.com/cms/jfs/t3265/99/5772327361/1944/4e6e16f3/587f5a4bN7fc3f5e7.png" alt=""></p>
 <p>闪退提前在40~50个分页的时候出现。到了这步基本可以断定闪退跟「有硬件加速的非隐藏的元素总面积」有关了</p>
 <p>总结一下几个测试的结果：</p>

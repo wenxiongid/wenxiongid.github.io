@@ -316,8 +316,8 @@
 </ol>
 <p>综上，其实我们能选的方案也只有一个2，但如果只用在标题和一些数字（倒计时、价格之类）上的话，也可以满足要求</p>
 <h2 id="那怎么压缩字体？"><a href="#那怎么压缩字体？" class="headerlink" title="那怎么压缩字体？"></a>那怎么压缩字体？</h2><p>这个嘛，就有挺多工具了，像</p>
-<p><a href="http://font-spider.org/" target="_blank" rel="noopener">字蛛</a></p>
-<p><a href="http://ecomfe.github.io/fontmin/tw" target="_blank" rel="noopener">fontmin</a></p>
+<p><a target="_blank" rel="noopener" href="http://font-spider.org/">字蛛</a></p>
+<p><a target="_blank" rel="noopener" href="http://ecomfe.github.io/fontmin/tw">fontmin</a></p>
 <p>都支持命令行调用，方便嵌入工作流</p>
 <h2 id="压缩后的字体有多大？"><a href="#压缩后的字体有多大？" class="headerlink" title="压缩后的字体有多大？"></a>压缩后的字体有多大？</h2><p>以下用fontmin进行测试</p>
 <p>测试文字： 为你推荐 热卖大牌 618好礼 猜你喜欢 全品齐聚 欢乐今宵 特色会场 显示秒杀 1234567890</p>
@@ -367,7 +367,7 @@
 </ul>
 <p>无论哪种情况，都会有很大可能先出现一种展示方式，然后切换到另一种展示方式的突然变化，这个变化根据原字体和目标字体表现不同，甚至还可能带来重新换行、容器大小变化的问题，这是一个很不好的用户体验，甚至带来展示bug；</p>
 <p>如果能在字体文件加载好前，只展示loading画面或骨架屏，不展示使用这个字体相关的元素；在加载好之后再展示，是比较好的解决方案。</p>
-<p>目前直接在css中用@font-face定义的字体文件，是否下载好是不能用js的方式探测的。但我们还有一个工具<a href="https://github.com/typekit/webfontloader" target="_blank" rel="noopener">webfontloader</a>，可以使用js来接管加载字体文件的这个工作。</p>
+<p>目前直接在css中用@font-face定义的字体文件，是否下载好是不能用js的方式探测的。但我们还有一个工具<a target="_blank" rel="noopener" href="https://github.com/typekit/webfontloader">webfontloader</a>，可以使用js来接管加载字体文件的这个工作。</p>
 <p>它可以定义每个加载字体文件的超时时间，再使用独立每个字体文件的「加载中」「已加载」「加载失败」「不支持」钩子，去完全把控整个字体加载的过程。让我们去实行各种预加载懒加载方案</p>
 
     </div>

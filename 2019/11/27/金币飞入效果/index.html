@@ -279,7 +279,7 @@
         <p>先看一下效果是怎样的:</p>
 <p><img src="https://img10.360buyimg.com/imagetools/jfs/t1/70114/8/16197/1029481/5dde4245E42155d9f/e3bbd07edbeedc3e.gif" alt="https://img10.360buyimg.com/imagetools/jfs/t1/70114/8/16197/1029481/5dde4245E42155d9f/e3bbd07edbeedc3e.gif"></p>
 <p>简单说就是固定两个点，元素从其中一个出发，到另一个点结束，中间的轨迹为随机曲线（包括直线）</p>
-<a id="more"></a>
+<span id="more"></span>
 <p>从这个条件立刻想到的是二次函数的图像，经过x轴上的两个点，把两个固定的点当作是<code>x</code>轴与函数图像的交点，再随机取开口的大小($y=ax^2+bx+c$中a的取值)，就可以定义出这条随机曲线</p>
 <p>这样实现分以下步骤来处理</p>
 <ol>
@@ -295,7 +295,7 @@
 <script type="math/tex; mode=display">\begin{bmatrix}A & B & C\\\\D & E & F\\\\G & H & I\end{bmatrix}\begin{bmatrix}0\\\\0\\\\1\end{bmatrix} = \begin{bmatrix}p1.x\\\\p1.y\\\\1\end{bmatrix}</script><p>和</p>
 <script type="math/tex; mode=display">\begin{bmatrix}A & B & C\\\\D & E & F\\\\G & H & I\end{bmatrix}\begin{bmatrix}d\\\\0\\\\1\end{bmatrix} = \begin{bmatrix}p2.x\\\\p2.y\\\\1\end{bmatrix}</script><p>可以得出:</p>
 <script type="math/tex; mode=display">C = p1.x</script><script type="math/tex; mode=display">F = p1.y</script><script type="math/tex; mode=display">G = 0</script><script type="math/tex; mode=display">I = 1</script><script type="math/tex; mode=display">A = \frac{p2.x - p1.x}{d}</script><script type="math/tex; mode=display">D = \frac{p2.y - p1.y}{d}</script><p>剩下的$B$、$E$和$H$怎么算出来呢？</p>
-<p>通过变换矩阵中<a href="https://zh.wikipedia.org/wiki/%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5#%E5%85%B6%E5%AE%83%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%8F%98%E6%8D%A2" target="_blank" rel="noopener">各个位置数值在对向量影响</a>可以看出，因为两个座标系只通过了平移和旋转的处理，所以$B = -D$，$E = A$，$H = 0$</p>
+<p>通过变换矩阵中<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5#%E5%85%B6%E5%AE%83%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%8F%98%E6%8D%A2">各个位置数值在对向量影响</a>可以看出，因为两个座标系只通过了平移和旋转的处理，所以$B = -D$，$E = A$，$H = 0$</p>
 <p>得出转换矩阵为:</p>
 <script type="math/tex; mode=display">\begin{bmatrix}\frac{p2.x - p1.x}{d} & \frac{p1.y - p2.y}{d} & p1.x\\\\\frac{p2.y - p1.y}{d} & \frac{p2.x - p1.x}{d} & p1.y\\\\0 & 0 & 1\end{bmatrix}</script><h2 id="定义曲线的方程"><a href="#定义曲线的方程" class="headerlink" title="定义曲线的方程"></a>定义曲线的方程</h2><p>前面我们先预设了这个方程为二次函数，所以设函数为：</p>
 <script type="math/tex; mode=display">y = ax^2 + bx + c</script><p>且新座标系中的$(0, 0)$和$(d, 0)$两点</p>
