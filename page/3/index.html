@@ -213,6 +213,92 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2014/03/10/%E5%8F%AF%E7%BC%96%E8%BE%91%E5%9D%97%E5%85%89%E6%A0%87%E5%AE%9A%E4%BD%8D%E7%9A%84%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="June Wu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JuneWu's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2014/03/10/%E5%8F%AF%E7%BC%96%E8%BE%91%E5%9D%97%E5%85%89%E6%A0%87%E5%AE%9A%E4%BD%8D%E7%9A%84%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">可编辑块光标定位的方法</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2014-03-10 17:35:00" itemprop="dateCreated datePublished" datetime="2014-03-10T17:35:00+08:00">2014-03-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-10-29 14:17:18" itemprop="dateModified" datetime="2019-10-29T14:17:18+08:00">2019-10-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/work/" itemprop="url" rel="index">
+                    <span itemprop="name">work</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>之前在可编辑块中插入文本框等内容后，光标定位控制是一个困扰挺久的一个问题。</p>
+<p>后来使用的方法是把插入的文本块的指针存起来，插入后再使用<code>range.setEndAfter(el)</code>把光标末尾定位在文本块后，再<code>range.collapse(false)</code>就完成光标定位了。</p>
+<p>但这个方法只能用于插入的是一个元素节点，如要插入文本节点就不能使用了。</p>
+<p>而今天就遇到这样一个应用场景，初步想的方法是先用<code>range.enOffset</code>得到当前光标的位置，再加上插入文本的长度，最后<code>range.setEnd(offset)</code>应该就可以了。</p>
+<p>实验后发现无论加多少在<code>endOffset</code>都提示输入的offset过大，代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">range.insertNode(frag);</span><br><span class="line">range.setEnd(range.endContainer, range.endOffset+insert_length);</span><br></pre></td></tr></table></figure>
+<p>检查了下，当编辑块为空时，运行到第二行时的<code>endOffset</code>为<code>1</code>，<code>startOffset</code>为<code>0</code>，这相当奇怪，因为在编辑框中光标是没有选中任何字符，即应该是<code>collapsed</code>，<code>startOffset</code>跟<code>endOffset</code>是相等的。</p>
+<p>后头检查代码后，这第二行取的<code>endOffset</code>是插入文本后的，于是在插入前取出<code>endOffset</code>检查，果然这次<code>start</code>跟<code>end</code>都是<code>0</code>了。这说明插入文本后，<code>range</code>的范围是包裹着插入的内容的，如果想把光标定位到插入内容后，只需要<code>range.collapse(false)</code>就可以了………………</p>
+<p>也就是上边这么多都是废话了，代码只需改成这样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">range.insertNode(frag);</span><br><span class="line">range.collapse(<span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+<p>就可以达到预想的要求了，经过确认，插入文本块也可以使用上述的代码。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2014/02/28/ie%E4%B8%8B%E5%BC%82%E6%AD%A5%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6%E7%9A%84%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -737,7 +823,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

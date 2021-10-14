@@ -213,6 +213,97 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2017/01/10/%E5%BE%AE%E4%BF%A1H5%E9%A1%B5%E9%9D%A2%E5%8A%A8%E7%94%BB%E4%B8%8E%E9%97%AA%E9%80%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="June Wu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JuneWu's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/01/10/%E5%BE%AE%E4%BF%A1H5%E9%A1%B5%E9%9D%A2%E5%8A%A8%E7%94%BB%E4%B8%8E%E9%97%AA%E9%80%80/" class="post-title-link" itemprop="url">微信H5页面动画与闪退</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-01-10 17:34:23" itemprop="dateCreated datePublished" datetime="2017-01-10T17:34:23+08:00">2017-01-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-11-20 16:25:43" itemprop="dateModified" datetime="2019-11-20T16:25:43+08:00">2019-11-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/work/" itemprop="url" rel="index">
+                    <span itemprop="name">work</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近做一个移动页面闯了个祸，先看看长什么样子的：</p>
+<p><a target="_blank" rel="noopener" href="https://h5.m.jd.com/dev/V4vE962o9aCGtEhB5xc5RyePqxp/index.html">https://h5.m.jd.com/dev/V4vE962o9aCGtEhB5xc5RyePqxp/index.html</a></p>
+<p><img src="https://img14.360buyimg.com/cms/jfs/t3961/157/1563697734/2018/373b0a49/58803996Neb893b04.png" alt=""></p>
+<p>在最终上线前，出现了这样的一个bug：</p>
+<p>在 iPhone 6 Plus 的机型上，手Q和微信的 webview 中访问这个页面，翻到第三、四页的时候必定闪退</p>
+<p>之前在我的 iPhone 6 上测试时也偶尔会出现这个情况，但在升级了微信到 6.5.3 版本后就没重现过，当时猜想是微信的问题而没去留意</p>
+<p>但测试在 6 Plus 上始终能重现这个bug，就想这次奶野了，没多少个小时就要上线了，就用上之前想的一个没加上优化方法，还好解决了</p>
+<p>先说说解决方法，很简单的：把不显示的分页设成 <code>display: none;</code></p>
+<p>第二天想这是什么原因呢，就做了下面的测试：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/01/10/%E5%BE%AE%E4%BF%A1H5%E9%A1%B5%E9%9D%A2%E5%8A%A8%E7%94%BB%E4%B8%8E%E9%97%AA%E9%80%80/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
     <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2016/04/29/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1107,92 +1198,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://wenxiongid.github.io/2014/03/10/%E5%8F%AF%E7%BC%96%E8%BE%91%E5%9D%97%E5%85%89%E6%A0%87%E5%AE%9A%E4%BD%8D%E7%9A%84%E6%96%B9%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="June Wu">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JuneWu's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/03/10/%E5%8F%AF%E7%BC%96%E8%BE%91%E5%9D%97%E5%85%89%E6%A0%87%E5%AE%9A%E4%BD%8D%E7%9A%84%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">可编辑块光标定位的方法</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2014-03-10 17:35:00" itemprop="dateCreated datePublished" datetime="2014-03-10T17:35:00+08:00">2014-03-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-10-29 14:17:18" itemprop="dateModified" datetime="2019-10-29T14:17:18+08:00">2019-10-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/work/" itemprop="url" rel="index">
-                    <span itemprop="name">work</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>之前在可编辑块中插入文本框等内容后，光标定位控制是一个困扰挺久的一个问题。</p>
-<p>后来使用的方法是把插入的文本块的指针存起来，插入后再使用<code>range.setEndAfter(el)</code>把光标末尾定位在文本块后，再<code>range.collapse(false)</code>就完成光标定位了。</p>
-<p>但这个方法只能用于插入的是一个元素节点，如要插入文本节点就不能使用了。</p>
-<p>而今天就遇到这样一个应用场景，初步想的方法是先用<code>range.enOffset</code>得到当前光标的位置，再加上插入文本的长度，最后<code>range.setEnd(offset)</code>应该就可以了。</p>
-<p>实验后发现无论加多少在<code>endOffset</code>都提示输入的offset过大，代码如下：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">range.insertNode(frag);</span><br><span class="line">range.setEnd(range.endContainer, range.endOffset+insert_length);</span><br></pre></td></tr></table></figure>
-<p>检查了下，当编辑块为空时，运行到第二行时的<code>endOffset</code>为<code>1</code>，<code>startOffset</code>为<code>0</code>，这相当奇怪，因为在编辑框中光标是没有选中任何字符，即应该是<code>collapsed</code>，<code>startOffset</code>跟<code>endOffset</code>是相等的。</p>
-<p>后头检查代码后，这第二行取的<code>endOffset</code>是插入文本后的，于是在插入前取出<code>endOffset</code>检查，果然这次<code>start</code>跟<code>end</code>都是<code>0</code>了。这说明插入文本后，<code>range</code>的范围是包裹着插入的内容的，如果想把光标定位到插入内容后，只需要<code>range.collapse(false)</code>就可以了………………</p>
-<p>也就是上边这么多都是废话了，代码只需改成这样：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">range.insertNode(frag);</span><br><span class="line">range.collapse(<span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
-<p>就可以达到预想的要求了，经过确认，插入文本块也可以使用上述的代码。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1243,7 +1248,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
