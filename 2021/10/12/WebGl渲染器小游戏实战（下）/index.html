@@ -50,12 +50,12 @@
   };
 </script>
 
-  <meta name="description" content="承接上篇的进度，接下来改说一下渲染器的实现了 先说一下这种像是两滴液体靠近，边缘合并的效果是怎么实现的  如果我们把眼镜脱下，或焦点放远一点，大概可以看到这样的图像：  看到这里可能就有人猜到是怎样实现的了。 是的，就是利用两个边缘径向渐变亮度的圆形，在它们的渐变边缘叠加的位置，亮度的相加能达到圆形中心的程度。 然后在这个渐变边缘的图形上加一个阶跃函数滤镜（低于某个值置为0，高于则置1），就可以得">
+  <meta name="description" content="承接上篇的进度，接下来改说一下渲染器的实现了 先说一下这种像是两滴液体靠近，边缘合并的效果是怎么实现的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="WebGl渲染器小游戏实战（下）">
 <meta property="og:url" content="https://wenxiongid.github.io/2021/10/12/WebGl%E6%B8%B2%E6%9F%93%E5%99%A8%E5%B0%8F%E6%B8%B8%E6%88%8F%E5%AE%9E%E6%88%98%EF%BC%88%E4%B8%8B%EF%BC%89/index.html">
 <meta property="og:site_name" content="JuneWu&#39;s Blog">
-<meta property="og:description" content="承接上篇的进度，接下来改说一下渲染器的实现了 先说一下这种像是两滴液体靠近，边缘合并的效果是怎么实现的  如果我们把眼镜脱下，或焦点放远一点，大概可以看到这样的图像：  看到这里可能就有人猜到是怎样实现的了。 是的，就是利用两个边缘径向渐变亮度的圆形，在它们的渐变边缘叠加的位置，亮度的相加能达到圆形中心的程度。 然后在这个渐变边缘的图形上加一个阶跃函数滤镜（低于某个值置为0，高于则置1），就可以得">
+<meta property="og:description" content="承接上篇的进度，接下来改说一下渲染器的实现了 先说一下这种像是两滴液体靠近，边缘合并的效果是怎么实现的">
 <meta property="og:locale">
 <meta property="og:image" content="https://img11.360buyimg.com/imagetools/jfs/t1/197202/29/13115/172757/6166b94aE2e292112/6a82b57b881d22fd.gif">
 <meta property="og:image" content="https://img13.360buyimg.com/imagetools/jfs/t1/210369/27/5106/1129110/6166bd24Ee0563103/f004765f406613f6.gif">
@@ -63,7 +63,7 @@
 <meta property="og:image" content="https://img14.360buyimg.com/imagetools/jfs/t1/198275/28/13029/78431/6167f9fcE5a2849ab/bf5a28e9f8ca43b0.jpg">
 <meta property="og:image" content="https://img10.360buyimg.com/imagetools/jfs/t1/212782/30/375/69734/61681561Ebc5ea8ca/765af5efab13fb8f.jpg">
 <meta property="article:published_time" content="2021-10-12T09:37:03.000Z">
-<meta property="article:modified_time" content="2021-10-14T11:50:47.964Z">
+<meta property="article:modified_time" content="2021-10-15T05:47:12.488Z">
 <meta property="article:author" content="June Wu">
 <meta property="article:tag" content="GLSL">
 <meta name="twitter:card" content="summary">
@@ -254,7 +254,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-10-14 19:50:47" itemprop="dateModified" datetime="2021-10-14T19:50:47+08:00">2021-10-14</time>
+                <time title="Modified: 2021-10-15 13:47:12" itemprop="dateModified" datetime="2021-10-15T13:47:12+08:00">2021-10-15</time>
               </span>
 
           
@@ -271,6 +271,7 @@
         <p>承接上篇的进度，接下来改说一下渲染器的实现了</p>
 <p>先说一下这种像是两滴液体靠近，边缘合并的效果是怎么实现的</p>
 <p><img src="https://img11.360buyimg.com/imagetools/jfs/t1/197202/29/13115/172757/6166b94aE2e292112/6a82b57b881d22fd.gif" alt="https://img11.360buyimg.com/imagetools/jfs/t1/197202/29/13115/172757/6166b94aE2e292112/6a82b57b881d22fd.gif"></p>
+<span id="more"></span>
 <p>如果我们把眼镜脱下，或焦点放远一点，大概可以看到这样的图像：</p>
 <p><img src="https://img13.360buyimg.com/imagetools/jfs/t1/210369/27/5106/1129110/6166bd24Ee0563103/f004765f406613f6.gif" alt="https://img13.360buyimg.com/imagetools/jfs/t1/210369/27/5106/1129110/6166bd24Ee0563103/f004765f406613f6.gif"></p>
 <p>看到这里可能就有人猜到是怎样实现的了。</p>

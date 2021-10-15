@@ -6,6 +6,7 @@
     <content><![CDATA[<p>承接上篇的进度，接下来改说一下渲染器的实现了</p>
 <p>先说一下这种像是两滴液体靠近，边缘合并的效果是怎么实现的</p>
 <p><img src="https://img11.360buyimg.com/imagetools/jfs/t1/197202/29/13115/172757/6166b94aE2e292112/6a82b57b881d22fd.gif" alt="https://img11.360buyimg.com/imagetools/jfs/t1/197202/29/13115/172757/6166b94aE2e292112/6a82b57b881d22fd.gif"></p>
+<span id="more"></span>
 <p>如果我们把眼镜脱下，或焦点放远一点，大概可以看到这样的图像：</p>
 <p><img src="https://img13.360buyimg.com/imagetools/jfs/t1/210369/27/5106/1129110/6166bd24Ee0563103/f004765f406613f6.gif" alt="https://img13.360buyimg.com/imagetools/jfs/t1/210369/27/5106/1129110/6166bd24Ee0563103/f004765f406613f6.gif"></p>
 <p>看到这里可能就有人猜到是怎样实现的了。</p>
